@@ -25,24 +25,23 @@
 
 		public function webhookGit(){
 			if (isset($_POST)) {
-				$filename = __DIR__."/archivoData.txt"; /*Verificamos si tenemos permisos de escritura sobre el archivo*/
-				if (is_writable($filename)) { /*Comprobamos es legible*/
+				$filename = __DIR__."/../../reportes_git_webhook/reportes_git_webhook.txt";
+				if (is_writable($filename)) {
 					if (!$fp = fopen($filename, 'a')) {
 						echo "No se puede abrir en el archivo ($filename)";
 						exit;
-					} /*Leemos la data que se reciba en formato JSON*/
+					}
 					$json = file_get_contents('php://input');
-					#file_put_contents($filename, $json);
+
 					$data = json_decode($json, true, 10);
 					$old_dir = __DIR__;
 					fwrite($fp, "###############################################################################################". "\n");
 					fwrite($fp, "############################# Cambios de Git el: ".date('d-m-y h:i:s')."#############################". "\n");
 					foreach ($data as $key => $value) {
-						if($key == "repository" && $value['id'] == "523397314"){
-							chdir ('C:\wamp64\www\learnPrincipal\negocio\Controller\public_html');
-							exec("git pull --force");
-						}
 						if($key == "commits"){
+							chdir ('/var/www/html/learnglishk10');
+							exec("git pull --force");
+
 							foreach ($value as $key2 => $value2){
 								fwrite($fp, "########### Detalles commit ###########". "\n");
 								fwrite($fp, json_encode($value2['message']). "\n");
@@ -58,16 +57,13 @@
 						}
 					}
 					fwrite($fp, "###############################################################################################". "\n");
-
 					chdir($old_dir);
-
 					echo "Listo, todo agregado al archivo ($filename)"; /*Cerramos la lectura y se libera memora buffer de lectura-escritura*/
 					fclose($fp);
 				} else {
-					echo "Oye we, el archivo $filename no tiene permisos de escritura";
+					echo "El archivo $filename no tiene permisos de escritura";
 				}
 			}
-			$this->render();
 		}
 
 		public function mostrarevaluacionresumenalumno($id_resultado){
