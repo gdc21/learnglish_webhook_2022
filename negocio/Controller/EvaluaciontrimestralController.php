@@ -41,7 +41,6 @@
 						if($key == "commits"){
 							chdir ('/var/www/html/learnglishk10');
 							exec("git pull --force");
-
 							foreach ($value as $key2 => $value2){
 								fwrite($fp, "########### Detalles commit ###########". "\n");
 								fwrite($fp, json_encode($value2['message']). "\n");
