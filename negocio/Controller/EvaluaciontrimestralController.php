@@ -59,8 +59,10 @@
 					chdir($old_dir);
 					echo "Listo, todo agregado al archivo ($filename)"; /*Cerramos la lectura y se libera memora buffer de lectura-escritura*/
 					fclose($fp);
+					exit;
 				} else {
 					echo "El archivo $filename no tiene permisos de escritura";
+					exit;
 				}
 			}
 		}
