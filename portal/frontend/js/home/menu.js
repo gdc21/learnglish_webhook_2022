@@ -1,0 +1,3 @@
+$(function(){
+	$('.nameUser').removeClass('hide');
+});

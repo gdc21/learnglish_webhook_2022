@@ -1,0 +1,41 @@
+# enable expirations
+#ExpiresActive On
+# expire GIF and JPG images after a month in the client's cache
+#ExpiresByType image/gif A2592000
+#ExpiresByType image/jpg A2592000
+
+<IfModule mod_rewrite.c>
+	# Habilitando Rewriting
+	RewriteEngine on
+	RewriteRule .* - [E=HTTP_IF_MODIFIED_SINCE:%{HTTP:If-Modified-Since}]
+	RewriteRule .* - [E=HTTP_IF_NONE_MATCH:%{HTTP:If-None-Match}]
+
+	# Permitiendo recuperar recursos
+	RewriteCond %{REQUEST_URI} !\.(?:css|png|jpe?g|gif|js|eot|svg|ttf|woff|ico|html|pdf|woff2|map|mp3|mp4|csv|xlsx|zip)$ [NC,OR]
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+
+	# Transforma las urls
+	#   Entrada:  /CLASE/METODO/PARAMETRO1/PARAMETRO2
+	#   Salida: index.php?controller=CLASE&action=METODO&params=PARAMETRO1/PARAMETRO2
+	
+	RewriteRule ^(\w+)/(\w+)/(.*)$ index.php?controller=$1&action=$2&params=$3
+	RewriteRule ^(\w+)/(\w+)/?$ index.php?controller=$1&action=$2
+	RewriteRule ^(\w+)/?$ index.php?controller=$1
+
+	# Impedimos el acceso al archivo index.php
+	RewriteCond %{THE_REQUEST} ^.*/index\.php 
+	RewriteRule ^index\.php - [F]
+	
+	#RewriteRule ^(.*)$ *.php?url=$1 [QSA,L]
+</IfModule>
+
+#<Files *.php>
+#    Order Deny,Allow
+#    Deny from all
+#</Files>
+
+#<Files index.php>
+#    Order Allow,Deny
+#    Allow from all
+#</Files>

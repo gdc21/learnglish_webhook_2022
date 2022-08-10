@@ -1,0 +1,811 @@
+/*hoja de estilos generales hecha por Laura M�ndez 2015, bajo notacion SMACSS*/
+/*****
+ *tipografia de apoyo
+ ****/
+ 
+header nav  ul {
+	padding: 0;
+	margin:0;
+}
+a{
+	text-decoration: none;
+	cursor:pointer;
+}
+button{
+	cursor:pointer;
+}
+ul li{
+	margin:0;
+	padding:0;
+}
+/*layout*/
+#contenido {
+    margin-bottom: 10em;
+}
+#menu a.menu-login{
+	border: 0.05em solid #68cac8;
+}
+#menu .goout{
+	background: #68cac8;
+	color:#fff;
+}
+/*Esilos de introduccion*/
+.introduccion.nAvanzado{
+	background: url("../../IMG/learnglish_3.png");
+}
+.introduccion.nBasico{
+	background: url("../../IMG/learnglish_2.png");
+}
+
+.btn_level.basico{
+	background-color: #8899f0;
+}
+.btn_level.avanzado{
+	background-color: #56d9db
+}
+
+.level_info {
+	width: 19.55em;
+	display: inline-block;
+	margin:0 1em;
+	text-align: left;
+}
+
+.btn_level h3{
+	font-size: 2em;
+}
+.btn_level  p{
+	font-family: "OpenSans-Light", Arial, Helvetica, sans-serif;
+}
+a.read_more{
+	text-decoration: none;
+	color:#fff;
+}
+.avanzado span.plus{
+	color:#56d9db;
+}
+.basico span.plus{
+	color:#8899f0;
+}
+span.plus{
+	width: 1.25em;
+	height: 1.25em;
+	border-radius: 50%;
+	line-height: 1.25em;
+	text-align: center;
+	display: inline-block;
+	background-color:#fff;
+	margin:0 0.25em;
+}
+section.button_Module.interno {
+    display: inline-block;
+    margin: auto;
+    text-align: center;
+	float: left;
+}
+/*Estilos logeado*/
+.levelIncator {
+    display: inline-block;
+    width: 49%;
+    margin: -0.1em;
+}
+.levelIncator .btn_level {
+    color: #fff;
+    display: inline-block;
+   height: 7.25em;
+    margin: 0;
+    padding: 1.4em 0.1em;
+    text-align: center;
+    vertical-align: top;
+	position: relative;
+}
+.levelIncator .level_info {
+    position: relative;
+    top: 0.35em;
+    width: 10.15em;
+}
+.levelIncator .btn_level h3 {
+    font-size: 1.7em;
+    margin: 0;
+    padding: 0;
+}
+.levelIncator .btn_level img {
+	position: relative;
+    top: -1em;
+    transform: scale(0.8);
+     -webkit-transform:  scale(0.8);
+     -moz-transform:  scale(0.8);
+     -ms-transform: scale(0.8);
+}
+/*.nameUser {
+    display: inline-block;
+    float: right;
+    margin-right: 0.9em;
+    margin-top: 1.1em;
+    width: 9.35em;
+}*/
+.userpicture {
+    border: 0.2em solid #e1dddd;
+    border-radius: 50%;
+    box-shadow: 0.25em 0.2em 0.25em #c5c4c4;
+    height: 2.5em;
+    width: 2.5em;
+}
+.name {
+    color: #888b88;
+    font-family: 'opensans-light';
+    font-size: 2em;
+    font-weight: lighter;
+    line-height: 2.8em;
+    position: relative;
+    top: -0.75em;
+}
+.userin img{
+	margin-right: 1.25em;
+}
+/*Estilos Modulos*/
+.overlay{
+	transition: all 1200ms ease 200ms;
+	background:rgba(51, 51, 51, 0.64);
+}
+.ventana {
+	 background-color: rgba(255, 255, 255, 0.64);
+    box-shadow: 0 0 0.5em #636262;
+    font-family: "OpenSans-Light",Arial,Helvetica,sans-serif;
+    height: 19.15em;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 6.55em;
+    opacity: 1;
+    position: absolute;
+    right: 0;
+    transition: all 1200ms ease 200ms;
+    width: 20em;
+    z-index: 100;
+}
+a.btn_close {
+    color: #808089;
+    font-size: 1.1em;
+    position: absolute;
+    right: 0.4em;
+    top: -0.2em;
+}
+
+.ventana h2{
+	 color: #808080;
+    font-family: "OpenSans-Light",Arial,Helvetica,sans-serif;
+    font-size: 2em;
+    font-weight: lighter;
+    margin: auto;
+    padding: 0.6em;
+    text-align: center;
+    text-shadow: 0 0 0.25em #cdcccc;
+    text-transform: uppercase;
+}
+.ventana ul {
+	margin:0;
+	padding: 0;
+}
+.ventana ul li{
+	color: #747474;
+    list-style-type: none;
+    margin: 0.5em 1.15em;
+    padding: 0;
+    text-align: center;
+}
+.ventana ul li label {
+    display: block;
+	color:#747474;
+    font-size: 0.8em;
+    font-weight: lighter;
+    padding: 0.25em;
+    text-align: left;
+}
+.ventana ul li input {
+	background-color: #adadad;
+    background-position: 15.75em center;
+    background-repeat: no-repeat;
+    background-size: 0.85em auto;
+    border: medium none;
+    color: #444444;
+    font-size: 0.75em;
+    height: 1.7em;
+    margin: auto;
+    text-align: center;
+    width: 95%;
+}
+.ventana ul li input.userinput{
+	background-image: url("../../IMG/user_logo.png");
+}
+.ventana ul li input.passwordinput{
+	background-image: url("../../IMG/lock.png");
+}
+.ventana button.aceptar {
+	background: #8992ee none repeat scroll 0 0;
+    border: medium none;
+    color: #e0dada;
+    display: block;
+    font-size: 0.8em;
+    font-weight: lighter;
+    height: 2.2em;
+    letter-spacing: 0.21em;
+    margin: 2.65em auto auto;
+    text-align: center;
+    text-transform: uppercase;
+    width: 12.5em;
+}
+.ventana button.ayuda {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: medium none;
+    color: #8992ee;
+    display: block;
+    font-size: 0.75em;
+    margin: 1.3em;
+    text-align: right;
+    text-shadow: 0 0 0.25em #e0dfdf;
+    width: 88%;
+}
+section.button_Module{
+	width: 100%;
+	display:block;
+	margin: auto;
+	text-align: center;
+}
+section button{
+  width:  initial !important;
+  height: initial  !important;
+  /*border:0.25em solid ;*/
+  background-color: #fff;
+  border-radius:0.6em;
+  margin: initial !important;
+  vertical-align: top;
+  position:relative;
+}
+section button img{
+	display: inline-block;
+    left: -3.9em;
+    position: relative;
+    top: 0.2em;
+    width: 2.5em;
+}
+section button span{
+	display:inline-block;
+}
+section.basico button,
+section.basico button span{
+	border-color: #8899f0;
+    color: #8899f0;
+}
+section.avanzado button,
+section.avanzado button span{
+	border-color:#56D9DB;
+	color:#56D9DB;
+}
+.button_Module.interno button::after {
+    content: "";
+    font-size: 2.1em;
+    height: 2.1em;
+    position: absolute;
+    right: -2.1em;
+     top: 0.75em;
+    width: 1.2em;
+}
+.button_Module.basico.interno button::after {
+	background-image: url("../../IMG/arrow_gral.png");
+}
+.button_Module.avanzado.interno button::after {
+	background-image: url("../../IMG/arrow_gral_2.png");
+}
+.modulename {
+    display: inline-block;
+    font-size: 1.5em;
+    left: 4.1em;
+    padding-top: 0.45em;
+    position: absolute;
+    text-align: left;
+    top: 0.1em;
+    width: 100%;
+}
+.modulename.grande{
+	 font-size: 1.3em;
+    right: 0.25em;
+    top: 0.2em;
+    word-spacing: -0.05em;
+}
+.modulename span{
+	display:block;
+}
+
+	/*Estilos Estado*/
+.hidden {
+	opacity: 0;
+	visibility: hidden;
+	display: none;
+	transform: scale(0.1) translate(0em, -260em);
+}
+
+#boxy {
+	 background: black none repeat scroll 0 0;
+    bottom: 0;
+    height: 263%;
+    opacity: 0.5;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+/*Unidad*/
+.select-eunit{
+ width: 100%;
+ text-align:center;
+ margin:auto;
+}
+.btn_level {
+	 height: 7.75em;
+}
+.mini-choose img {
+    transform: scale(0.5) translateY(-3.8em);
+}
+.mini-choose .level_info {
+	 left: -2.55em;
+    position: relative;
+    top: -4.7em;
+}
+button.basico.titulo{
+	border-color:#819AF3;
+   display:block;
+   font-family: "OpenSans-Light";
+  margin: 2.56em auto;
+}
+button.basico span{
+	 color: #819AF3;
+	display:block;
+}
+.lesson-btn.loock::before {
+     background: rgba(136, 152, 239, 0.54) url("../../IMG/candado.png") no-repeat scroll center center;
+    border-radius: 0.45em;
+    content: "";
+    display: block;
+    height: 5.1em;
+    left: -0.2em;
+    position: absolute;
+    top: -0.25em;
+    width: 10.35em;
+    z-index: 98;
+}
+.lesson-btn.unlook::before {
+    background: rgba(73, 227, 219, 0.49) none repeat scroll 0 0;
+    border-radius: 0.45em;
+    content: "";
+    display: block;
+    height: 5.5em;
+    left: -0.2em;
+    position: absolute;
+    top: -0.2em;
+    width: 10.75em;
+    z-index: 98;
+}
+.lesson-btn{
+   background-color: #fff;
+    border: 0.2em solid;
+    border-radius: 0.45em;
+    display: inline-block;
+    font-family: "OpenSans-Light";
+    height: 5.1em;
+    margin: 0.65em;
+    position: relative;
+    text-align: left;
+    vertical-align: top;
+    width: 10.35em;
+}
+.lesson-btn.basico{
+  border-color: #8899f0;
+}
+.lesson-btn.basico span{
+   color: #8899f0;
+}
+.lessonNum {
+    bottom: 0;
+    display: block;
+    font-size: 0.9em;
+    height: 3.4em;
+    left: 4.2em;
+    position: absolute;
+    top: 0.65em;
+}
+.lessonNum-num{
+ display:block;
+}
+.lesson-btn img {
+    display: inline-block;
+    margin: 0.95em 0.95em 0.95em 0.4em;
+ 
+}
+
+.lessonNum-name{
+    display: inline-block;
+    width: 5.9em;
+}
+.sectionsLessons{
+ text-align: center;
+}
+
+/*ENTER PAGES*/
+.aligncenter {
+    text-align: center;
+}
+.nv-mv-l-titulo{
+  color: #64d2d7;
+    font-family: "opensans-bold";
+    font-size: 4em;
+}
+.nv-mv-l-number{
+  color:#9170e7;
+}
+.nv-mv-l-subtitulo{
+        color: #eec672;
+    font-family: "opensans-light";
+    font-size: 1.3em;
+    font-weight: lighter;
+    letter-spacing: 0.2em;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    text-transform: uppercase;
+    word-spacing: 0.25em;
+}
+.nv-mv-l-translation{
+   color: #c778e8;
+    font-family: "opensans-light";
+    font-size: 0.95em;
+    letter-spacing: 0.2em;
+    line-height: 0.1em;
+}
+.nv-mv-l-sub-subtitulo{
+   background-color: #9170e7;
+    color: #fff;
+    display: block;
+    font-size: 0.95em;
+    font-weight: normal;
+    letter-spacing: 0.2em;
+     margin: 1.9em auto 1em;
+    padding: 0.25em;
+    text-transform: uppercase;
+    width: 45%;
+    word-spacing: 0.5em;
+}
+.nv-mv-l-hi{
+    color: #fad656;
+    display: block;
+    font-family: "opensans-bold";
+    font-size: 1.8em;
+    letter-spacing: 0.45em;
+}
+.nv-mv-l-hi-two{
+    color: #c778e8;
+    font-family: "opensans-light";
+    font-size: 1.1em;
+    font-style: italic;
+    font-weight: lighter;
+    letter-spacing: 0.2em;
+    line-height: 0.7em;
+    padding-top: 0.4em;
+}
+.nv-mv-l-description{
+  color: #767070;
+    font-size: 0.85em;
+    margin: auto;
+    padding-bottom: 1.51em;
+    padding-top: 1.8em;
+    text-align: justify;
+    width: 63%;
+  line-height: 1.45em;
+}
+.spotlight{
+  color: #9170e7;
+
+}
+.lighttext{
+    color: #8a8c91;
+    font-family: opensans-light;
+    font-size: 0.8em;
+    font-style: italic;
+}
+.sectionslessons{
+  display: block;
+    height: auto;
+    margin: auto auto 5.35em;
+    text-align: center;
+    width: 80%;
+}
+a.section{
+   color: #fff;
+    display: inline-block;
+    font-size: 0.9em;
+    height: 2.1em;
+    line-height: 2.1em;
+    margin: 3% 6%;
+    width: 11.9em;
+}
+.section.review {
+	background-color: #56dba1;
+}
+.section.gramBit {
+	background-color: #6bc8d0;
+}
+.section.vocabulary {
+	background-color: #f5bd3d;
+}
+.section.reading{
+	background-color: #2d75d8;
+}
+.section.listening {
+	background-color: #be51e8;
+}
+.section.practice{
+	background-color: #ed583f;
+}
+a.section img {
+    float: right;
+    height: 2.1em;
+    width: 3.8em;
+}
+.namelesson {
+    text-align: center;
+}
+.basico.arrow_rg, .basico.arrow_lf{
+	border: 0.15em solid #8899F0;
+}
+.arowbutton{
+	 margin: 2.5em 1.25em;
+}
+.arrow_lf img{
+	 display: inline-block;
+    left: -0.1em;
+    line-height: 3.1em;
+    margin: auto;
+    position: relative;
+    top: 0.25em;
+}
+
+.arrow_rg img{  
+	 display: inline-block;
+    left: 0.2em;
+    line-height: 3.1em;
+    margin: auto;
+    position: relative;
+    top: 0.3em;
+}
+.arrow_rg{
+	width: 2.5em;
+	height:2.5em;
+	display:inline-block;
+	border-radius: 50%;
+	text-align:center;
+	float: right;
+}
+.arrow_lf{
+	width: 2.5em;
+	height:2.5em;
+	display:inline-block;
+	border-radius: 50%;
+	text-align:center;
+	float: left;
+}
+h2.lesson {
+    color: #fff;
+    display: block;
+    font-size: 1.1em;
+    height: 2.1em;
+    line-height: 2.25em;
+    text-align: right;
+    width: 56%;
+}
+h2.lesson img {
+    float: right;
+    margin: 0.35em;
+    vertical-align: middle;
+}
+.teoria {
+   
+}
+h3.section {
+    display: block;
+    height: 2.1em;
+    text-align: right;
+    width: 43%;
+}
+h3.section img {
+    float: right;
+    margin: 0 0 0 0.5em;
+	height: 2.1em;
+}
+h3.section .namelesson {
+   color: #fff;
+    font-size: 0.95em;
+    font-weight: lighter;
+    letter-spacing: 0.05em;
+    line-height: 2.1em;
+    text-align: right;
+    text-transform: uppercase;
+}
+.lesson.introductionMyself {
+    background: #9170E7 none repeat scroll 0 0;
+}
+h3.grammar-bit {
+    background: #6BC8D0 none repeat scroll 0 0;
+    text-align: right;
+}
+.nametema {
+    font-family: "OpenSans-Light",Arial,Hevetica,sans-serif;
+    font-weight: lighter;
+}
+#objeto_de_aprendizaje  div#lo_contenedor{
+	border:medium none;
+}
+#objeto_de_aprendizaje div#tablero {
+    height: auto;
+    width: 100%;
+}
+
+/* **************************************************** */
+/*				Estilos de objetos.php					*/
+/* **************************************************** */
+.div_secciones{	float:left; width:32%; margin: 1.5em 0em;}
+#div_sec_2{ width:65%;}
+#add_seccion{	width:100%; height: 6.75em; background-color: #f7f7f7; border-radius: 1em; border: 0.05em solid #68cac8; padding: 0.5em 0.75em; display: none;}
+#NewSeccion .select_n_sec{ float: left; margin: 1em 0.75em; width:41%;}
+#NewSeccion input[type="button"]{	margin: 0.75em 0em; float: right;}
+.field_position{	width: 54%; border: 0.05em solid silver; padding: .35em .625em .75em; float: left;}
+.field_position legend{	display: block; width: auto; padding: 0 !important; margin-bottom: 0em !important; font-size: 0.6em !important; line-height: inherit;
+    color: #333; border: 0; border-bottom: 0em !important;}
+.field_position input[type="radio"]{	margin-left: 0.7em;}
+#NewNavStructure div{	float: left; margin-left: 1.5em;}
+.add_sec_btn{	cursor: pointer; font-weight: bolder; display: none;}
+.img_c{	margin: 0em 0.5em 0em; cursor: pointer;}
+
+#edit_seccion{	width:100%; min-height: 15em; height: auto;background-color: #f7f7f7; border-radius: 1em; border: 0.05em solid #68cac8; padding: 0.5em 0.75em; display: none;}
+.edit_sec{	float: right; cursor: pointer;}
+.sec_name{	width: 100%; height: 2.5em; }
+.sec_file div{	float:left; width: 10em; height: 7em; margin-left: 0.5em;}
+.UploadIMG{
+	width: 100% !important;
+    margin-top: 4em;
+}
+.Upload_Notas{
+	    width: 65% !important;
+	    padding: 0.5em;
+}
+.upload {
+    width: 8.8em !important;
+    height: 1.5em !important;
+    background-color: #666;
+    overflow: hidden;
+    color: white;
+    border-radius: 1em;
+}
+.upload input {
+    display: block !important;
+    width: 8.8em !important;
+    height: 1.5em !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+}
+.claro{clear:both;}    
+    
+/************ CSS drag and drop ********/
+.filedrag{    
+	padding-top: 4em !important;
+	font-weight: bold;
+	text-align: center;
+	padding: 1em 0;
+	margin: 1em 0;
+	color: #555;
+	border: 0.1em dashed #555;
+	border-radius: 0.35em;
+	cursor: default;
+}
+
+.filedrag-hover
+{
+	padding-top: 4em !important;
+	font-weight: bold;
+	text-align: center;
+	padding: 1em 0;
+	margin: 1em 0;
+	color: #555;
+	border: 0.1em dashed #555;
+	border-radius: 0.35em;
+	cursor: default;
+	color: #f00;
+	border-color: #f00;
+	border-style: solid;
+	box-shadow: inset 0 0.35em 0.2em #888;
+}
+.slides {	
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 15em;
+}
+
+.slide {
+    padding: 0.75em;
+    background-color: #2F2F2F;
+    margin: 0 0 0.75em;
+    text-align: center;
+    color: #FFF;
+    border: 0.1em solid #444;
+    width: 15em;
+    text-align: left;
+}
+
+.slide-placeholder {
+    background: #DADADA;
+    position: relative;
+    width: 15em; 
+    list-style-type: none;
+}
+.slide-placeholder:after {
+    content: " ";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0.75em;
+    background-color: #FFF;
+}
+/* **************************************************** */
+/*						Colores							*/
+/* **************************************************** */
+.az_0{background-color: #cfe6f9 !important;}
+.az_1{background-color: #547e9f;}
+.az_2{background-color: #3881bb;}
+.az_3{background-color: #4b9ad8;}
+.az_4{background-color: #518bb9;}
+.az_5{background-color: #59a6e3;}
+.az_6{background-color: #2a89d4;}
+.mor_1{background-color: #ba85f5 !important;}
+.mor_2{background-color: #8557b9 !important;}
+.bg_blanco{background-color: white !important;}
+.activa0{ background-color: #f78189 !important;}
+.activa1{ background-color: #83e2b6 !important;}
+
+/* **************************************************** */
+/*				Estilos de Evaluaciones.php				*/
+/* **************************************************** */
+.table_Eval{    margin: 0 auto; width: 53em;}
+.table_head{ display:table; border-spacing: 0.25em 0em;}
+.table_head div{ display:table-cell; height: 2.5em; color: white; vertical-align: middle; text-align: center; font-weight:lighter;}
+	.th_1{ width: 11.05em; font-size: 0.9em;}
+	.th_2{ width: 5.65em; font-size: 0.75em;}
+	.th_3{ width: 4em; font-size: 0.7em;}
+	.th_4{ width: 5.65em; font-size: 0.9em;}
+	.th_5{ width: 5.65em; font-size: 0.9em;}
+	.th_6{ width: 8em; font-size: 0.9em;}
+	.th_7{ width: 4.45em; font-size: 0.9em;}
+	.th_8{ width: 5.95em; font-size: 0.9em;}
+	
+.table_row{ display:table; border-spacing: 0.25em 0em; margin-bottom: 0.25em;}
+.table_row div{ display:table-cell; height: 4.25em; color: black; background-color: #e8f2f9; vertical-align: middle; text-align: center; font-weight:lighter;}
+	.tr_1{ width: 11.05em; font-size: 0.7em; text-align: left !important; padding-left:0.25em;}
+	.tr_2{ width: 5.65em; font-size: 1.2em;}
+	.tr_3{ width: 4em; font-size: 0.9em;}
+	.tr_4{ width: 5.65em; font-size: 0.9em;}
+	.tr_5{ width: 5.65em; font-size: 0.9em;}
+	.tr_6{ width: 8em; font-size: 0.75em;}
+	.tr_7{ width: 4.45em; font-size: 0.9em;}
+	.tr_8{ width: 5.95em; font-size: 0.9em;}
+	.tr_edit{float:left; width:100%; height: 2em !important; margin-top: 0.25em; color: white !important; cursor:pointer;}
+	.tr_edit p{position: relative; top: 18%;}
+	
+/* **************************************************** */
+/*				Estilos de editQuest.php				*/
+/* **************************************************** */
+#displayIMG_Q {
+    width: 6.5em;
+}
+#displayIMG_Q img {
+    width: 100%;
+}

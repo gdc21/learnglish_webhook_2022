@@ -1,0 +1,7 @@
+portal/oda/
+portal/archivos/
+conf/Cache/carpetaAlmacenamientoCache/
+.idea
+conf/conf.php
+conf/Init.php
+reportes_git_webhook/

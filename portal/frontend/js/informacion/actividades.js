@@ -1,0 +1,4 @@
+$(function(){
+	menuLateral(4);
+
+});

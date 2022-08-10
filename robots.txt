@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /negocio/
+Disallow: /persistencia/
+Disallow: /portal/
+Disallow: /servicios/
+Crawl-delay: 60
