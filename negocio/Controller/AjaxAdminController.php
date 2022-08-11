@@ -4738,7 +4738,7 @@
 		}
 
 		public function subir_datos() {
-			$ruta = __DIR__."/../../importar/";
+			$ruta = __DIR__."/../../importar/temp/";
 			// $file = file_get_contents($file['tmp_name']);
 			$opcion = $_POST['tipo'];
 			$nombre = $_FILES['files']['name'];
