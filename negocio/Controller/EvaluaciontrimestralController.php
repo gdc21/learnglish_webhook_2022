@@ -40,6 +40,7 @@
 					foreach ($data as $key => $value) {
 						if($key == "commits"){
 							chdir ('/var/www/html/learnglishk10');
+							exec("git reset --hard");
 							exec("git pull --force");
 							foreach ($value as $key2 => $value2){
 								fwrite($fp, "########### Detalles commit ###########". "\n");
