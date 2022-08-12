@@ -16,5 +16,6 @@ include_once 'conf/Helpers.php';
 include_once 'conf/SistemaDeCache.php';
 // Se crea un objeto
 $route = new Route;
+
 // Se llama al metodo action
 $route -> action();
