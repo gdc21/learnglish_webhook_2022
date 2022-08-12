@@ -19,4 +19,3 @@ include_once 'conf/SistemaDeCache.php';
 $route = new Route;
 // Se llama al metodo action
 $route -> action();
-?>
