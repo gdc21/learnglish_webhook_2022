@@ -1,6 +1,5 @@
 <?php
 session_start();
-//var_dump( $_SERVER );
 //die;
 //Necesario para localizar la carpeta padre y generar el CONTEXT
 $carpetaPadre = dirname(__FILE__);
