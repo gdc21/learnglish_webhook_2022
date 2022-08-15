@@ -96,14 +96,14 @@ switch ($this->temp['id_seccion']) {
         /**
          * Verifica en la seccion de modulos si esta habilitada esta opcion, tbl:lg00043
          */
-        if (verificaModuloSistemaActivo('MostrarRutasApoyo')) { ?>
+        if ($_SESSION['perfil'] == 1 && verificaModuloSistemaActivo('MostrarRutasApoyo')) { ?>
             <p id="aqui"></p>
             <script>
                 if(typeof directorio_oda !== 'undefined'){
                     document.getElementById('aqui').innerHTML =
                         "C:\\wamp64\\www\\htmlsistemas\\learnglishk10Git\\portal\\"+directorio_oda.substr(directorio_oda.indexOf('oda'), directorio_oda.length);
-                    document.getElementById('aqui').innerHTML +=
-                        "<br><br>\\\\JMORENO\\Carpeta oda learn Jon\\"+directorio_oda.substr(directorio_oda.indexOf('oda/'), directorio_oda.length);
+                    //document.getElementById('aqui').innerHTML +=
+                    //    "<br><br>\\\\JMORENO\\folder_oda_jon\\"+directorio_oda.substr(directorio_oda.indexOf('oda/'), directorio_oda.length);
                 }
             </script>
             <?php
