@@ -66,7 +66,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="nameCampo">Pregunta correcta</td>
+									<td class="nameCampo">Archivo zip</td>
 									<td>
 										<div class="row col-lg-12">
 											<input type="text" id="archivo_texto" placeholder="Selecciona un archivo" style="width: 40%; margin-left: 12px;" readonly>

@@ -2659,16 +2659,15 @@
 			} else {
 				if (empty($ultimoOrden[0]['orden'])) {
 					// echo "|1";
-					$ruta = ODA."n".$nivel."/m".$modulo."/l".$numero_leccion['LGF0160007']."/obj".($orden+1);
+					$ruta = __DIR__."/../../portal/oda/n".$nivel."/m".$modulo."/l".$numero_leccion['LGF0160007']."/obj".($orden+1);
 					$ordenObj = ($orden+1);
 					$directorio = "obj".($orden+1);
 				} else {
 					// echo "|2";
-					$ruta = ODA."n".$nivel."/m".$modulo."/l".$numero_leccion['LGF0160007']."/obj".($ultimoOrden[0]['orden']);
+					$ruta = __DIR__."/../../portal/oda/n".$nivel."/m".$modulo."/l".$numero_leccion['LGF0160007']."/obj".($ultimoOrden[0]['orden']);
 					$ordenObj = $ultimoOrden[0]['orden'];
 					$directorio = "obj".$ultimoOrden[0]['orden'];
 				}
-				// echo $ruta;
 				if(!is_dir($ruta)){
 					mkdir($ruta, 0777, true);
 					chown($ruta, "root");

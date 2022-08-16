@@ -101,7 +101,7 @@ switch ($this->temp['id_seccion']) {
             <script>
                 if(typeof directorio_oda !== 'undefined'){
                     document.getElementById('aqui').innerHTML =
-                        "C:\\wamp64\\www\\htmlsistemas\\learnglishk10Git\\portal\\"+directorio_oda.substr(directorio_oda.indexOf('oda'), directorio_oda.length);
+                        "C:\\wamp64\\www\\learnPrincipal\\portal\\"+directorio_oda.substr(directorio_oda.indexOf('oda'), directorio_oda.length);
                     //document.getElementById('aqui').innerHTML +=
                     //    "<br><br>\\\\JMORENO\\folder_oda_jon\\"+directorio_oda.substr(directorio_oda.indexOf('oda/'), directorio_oda.length);
                 }
@@ -435,7 +435,7 @@ switch ($this->temp['id_seccion']) {
 	}
 
 	#objeto_de_aprendizaje div#tablero {
-		width: 100% !important;
+		width: 100%;
 	}
 
 	.circle {
