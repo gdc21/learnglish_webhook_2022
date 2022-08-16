@@ -2408,6 +2408,27 @@
 			}
 		}
 
+        public function borrarObjeto(){
+            $objeto = $_POST["objeto"];
+
+            $seccion18 = (new EstructuraNavegacion())->obtenEstructuraNavegacion((object) array("LGF0180001" => $objeto));
+            $seccion18 = $seccion18[0];
+
+            $leccion = (new Leccion())->obtenLeccion((object) array("LGF0160001" => $seccion18["LGF0180004"]));
+            $leccion = $leccion[0];
+
+            $ruta = __DIR__."/../../portal/oda/n".$seccion18["LGF0180002"]."/m".$seccion18["LGF0180003"]."/l".$leccion["LGF0160007"]."/".$seccion18["LGF0180007"]."/";
+            $res = $this->eliminar_directorio_recursivamente($ruta);
+
+            (new EstructuraNavegacion())-> eliminaEstructuraNavegacion((object) array("LGF0180001" => $objeto));
+
+            if($res){
+                $this->renderJSON(array("mensaje" => "Objeto borrado correctamente."));
+            }else{
+                $this->renderJSON(array('error' => 'Ocurrió un problema al borrar el objeto.'));
+            }
+        }
+
 		public function mostrarObjetos() {
 			$modulo = $_POST['modulo'];
 			$leccion = $_POST['leccion'];
@@ -2423,13 +2444,19 @@
 							$estatus = "Activo";
 							$texto = "Desactivar";
 							$icono = "fa fa-lock";
-							$accion = "eliminar(".$resp['id'].")'";
+							$accion = "eliminar(".$resp['id'].")";
+                            $accionBorrar = "";
+                            $iconoBorrar = "";
+                            $textoBorrar = "";
 							$estilo ="";
 						} else {
 							$estatus = "Inactivo";
 							$texto = "Activar";
 							$icono = "fa fa-unlock";
 							$accion = "activar(".$resp['id'].")'";
+                            $accionBorrar = "borrarObjeto(".$resp['id'].")";
+                            $iconoBorrar = "fa fa-trash";
+                            $textoBorrar = "<b>Borrar</b> objeto";
 							$estilo = "style='font-weight: bold; color: #ff0000;'";
 						}
 						if (empty($resp['fecha'])) {
@@ -2437,7 +2464,35 @@
 						} else {
 							$fecha = $resp['fecha'];
 						}
-						$tabla.="<tr><td>".$resp['orden']."</td><td>".$resp['nombre']."</td><td>".$resp['modulo']."</td><td>".$resp['leccion']."</td><td>".$resp['seccion']."</td><td>".$fecha."</td><td ".$estilo.">".$estatus."</td><td><span><a href=".CONTEXT."admin/editObjeto/".$resp['id']."><i class='fa fa-pencil' aria-hidden='true'></i> Editar</a></span>  <span><a href='#' onclick='".$accion."'><i class='".$icono."' aria-hidden='true'></i> ".$texto."</a></span></td></tr>";
+						$tabla.="<tr>   
+                                    <td>".$resp['orden']."</td>
+                                    <td>".$resp['nombre']."</td>
+                                    <td>".$resp['modulo']."</td>
+                                    <td>".$resp['leccion']."</td>
+                                    <td>".$resp['seccion']."</td>
+                                    <td>".$fecha."</td>
+                                    <td ".$estilo.">".$estatus."</td>
+                                    <td>
+                                        <span>
+                                            <a href=".CONTEXT."admin/editObjeto/".$resp['id'].">
+                                                <i class='fa fa-pencil' aria-hidden='true'></i> Editar
+                                            </a>
+                                        </span> <br>
+                                        <span>
+                                            <a href='#' onclick='".$accion."'>
+                                                <i class='".$icono."' aria-hidden='true'></i> ".$texto."
+                                            </a>
+                                        </span> ";
+                        $tabla .= $accionBorrar != "" ? "<hr>
+                                        <span>
+                                            <a href='#' onclick='".$accionBorrar."'>
+                                                <i class='".$iconoBorrar."' aria-hidden='true'></i> ".$textoBorrar."
+                                            </a>
+                                        </span>
+                                    </td>
+                                  </tr>":
+                            "</td>
+                        </tr>";
 					}
 				} else {
 					$resultado = false;
@@ -2805,21 +2860,20 @@
 		public function updateObjeto() {
 			$seccion = $_POST['seccion'];
 			$estatus = $_POST['estatus'];
-			$texto_es = $_POST['texto_es'];
-			$texto_en = $_POST['texto_en'];
+			/*$texto_es = $_POST['texto_es'];
+			$texto_en = $_POST['texto_en'];*/
 
-			$opcion = $_POST['opcion'];
+			/*$opcion = $_POST['opcion'];*/
 			
 			$seccion18 = (new EstructuraNavegacion())->obtenEstructuraNavegacion((object) array("LGF0180001" => $_POST["objeto"]));
 			$seccion18 = $seccion18[0];
 
 			$leccion = (new Administrador())->informacionLeccion($seccion18['LGF0180004']);
 
-			$rutaA = __DIR__."/../../portal/archivos/recursosLecciones/n".$seccion18["LGF0180002"]."/m".$seccion18["LGF0180003"]."/l".$leccion[0]["LGF0160007"]."/audio/";
+			/*$rutaA = __DIR__."/../../portal/archivos/recursosLecciones/n".$seccion18["LGF0180002"]."/m".$seccion18["LGF0180003"]."/l".$leccion[0]["LGF0160007"]."/audio/";
+			$rutaImg = __DIR__."/../../portal/archivos/recursosLecciones/n".$seccion18["LGF0180002"]."/m".$seccion18["LGF0180003"]."/l".$leccion[0]["LGF0160007"]."/img/";*/
 
-			$rutaImg = __DIR__."/../../portal/archivos/recursosLecciones/n".$seccion18["LGF0180002"]."/m".$seccion18["LGF0180003"]."/l".$leccion[0]["LGF0160007"]."/img/";
-
-			if ($opcion == 1) { // eliminar audio
+			/*if ($opcion == 1) { // eliminar audio
 				$idioma = $_POST['lg'];
 				if ($idioma == 'es') {
 					$data["LGF0180012"] = "";
@@ -2840,11 +2894,11 @@
 
 				unlink($audio);
 				$this->renderJSON(array("mensaje" => $texto." eliminado correctamente."));
-			} else { // actualizar informacion de objetos
-				$data["LGF0180010"] = (empty($texto_es) ? "" : $texto_es);
-				$data["LGF0180011"] = (empty($texto_en) ? "" : $texto_en);
+			} else { // actualizar informacion de objetos*/
+				/*$data["LGF0180010"] = (empty($texto_es) ? "" : $texto_es);
+				$data["LGF0180011"] = (empty($texto_en) ? "" : $texto_en);*/
 				// echo $rutaA."<br>";
-				if (!$this->validar_ruta($rutaA)) {
+				/*if (!$this->validar_ruta($rutaA)) {
 					mkdir($rutaA, 0777, true);
 					chown($rutaA, "root");
 					chmod($rutaA, 0777);
@@ -2854,9 +2908,9 @@
 					mkdir($rutaImg, 0777, true);
 					chown($rutaImg, "root");
 					chmod($rutaImg, 0777);
-				}
+				}*/
 
-				if ($_FILES['imagen']['tmp_name'] != "") {
+				/*if ($_FILES['imagen']['tmp_name'] != "") {
 					$temporal = $_FILES['imagen']['tmp_name'];
 					$aux = str_replace(" ", "_", $_FILES['imagen']['name']);
 					$aux = strtolower($aux);
@@ -2869,9 +2923,9 @@
 					$rutaFile = $rutaImg.$name;
 					$data["LGF0180014"] = $name;
 					$this->mover_recursos($temporal, $rutaFile);
-				}
+				}*/
 
-				if ($_FILES['audio_es']['tmp_name'] != "") {
+				/*if ($_FILES['audio_es']['tmp_name'] != "") {
 					$temporal = $_FILES['audio_es']['tmp_name'];
 					$aux = str_replace(" ", "_", $_FILES['audio_es']['name']);
 					$aux = strtolower($aux);
@@ -2884,9 +2938,9 @@
 					$rutaFile = $rutaA.$name;
 					$data["LGF0180012"] = $name;
 					$this->mover_recursos($temporal, $rutaFile);
-				}
+				}*/
 
-				if ($_FILES['audio_en']['tmp_name'] != "") {
+				/*if ($_FILES['audio_en']['tmp_name'] != "") {
 					$temporal = $_FILES['audio_en']['tmp_name'];
 					$aux = str_replace(" ", "_", $_FILES['audio_en']['name']);
 					$aux = strtolower($aux);
@@ -2900,13 +2954,13 @@
 					// echo $rutaFile;
 					$data["LGF0180013"] = $name;
 					$this->mover_recursos($temporal, $rutaFile);
-				}
+				}*/
 
 				if (!empty($_FILES['file']['tmp_name'])) {
 					$leccion = (new Leccion())->obtenLeccion((object) array("LGF0160001" => $seccion18["LGF0180004"]));
 					$leccion = $leccion[0];
 					
-					$ruta = ODA."n".$seccion18["LGF0180002"]."/m".$seccion18["LGF0180003"]."/l".$leccion["LGF0160007"]."/".$seccion18["LGF0180007"]."/";
+					$ruta = __DIR__."/../../portal/oda/n".$seccion18["LGF0180002"]."/m".$seccion18["LGF0180003"]."/l".$leccion["LGF0160007"]."/".$seccion18["LGF0180007"]."/";
 					$this->eliminar_directorio_recursivamente($ruta);
 					
 					$carga = $this->cargar_archivo("file", $ruta);
@@ -2939,7 +2993,7 @@
 					}
 					// actualizarEstructuraNavegacion
 				}
-			}
+			/*}*/
 		}
 
 		public function eliminar_directorio_recursivamente($ruta) {
@@ -2962,6 +3016,7 @@
 		        # Al final de todo, el directorio estará vacío
 		        # y podremos usar rmdir
 		        rmdir($ruta);
+                return true;
 		    }
 		}
 

@@ -127,6 +127,7 @@ class UniversalDatabase extends ModelTools
             'preschool',
             'means',
             'navegar',
+            'mostrarObjetos',
             'getEvaluacion',
             'obtenAccesomodulos',
             'verificarDocumentosYspeakCargado',

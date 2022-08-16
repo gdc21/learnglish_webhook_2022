@@ -108,6 +108,38 @@ function cargar_lecciones(modulo) {
 	});
 }
 
+function borrarObjeto(objeto){
+	var confirma = confirm("¿Est\u00E1s seguro de ELIMINAR este objeto?");
+	if (confirma) {
+		$.ajax({
+			type: "POST",
+			url: context+"admin/borrarObjeto",
+			data: {objeto: objeto},
+			dataType: 'json',
+			success: function (resp) {
+				if (resp.error) {
+					$("#mensaje").show();
+					$('#mensaje').removeClass("alert-success");
+					$('#mensaje').addClass("alert-warning");
+					$('#mensaje').show("swing");
+					$('#mensaje').html('<b>' + resp.error + '</b>');
+				} else {
+					$("#mensaje").show();
+					$('#mensaje').addClass("alert-success");
+					$('#mensaje').removeClass("alert-warning");
+					$('#mensaje').show("swing");
+					$('#mensaje').html('<b>' + resp.mensaje + '</b>');
+					cargar_tabla($("#modulo").val(), $("#leccion").val());
+					$("#tabla").dataTable().fnDestroy();
+					setTimeout(function () {
+						$("#mensaje").hide();
+					}, 2000)
+				}
+			}
+		});
+	}
+}
+
 function eliminar(objeto) {
 	var confirma = confirm("¿Est\u00E1s seguro de desactivar este objeto?");
 	if (confirma) {
