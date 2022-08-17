@@ -12,20 +12,14 @@ function dar_accion_botones_preview(){
 
 $(document).ready(function () {
 
-
-
 	$(window).on('load', function () {
 		Cookies.remove('modulo')
 		Cookies.remove('leccion')
 	})
 
-
-
-
 	var moduloid = Cookies.get('modulo');
 	var leccionid = Cookies.get('leccion');
-	// console.log("modulo "+moduloid)
-	// console.log("leccion "+leccionid)
+
 	if (moduloid != "" && leccionid != "") {
 		cargar_tabla(Cookies.get('modulo'), Cookies.get('leccion'));
 		cargar_lecciones(moduloid);
@@ -108,7 +102,6 @@ function cargar_tabla(modulo, leccion) {
 				/*Al dar clic en previsualizar se mostrara el modal con la seccion oculta*/
 				dar_accion_botones_preview();
 				$(".paginate_button").click(function(){
-					console.log("dsa", this);
 					dar_accion_botones_preview();
 				});
 			} else {
@@ -270,7 +263,6 @@ function ordenamiento(modulo, leccion) {
 						i= parseInt(ui.item[0].dataset.inicia),
 						move = 0,
 						id=0;
-						console.log("i", i);
 
 						$.each(nuevo, function(){
 							i++;
@@ -289,11 +281,6 @@ function ordenamiento(modulo, leccion) {
 							}
 						});
 
-
-
-						//console.log("ui.item[0].dataset", ui.item[0].dataset);
-						//console.log("cambio: "+cambio+" iden: "+iden+" ID: "+id+" Nueva posicion: "+new_position+" move: "+move);
-
 						if(move != 0){
 
 							if(!confirm("Confirmar cambios y aplicar en servidor?")){
@@ -307,7 +294,6 @@ function ordenamiento(modulo, leccion) {
 								id : identificador
 							}
 							data = getInfoAjax('ordenarObjetos', variable,"admin");
-							console.log("data 2 246", data);
 
 							if(move == 1){
 								var sons = $('#sortable').children('li');
@@ -324,7 +310,6 @@ function ordenamiento(modulo, leccion) {
 										};
 										$('#span_'+this.id+'').html(posicion+' )');
 										var data = getInfoAjax('ordenarObjetos', variable,"admin");
-										console.log("data 2 262", data);
 									}
 								});
 								$('#'+identificador).attr('data-order',new_position);
@@ -345,7 +330,6 @@ function ordenamiento(modulo, leccion) {
 										};
 										$('#span_'+this.id+'').html(posicion+' )');
 										data = getInfoAjax('ordenarObjetos', variable,"admin");
-										console.log("data 2 284", data);
 									}
 								});
 								$('#'+identificador).attr('data-order',new_position);
