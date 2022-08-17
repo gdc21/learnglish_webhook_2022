@@ -1030,8 +1030,9 @@ class HomeController extends Controller_Learnglish
             $this->Redirect("home", "menu");
         }
 
+        $mostrar_ocultas = (isset ($url[4]) ? 0 : 1);
         $orden = (isset ($url[3]) ? $url[3] : 1);
-        $nav = (new Administrador())->navegacion($url[0], $url[1], $url[2]);
+        $nav = (new Administrador())->navegacion($url[0], $url[1], $url[2], 0, $mostrar_ocultas);
         $current = $this->buscar($nav, $orden);
         #var_dump($current);
         // $url[0] -> Nivel

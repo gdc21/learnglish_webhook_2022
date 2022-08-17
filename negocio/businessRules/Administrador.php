@@ -213,11 +213,15 @@
 		 * @param unknown $leccion
 		 * @param number $seccion
 		 */
-		function navegacion($nivel, $modulo, $leccion, $orden = 0) {
+		function navegacion($nivel, $modulo, $leccion, $orden = 0, $solo_activas = 1) {
 			$complement = '';
+			$complement2 = '';
 			if ($orden != 0) {
 				$complement = ' AND LGF0180006 = ' . $orden;
 			}
+            if ($solo_activas) {
+                $complement2 = ' LGF0180008 = 1 AND ';
+            }
 			$this->query = "SELECT LGF0180001 as id, LGF0180006 AS orden,
 			LGF0180002 AS ID_nivel,
 			LGF0140002 AS nivel,
@@ -243,7 +247,7 @@
 			INNER JOIN lg00015 ON LGF0150001 = LGF0180003
 			INNER JOIN lg00016 ON LGF0160001 = LGF0180004
 			INNER JOIN lg00017 ON LGF0170001 = LGF0180005
-			WHERE LGF0180008 = 1  AND LGF0180002 = $nivel AND LGF0180003 = $modulo AND LGF0180004 = $leccion $complement ORDER BY LGF0180006 ASC";
+			WHERE $complement2 LGF0180002 = $nivel AND LGF0180003 = $modulo AND LGF0180004 = $leccion $complement ORDER BY LGF0180006 ASC";
 			// echo $this->query."<br>";
 			return $this->doSelect ();
 		}
@@ -1259,7 +1263,29 @@
 		}
 
 		public function mostrarObjetos($modulo, $leccion) {
-			$this->query = "SELECT t1.LGF0180001 AS id, t4.LGF0170002 AS nombre, t2.LGF0150002 AS modulo, t3.LGF0160002 AS leccion, t4.LGF0170002 AS seccion, t4.LGF0170001 AS seccionid,t1.LGF0180007 AS directorio, t1.LGF0180006 AS orden, t1.LGF0180008 AS estatus, DATE_FORMAT(t1.LGF0180009,'%d %m %Y') as fecha, t2.LGF0150004 as nivel FROM lg00018 t1 INNER JOIN lg00015 t2 ON t2.LGF0150001 = t1.LGF0180003 INNER JOIN lg00016 t3 ON t3.LGF0160001 = t1.LGF0180004 INNER JOIN lg00017 t4 ON t4.LGF0170001 = t1.LGF0180005 WHERE t1.LGF0180003 = $modulo AND t1.LGF0180004 = $leccion ORDER BY orden ASC";
+            #Para formar el url de visualizacion en admin/objeto desde AjaxAdminController@mostrarObjetos
+            #var URL_for_iframe = navegar/nivelid_moduloid_leccionid_orden
+			$this->query = "SELECT t1.LGF0180001 AS id, 
+                                   t4.LGF0170002 AS nombre, 
+                                   t2.LGF0150004 AS nivelid, 
+                                   t2.LGF0150001 AS moduloid, 
+                                   t2.LGF0150002 AS modulo, 
+                                   t3.LGF0160001 AS leccionid, 
+                                   t3.LGF0160002 AS leccion, 
+                                   t4.LGF0170002 AS seccion, 
+                                   t4.LGF0170001 AS seccionid,
+                                   t1.LGF0180007 AS directorio, 
+                                   t1.LGF0180006 AS orden, 
+                                   t1.LGF0180008 AS estatus, 
+                                   DATE_FORMAT(t1.LGF0180009,'%d %m %Y') as fecha, 
+                                   t2.LGF0150004 as nivel 
+                                   FROM lg00018 t1 
+                                       INNER JOIN lg00015 t2 ON t2.LGF0150001 = t1.LGF0180003 
+                                       INNER JOIN lg00016 t3 ON t3.LGF0160001 = t1.LGF0180004 
+                                       INNER JOIN lg00017 t4 ON t4.LGF0170001 = t1.LGF0180005  
+                                   WHERE t1.LGF0180003 = $modulo AND 
+                                         t1.LGF0180004 = $leccion 
+                                   ORDER BY orden ASC";
 			// echo $this->query."\n";
 			return $this->doSelect();
 		}

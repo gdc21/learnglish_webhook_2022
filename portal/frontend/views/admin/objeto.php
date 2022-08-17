@@ -14,6 +14,9 @@
 		margin: 0em 0em 0em 90%;
 	    margin-top: -0.75em;
 	}
+    .modal-dialog{
+        max-width: 80% !important;
+    }
 </style>
 <section class="container">
 	<section id="contenido">
@@ -126,4 +129,22 @@
 			</div>
 		</div>
 	</div>
+    <!-- Modal para previzualizar leccion inactiva -->
+    <div class="modal fade" id="modalURLPreview" tabindex="-1" aria-labelledby="modalURLPreviewLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalURLPreviewLabel">Leccion preview INACTIVA</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="seccionVer">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para previzualizar leccion inactiva -->
 </section>

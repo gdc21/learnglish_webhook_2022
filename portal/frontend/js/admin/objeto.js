@@ -1,8 +1,28 @@
+function dar_accion_botones_preview(){
+	$(".modal_previsualizar").click(function(){
+		URL = this.getAttribute('url');
+		console.log("this", this);
+
+		var iframeS = document.createElement('iframe');
+		iframeS.src = context+"home/navegar/"+URL;
+		iframeS.width = "100%";
+		iframeS.style.height = "100vh";
+
+		$('#seccionVer').html(iframeS);
+	})
+}
+
+
 $(document).ready(function () {
+
+
+
 	$(window).on('load', function () {
 		Cookies.remove('modulo')
 		Cookies.remove('leccion')
 	})
+
+
 
 
 	var moduloid = Cookies.get('modulo');
@@ -71,7 +91,6 @@ function cargar_tabla(modulo, leccion) {
 		},
 		success: function (resp) {
 			if (resp.resultado) {
-				console.log("resp.resultado", resp);
 				$("#ordenar").show();
 				$("#tabla tbody").html(resp.contenido);
 				$('#tabla').dataTable({
@@ -87,6 +106,13 @@ function cargar_tabla(modulo, leccion) {
 					},
 					"order": [[ 0, "asc" ]], //or asc 
 					columnDefs: [{ type: 'de_date', targets: 3 }]
+				});
+
+				/*Al dar clic en previsualizar se mostrara el modal con la seccion oculta*/
+				dar_accion_botones_preview();
+				$(".paginate_button").click(function(){
+					console.log("dsa", this);
+					dar_accion_botones_preview();
 				});
 			} else {
 				$("#ordenar").hide();
@@ -129,8 +155,8 @@ function borrarObjeto(objeto){
 					$('#mensaje').removeClass("alert-warning");
 					$('#mensaje').show("swing");
 					$('#mensaje').html('<b>' + resp.mensaje + '</b>');
-					cargar_tabla($("#modulo").val(), $("#leccion").val());
 					$("#tabla").dataTable().fnDestroy();
+					cargar_tabla($("#modulo").val(), $("#leccion").val());
 					setTimeout(function () {
 						$("#mensaje").hide();
 					}, 2000)
@@ -161,8 +187,10 @@ function eliminar(objeto) {
 					$('#mensaje').removeClass("alert-warning");
 					$('#mensaje').show("swing");
 					$('#mensaje').html('<b>' + resp.mensaje + '</b>');
-					cargar_tabla($("#modulo").val(), $("#leccion").val());
+
 					$("#tabla").dataTable().fnDestroy();
+					cargar_tabla($("#modulo").val(), $("#leccion").val());
+
 					setTimeout(function () {
 						$("#mensaje").hide();
 					}, 2000)
@@ -193,8 +221,8 @@ function activar(objeto) {
 					$('#mensaje').removeClass("alert-warning");
 					$('#mensaje').show("swing");
 					$('#mensaje').html('<b>' + resp.mensaje + '</b>');
-					cargar_tabla($("#modulo").val(), $("#leccion").val());
 					$("#tabla").dataTable().fnDestroy();
+					cargar_tabla($("#modulo").val(), $("#leccion").val());
 					setTimeout(function () {
 						$("#mensaje").hide();
 					}, 2000)
