@@ -1,14 +1,11 @@
 function dar_accion_botones_preview(){
 	$(".modal_previsualizar").click(function(){
 		URL = this.getAttribute('url');
-		console.log("this", this);
 
-		var iframeS = document.createElement('iframe');
-		iframeS.src = context+"home/navegar/"+URL;
-		iframeS.width = "100%";
-		iframeS.style.height = "100vh";
+		enlaceA = context+"home/navegar/"+URL;
 
-		$('#seccionVer').html(iframeS);
+		window.open(enlaceA, '_blank').focus();
+
 	})
 }
 

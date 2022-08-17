@@ -2454,7 +2454,7 @@
                             $url_para_iframe_previsualizar = $resp['nivelid']."_".$resp['moduloid']."_".$resp['leccionid']."_".$resp['orden']."_0";
 
 							$estatus = "Inactivo <hr> 
-                                <button type='button' url='".$url_para_iframe_previsualizar."' class='modal_previsualizar regresar basico menu-principal' data-bs-toggle='modal' data-bs-target='#modalURLPreview'>
+                                <button type='button' url='".$url_para_iframe_previsualizar."' class='modal_previsualizar regresar basico menu-principal' >
                                     Previsualizar  
                                 </button>";
 							$texto = "Activar";
