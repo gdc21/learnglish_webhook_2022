@@ -27,7 +27,7 @@ $(document).ready(function () {
 
 	$("#file").change(function (e) {
 		var file = document.querySelector('#file').files[0];
-		console.log(file)
+
 		$("#mensaje-archivo").hide();
 		$("#mensaje-archivo").html("");
 		if (file.type == "application/x-zip-compressed" || file.type == "application/zip") {
@@ -94,7 +94,6 @@ $(document).ready(function () {
                 cache:false,
                 async: true,
                 success: function (resp) {
-                	// console.log(resp)
                 	if (resp.error) {
                 		$('#formObjeto')[0].reset();
                 		$('#mensaje').removeClass("alert-success");
@@ -110,7 +109,7 @@ $(document).ready(function () {
 						$('#mensaje').show("swing");
 						$('#mensaje').html('<b>' + resp.mensaje + '</b>');
 						setTimeout(function function_name(argument) {
-							history.back();
+							window.location = window.location.href+'?eraseCache=true';
 						}, 2500);
                 	}
                 }

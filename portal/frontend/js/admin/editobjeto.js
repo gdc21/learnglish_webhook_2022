@@ -75,7 +75,7 @@ $(document).ready(function () {
 	                cache:false,
 	                async: true,
 	                success: function (resp) {
-	                	// console.log(resp)
+
 	                	if (resp.error) {
 	                		// $('#formObjetoUp')[0].reset();
 	                		$('#mensaje').removeClass("alert-success");
@@ -89,7 +89,7 @@ $(document).ready(function () {
 							$('#mensaje').show("swing");
 							$('#mensaje').html('<b>' + resp.mensaje + '</b>');
 							setTimeout(function function_name(argument) {
-								location.reload();
+								window.location = window.location.href+'?eraseCache=true';
 							}, 2500);
 	                	}
 	                }
