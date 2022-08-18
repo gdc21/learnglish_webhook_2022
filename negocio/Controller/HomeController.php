@@ -1306,7 +1306,7 @@ class HomeController extends Controller_Learnglish
         }
         #var_dump($this->temp);
         #ACTIVADOS MOMENTANEAMIENTE
-        if($_SESSION['perfil'] == 1){
+        if($_SESSION['perfil'] == 1 && (!empty($evaluacion) && $current["orden"] == $ordenEval[0]['orden'])){
             $this->temp["js_evaluacion_abs"] = ODA . "../frontend/js/evaluacion.js";
             $this->temp["js_evaluacion_rel"] = ODA_REL . "../frontend/js/evaluacion.js";
         }
