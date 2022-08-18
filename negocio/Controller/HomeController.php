@@ -1305,6 +1305,11 @@ class HomeController extends Controller_Learnglish
             }
         }
         #var_dump($this->temp);
+        #ACTIVADOS MOMENTANEAMIENTE
+        if($_SESSION['perfil'] == 1){
+            $this->temp["js_evaluacion_abs"] = ODA . "../frontend/js/evaluacion.js";
+            $this->temp["js_evaluacion_rel"] = ODA_REL . "../frontend/js/evaluacion.js";
+        }
         $this->render();
     }
 

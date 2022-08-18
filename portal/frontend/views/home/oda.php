@@ -232,10 +232,10 @@ switch ($this->temp['id_seccion']) {
                         <?php }
 
 
-                        if ( $this->temp ["anotaciones"] == 'not_exercises_yet' ||
+                        if ( ($this->temp ["anotaciones"] == 'not_exercises_yet' ||
                                  $this->temp ["anotaciones"] == 'no_files' ||
                                  $this->temp ["anotaciones"] == 'document_missing' ||
-                                 $this->temp ["anotaciones"] == 'speaking_missing'
+                                 $this->temp ["anotaciones"] == 'speaking_missing') && $_SESSION['perfil'] != 1
                         ) {
                             include_once "cargadocumentosalumno.php";
                         } ?>
