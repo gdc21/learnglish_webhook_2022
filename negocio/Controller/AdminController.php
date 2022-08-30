@@ -7,10 +7,6 @@
 			$this->temp ['path_home'] = CONTEXT . $class;
 
 			// Acceso al menu del administrador para los perfiles 1,3,4,6
-			/*if (! isset ( $_SESSION ["userLogged"] ) || ($_SESSION ["perfil"] != 1 && $_SESSION ["perfil"] != 6 && $_SESSION ["perfil"] != 3 && $_SESSION ["perfil"] != 4)) {
-				$this->Redirect ();
-			}*/
-
 			if (!isset($_SESSION["userLogged"]) || !in_array($_SESSION ["perfil"],array(1,3,4))) {
 				$this->Redirect ();
 			}
@@ -680,16 +676,94 @@
 		/**
 		 * Clientes
 		 */
+        public function estadisticacliente($id_registro = ''){
+
+            if($id_registro == "no" && $_SESSION['perfil'] == 3){
+
+                $id_registro = (new EstadisticasCliente())->obtenerEstadisticasCliente((object)array(
+                    'LGF0460002' => $_SESSION['idUsuario']
+                ))[0]['LGF0460001'];
+
+                if($id_registro == null){
+                    echo "<script>
+                                alert('Por el momento el cliente no posee solicitud de reporte de usos.');                              
+                                history.go(-1);                           
+                        </script>";
+                }
+            }elseif($id_registro != "no" && $_SESSION['perfil'] != 1){
+                $this->Redirect("home", "menu");
+            }
+
+            $estadistica = (new EstadisticasCliente())->leerEstadisticasCliente($id_registro);
+            $this->temp['encabezado'] = self::encabezado("Cliente: ".$estadistica[0]['LGF0280002']." <br> Reporte general");
+            if(!(count($estadistica) > 0)){
+                $this->temp['data'] = "";
+            }
+            $this->temp['data']['general'] = $estadistica[0];
+            ##############################################################
+            /*Activos/inactivos, fecha_inicio, fecha_fin*/
+            $alumnos_activos = (new EstadisticasCliente())->estadisticasPorFecha_Alm_Doc(2, $estadistica[0]['LGF0460004'], $estadistica[0]['LGF0460005']);
+            $docentes_activos = (new EstadisticasCliente())->estadisticasPorFecha_Alm_Doc(6, $estadistica[0]['LGF0460004'], $estadistica[0]['LGF0460005']);
+            $this->temp['data']['alumnos_activos'] = $alumnos_activos;
+            $this->temp['data']['docentes_activos'] = $docentes_activos;
+            ##############################################################
+            $escuelas_registradas = (new EstadisticasCliente())->escuelas_beneficiadas($estadistica[0]['LGF0460004'], $estadistica[0]['LGF0460005']);
+            $this->temp['data']['er'] = $escuelas_registradas;
+            ##############################################################
+
+            $tot = array_merge($alumnos_activos, $docentes_activos);
+            $lic_cargadas = 0;
+            foreach ($tot as $item) {
+                $lic_cargadas += intval($item['T_registrados']);
+            }
+
+            $this->temp['data']['lic_cargadas'] = $lic_cargadas;
+
+            ##############################################################
+            $escuelas_registradas_lista = (new EstadisticasCliente())->escuelas_beneficiadas_lista($estadistica[0]['LGF0460004'], $estadistica[0]['LGF0460005']);
+            $this->temp['data']['er_l'] = $escuelas_registradas_lista;
+            ##############################################################
+            $niveles_beneficiados = (new EstadisticasCliente())->niveles_beneficiados($estadistica[0]['LGF0460004'], $estadistica[0]['LGF0460005']);
+            $this->temp['data']['niveles_beneficiados'] = $niveles_beneficiados;
+            ##############################################################
+            $tiempo_conexion_acumulado_alumnos = (new EstadisticasCliente())->tiempo_conexion_acumulado(2, $estadistica[0]['LGF0460004'], $estadistica[0]['LGF0460005']);
+            $this->temp['data']['time_con_alm'] = $tiempo_conexion_acumulado_alumnos[0];
+            ##############################################################
+            $tiempo_conexion_acumulado_docentes = (new EstadisticasCliente())->tiempo_conexion_acumulado(6, $estadistica[0]['LGF0460004'], $estadistica[0]['LGF0460005']);
+            $this->temp['data']['time_con_doc'] = $tiempo_conexion_acumulado_docentes[0];
+            ##############################################################
+
+
+            $tiempo_conexion_acumulado_por_inst = (new EstadisticasCliente())->tiempo_por_institucion('2,6', $estadistica[0]['LGF0460004'], $estadistica[0]['LGF0460005']);
+            $this->temp['data']['time_con_por_inst'] = $tiempo_conexion_acumulado_por_inst;
+            ##############################################################
+
+
+            $tiempo_conexion_por_inst_activos = (new EstadisticasCliente())->tiempo_por_institucion_activos_inactivos('2,6', 1, $estadistica[0]['LGF0460004'], $estadistica[0]['LGF0460005']);
+            $this->temp['data']['time_con_por_inst_activos'] = $tiempo_conexion_por_inst_activos;
+            $tiempo_conexion_por_inst_inactivos = (new EstadisticasCliente())->tiempo_por_institucion_activos_inactivos('2,6', 0, $estadistica[0]['LGF0460004'], $estadistica[0]['LGF0460005']);
+            $this->temp['data']['time_con_por_inst_inactivos'] = $tiempo_conexion_por_inst_inactivos;
+            ##############################################################
+
+
+            $tiempo_conexion_por_niveles = (new EstadisticasCliente())->tiempo_por_niveles('2', '1,2,3', $estadistica[0]['LGF0460004'], $estadistica[0]['LGF0460005']);
+            $this->temp['data']['time_con_por_niveles'] = $tiempo_conexion_por_niveles;
+            ##############################################################
+
+
+            $this->render();
+        }
+
 		public function clientes() {
 			$clientes = (new Administrador())->obtenClientes();
 			$data = array();
 			foreach ($clientes as $key => $cli) {
 				array_push($data, array(
-					"id" => $cli['LGF0280001'],
-					"nombre" => $cli['LGF0280002'],
-					"contacto" => $cli['LGF0280017'],
+					"id"        => $cli['LGF0280001'],
+					"nombre"    => $cli['LGF0280002'],
+					"contacto"  => $cli['LGF0280017'],
 					"totalInst" => $cli['totalInst'],
-					"fecha" => $cli['LGF0280011']
+					"fecha"     => $cli['LGF0280011']
 				));
 			}
 			$this->temp['lista'] = $data;

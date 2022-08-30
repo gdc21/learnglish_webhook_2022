@@ -101,6 +101,7 @@ class UniversalDatabase extends ModelTools
         $funcionesTraza = array_column($debug2, 'function');
         #Lista de funciones que no seran almacenadas en cache (intentos de acceso por ejemplo)
         $funcionesExcluidas = [
+            'obtenerestadisticacliente',
             'listar_alumnos_grupo_especifico',
             'informacionGrupos',
             'gruposyprofesoresdeinstitucion',

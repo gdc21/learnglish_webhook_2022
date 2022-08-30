@@ -1339,6 +1339,120 @@
 			}
 		}
 
+        /** Retorna segin el caso los tiempos o licencias activas-inactivas por grafica solicitada
+         * @return void
+         */
+        public function datosIntervalosFechasTiempos(){
+            $fec_inicio = $_POST['fec_inicio'];
+            $fec_fin    = $_POST['fec_fin'];
+            $tipo = $_POST['tipo'];
+
+            if($tipo == 'total'){
+                /*Retornara los minutos que han empleado el sistema en los periodos de tiempo y perfil indicado como 1 parametro*/
+                $dato1 = (new EstadisticasCliente())->tiempo_conexion_acumulado(2, $fec_inicio, $fec_fin)[0]['tiempo'];
+                ##############################################################
+                $dato2 = (new EstadisticasCliente())->tiempo_conexion_acumulado(6, $fec_inicio, $fec_fin)[0]['tiempo'];
+            }elseif($tipo == 'licencias'){
+                /*Retornara la cantidad de licencias activas-inactivas de usuarios y docentes*/
+                $alumnos_activos = (new EstadisticasCliente())->estadisticasPorFecha_Alm_Doc(2, $fec_inicio, $fec_fin);
+                $docentes_activos = (new EstadisticasCliente())->estadisticasPorFecha_Alm_Doc(6, $fec_inicio, $fec_fin);
+
+                $dato1 = 0;
+                $dato2 = 0;
+                foreach ($docentes_activos as $key => $docente) {
+                        $dato1 += $docente['T_activos'] + $alumnos_activos[$key]['T_activos'];
+                        $dato2 += ($docente['T_registrados'] - $docente['T_activos']);
+                        $dato2 += ($alumnos_activos[$key]['T_registrados'] -  + $alumnos_activos[$key]['T_activos']);
+                }
+            }
+
+            $this->renderJSON(array(
+                #Alumnos tiempo - Lic activas
+                "dato1" => $dato1,
+                #Docentes tiempo - Lic inactivas
+                "dato2" => $dato2
+            ));
+        }
+
+
+        public function obtenerestadisticacliente(){
+            $cliente = $_POST['cliente'];
+            $tabla = "";
+
+            $data = (new EstadisticasCliente())->obtenerEstadisticasCliente((object) array (
+                "LGF0460002" => $cliente
+            ));
+
+            if(count($data) > 0){
+                foreach ($data as $registro){
+                    $tabla .=
+                        '<tr>                                                  
+                            <td>'.$registro['LGF0460003'].'</td>                       
+                            <td>'.$registro['LGF0460004'].'</td>                       
+                            <td>'.$registro['LGF0460005'].'</td>                       
+                            <td>
+                                <a href="'.CONTEXT.'admin/estadisticacliente/'.$registro['LGF0460001'].'" target="_blank" class="mb-2">Ver análisis</a>
+                                <hr>
+                                <button class="eliminarRegistroCliente" registro="'.$registro['LGF0460001'].'">
+                                    Eliminar registro
+                                </button>
+                            </td>                       
+                        </tr>';
+                }
+            }
+
+
+            if ($tabla != "") {
+                $this->renderJSON(array("tabla" => $tabla, 'cantidad' => 1));
+            } else {
+                $tabla =
+                    "<tr>
+                        <td colspan='4'>Sin registros</td>                       
+                    </tr>";
+                $this->renderJSON(array("tabla" => $tabla, 'cantidad' => 0));
+            }
+
+        }
+        public function asignarestadisticacliente(){
+            $cliente    = $_POST['cliente'];
+            $licencias  = $_POST['licencias'];
+            $fec_inicio = $_POST['fec_inicio'];
+            $fec_fin    = $_POST['fec_fin'];
+
+            $data = array(
+                'LGF0460002' => $cliente,
+                'LGF0460003' => $licencias,
+                'LGF0460004' => $fec_inicio,
+                'LGF0460005' => $fec_fin
+            );
+
+            $respuesta = (new EstadisticasCliente())->crearEstadisticasCliente((object) $data);
+
+            if ($respuesta) {
+                $this->renderJSON(array("mensaje" => "Estadistica creada correctamente"));
+            } else {
+                $this->renderJSON(array("error" => "Ha ocurrido un error al registrar la información del cliente."));
+            }
+
+        }
+        public function eliminarestadisticacliente(){
+            $id    = $_POST['id'];
+
+            $data = array(
+                'LGF0460001' => $id
+            );
+
+            $respuesta = (new EstadisticasCliente())->eliminaEstadisticasCliente((object) $data);
+
+            if ($respuesta) {
+                $this->renderJSON(array("mensaje" => "Estadistica eliminada correctamente"));
+            } else {
+                $this->renderJSON(array("error" => "Ha ocurrido un error al eliminar la información del cliente."));
+            }
+
+        }
+
+
 		/**
 		 * Grupos
 		 */

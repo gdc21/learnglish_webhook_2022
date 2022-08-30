@@ -205,7 +205,11 @@
 			WHERE ".$adicional." LGF0180002=" . $conditions ["nivel"] . " AND LGF0180003=" . $conditions ["modulo"] . " AND LGF0180004=" . $conditions ["leccion"] . " ORDER BY LGF0180006";
 			return $this->doSelect ();
 		}
-		
+
+        function navegacioncompleta(){
+            $this->query = "SELECT * FROM lg00018 where LGF0180005 = 8 and LGF0180008 = 1";
+            return $this->doSelect();
+        }
 		/**
 		 * 
 		 * @param unknown $nivel

@@ -12,7 +12,7 @@ class EstadisticasSistema extends UniversalDatabase
             $seleccionTipo = " DATE_FORMAT(log_session.lgf0360004,'%W %d') AS diaSemana, ";
 
             $condicionYAgrupacion = " AND week(log_session.lgf0360004) = week(now()) AND YEAR(log_session.lgf0360004) = YEAR(now()) 
-                GROUP BY DAYOFWEEK(log_session.lgf0360004)";
+                GROUP BY DAYOFWEEK(log_session.lgf0360004) ";
 
         }
         elseif($tipo == 'semanaSoloMinutos'){
@@ -40,9 +40,6 @@ class EstadisticasSistema extends UniversalDatabase
                 GROUP BY niveles.LGF0140001;";
             $tablasAdicionales = ", lg00014 AS niveles";
         }
-
-
-
 
         elseif ($tipo == 'tiempoTotalPorModulos'){
             $seleccionTipo = " modulos.LGF0150002 AS modulo, ";
@@ -73,7 +70,7 @@ class EstadisticasSistema extends UniversalDatabase
             $tablasAdicionales = ", lg00015 AS modulos";
             $inTipoUsuario     = ' (2) AND usuarios.LGF0010038 = '.$id;
         }
-         elseif( $tipo == 'SecundariaInstitucion'){
+        elseif( $tipo == 'SecundariaInstitucion'){
             $seleccionTipo = " modulos.LGF0150002 AS modulo, ";
             $condicionYAgrupacion = " and log_session.LGF0360007 = modulos.LGF0150001
                 AND modulos.LGF0150004 = 3 
@@ -81,11 +78,6 @@ class EstadisticasSistema extends UniversalDatabase
             $tablasAdicionales = ", lg00015 AS modulos";
             $inTipoUsuario     = ' (2) AND usuarios.LGF0010038 = '.$id;
         }
-
-
-
-
-
 
         elseif ($tipo == 'tiempoTotalPorDocentes'){
             $seleccionTipo = "";

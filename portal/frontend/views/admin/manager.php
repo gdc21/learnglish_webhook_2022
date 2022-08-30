@@ -178,6 +178,13 @@
                     <span class="nombreM">Reportes</span>
                 </a>
             </div>
+
+            <div class="col-6 col-lg-3">
+                <a href="<?php echo CONTEXT ?>admin/estadisticacliente/no">
+                    <div class="cuadrado2"><i class="fa fa-file-text-o" aria-hidden="true"></i></div>
+                    <span class="nombreM">Dashboard reporte de usos</span>
+                </a>
+            </div>
         </div>
     <?php } ?>
 </section>

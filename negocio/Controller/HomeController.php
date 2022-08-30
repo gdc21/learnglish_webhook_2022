@@ -32,6 +32,16 @@ class HomeController extends Controller_Learnglish
     }
     /**########################################################################################*/
 
+    public function listarlistening(){
+        $datos = (new Administrador())->navegacioncompleta();
+        $i = 1;
+        foreach ($datos as $dato) {
+            echo $dato['LGF0180001'].'  \\\JMORENO\folder_oda_jon\n'.$dato['LGF0180002'].'\m'.$dato['LGF0180003'].'\l'.$dato['LGF0180006'].'\\'.$dato['LGF0180007'].'<br>';
+            $i++;
+        }
+
+    }
+
 
     /**########################################################################################*/
     public function moveblobtospeakingfolder()
