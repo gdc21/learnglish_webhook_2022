@@ -220,16 +220,16 @@
                             <tr>
                                 <td>Modulo</td>
                                 <td>Nivel académico que se va a registrar:
-                                    <li>Modulo 1, Grado: 3 (3° preescolar)Módul
-                                    <li>Modulo 2, Grado: 1 (1° primaria)Módul
-                                    <li>Modulo 3, Grado: 2 (2° primaria)Módul
-                                    <li>Modulo 4, Grado: 3 (3° primaria)Módul
-                                    <li>Modulo 5, Grado: 4 (4° primaria)Módul
-                                    <li>Modulo 6, Grado: 5 (5° primaria)Módul
-                                    <li>Modulo 7, Grado: 6 (6° primaria)Módul
-                                    <li>Modulo 8, Grado: 1 (1° secundaria)Módul
-                                    <li>Modulo 9, Grado: 2 (2° secundaria)Módul
-                                    <li>Modulo 10, Grado: 3 (3° secundaria)Módul
+                                    <li>Modulo 1, Grado: 3 (3° preescolar)
+                                    <li>Modulo 2, Grado: 1 (1° primaria)
+                                    <li>Modulo 3, Grado: 2 (2° primaria)
+                                    <li>Modulo 4, Grado: 3 (3° primaria)
+                                    <li>Modulo 5, Grado: 4 (4° primaria)
+                                    <li>Modulo 6, Grado: 5 (5° primaria)
+                                    <li>Modulo 7, Grado: 6 (6° primaria)
+                                    <li>Modulo 8, Grado: 1 (1° secundaria)
+                                    <li>Modulo 9, Grado: 2 (2° secundaria)
+                                    <li>Modulo 10, Grado: 3 (3° secundaria)
                                 </td>
                             </tr>
                             <tr>
@@ -241,16 +241,16 @@
                             <tr>
                                 <td>Grado</td>
                                 <td>Nivel académico que se va a registrar:
-                                    <li>Modulo 1, Grado: 3 (3° preescolar)Módul
-                                    <li>Modulo 2, Grado: 1 (1° primaria)Módul
-                                    <li>Modulo 3, Grado: 2 (2° primaria)Módul
-                                    <li>Modulo 4, Grado: 3 (3° primaria)Módul
-                                    <li>Modulo 5, Grado: 4 (4° primaria)Módul
-                                    <li>Modulo 6, Grado: 5 (5° primaria)Módul
-                                    <li>Modulo 7, Grado: 6 (6° primaria)Módul
-                                    <li>Modulo 8, Grado: 1 (1° secundaria)Módul
-                                    <li>Modulo 9, Grado: 2 (2° secundaria)Módul
-                                    <li>Modulo 10, Grado: 3 (3° secundaria)Módul
+                                    <li>Modulo 1, Grado: 3 (3° preescolar)
+                                    <li>Modulo 2, Grado: 1 (1° primaria)
+                                    <li>Modulo 3, Grado: 2 (2° primaria)
+                                    <li>Modulo 4, Grado: 3 (3° primaria)
+                                    <li>Modulo 5, Grado: 4 (4° primaria)
+                                    <li>Modulo 6, Grado: 5 (5° primaria)
+                                    <li>Modulo 7, Grado: 6 (6° primaria)
+                                    <li>Modulo 8, Grado: 1 (1° secundaria)
+                                    <li>Modulo 9, Grado: 2 (2° secundaria)
+                                    <li>Modulo 10, Grado: 3 (3° secundaria)
                                 </td>
                             </tr>
                             <tr>
@@ -358,7 +358,7 @@
                         <input type="file" name="limpiar" accept=".csv" class="limpiar mt-5 mb-3 w-75 mx-auto form-control" required>
                         <p class="mt-3 mensaje" style="color: green;"></p>
                         <button type="button" class="text-white btn d-block mx-auto btn-success mb-5 procesar"  formularioNumero="2">
-                            Subir y limpiar documento
+                            Realizar carga de elementos
                         </button>
                     </form>
                 </div>
@@ -384,161 +384,6 @@
 
         </div>
 
-        <script>
-            $(function () {
-
-                /**Al presionar el boton de siguiente tab se iluminaran las siguientes
-                 * */
-                $("#accionBotonSiguiente").click(function () {
-                    $("#accionBotonAnterior").removeClass('d-none');
-
-                    var actualTab = this.getAttribute('actualTab');
-                    var siguienteTab = parseInt(actualTab) + 1;
-                    if (actualTab != '4') {
-                        /*Seccion de mostrar contenido de cada paso*/
-                        $("[class*=seccionPaso" + actualTab + "]").addClass('d-none');
-                        $("[class*=seccionPaso" + siguienteTab + "]").removeClass('d-none');
-
-                        /*Seccion de tabs en verde pasos*/
-                        $("[id*=Step" + actualTab + "]").removeClass('active');
-                        this.setAttribute('actualTab', siguienteTab);
-                        $("[id*=Step" + siguienteTab + "]").addClass('active');
-                    }
-                });
-
-                /**Al presionar el boton de siguiente tab se iluminaran las siguientes
-                 * */
-                $("#accionBotonAnterior").click(function () {
-                    var actualTab = $("#accionBotonSiguiente").attr('actualTab');
-                    var siguienteTab = parseInt(actualTab) - 1;
-                    if (actualTab != '1') {
-                        /*Seccion de mostrar contenido de cada paso*/
-                        $("[class*=seccionPaso" + actualTab + "]").addClass('d-none');
-                        $("[class*=seccionPaso" + siguienteTab + "]").removeClass('d-none');
-
-                        /*Seccion de tabs en verde pasos*/
-                        $("[id*=Step" + actualTab + "]").removeClass('active');
-                        $("#accionBotonSiguiente").attr('actualTab', siguienteTab);
-                        $("[id*=Step" + siguienteTab + "]").addClass('active');
-                    }
-
-                    if(actualTab == '2'){
-                        $("#accionBotonAnterior").addClass('d-none');
-                    }
-
-
-                });
-
-                /**+
-                 * MOSTRAR BOT SIGUIENTE, MOSTRAR TABLA, CAMBIA TITULO SIMBOLOGIA
-                 *
-                 * Cuando se de click en el boton descargar empezara a mostrarse el boton de siguiente
-                 * Se cambiar titulo de simbologia
-                 * Se mostrara tabla con simbologia correspondiente
-                 */
-                $("#botonDownloadi").click(function () {
-                    var nombre_archivo = $("#download_ejemplo").attr('nombre_archivo');
-                    $(".nombre_archivo").html(nombre_archivo);
-
-                    var resultante = $("#download_ejemplo").attr('resultante');
-                    $(".resultante").html(resultante);
-
-                    var tabla_mostrar_simbologia = $("#download_ejemplo").attr('tabla');
-
-                    $(".tabla_mostrar_simbologia").addClass('d-none');
-                    $("#"+tabla_mostrar_simbologia).removeClass('d-none');
-
-                    $("#accionBotonSiguiente").removeClass('d-none');
-
-                });
-
-                /**
-                 * Cuando el usuario selecciona una opcion para importacion masiva
-                 */
-                $(".importar_step1_selecciona").change(function () {
-
-                    $("[class*=seccionPaso]").addClass('d-none');
-
-
-                    if(this.value != ""){
-                        $("[class*=seccionPaso1]").removeClass('d-none');
-                        $("#Step1").html("Paso 1");
-                        $(".itemSteps").removeClass('d-none');
-
-                    }else{
-                        $("#Step1").html("Esperando selección...");
-
-                        /*Ocultamos los circulos y ampliamos el primero*/
-                        $("[id*='Step']").addClass('d-none');
-
-                        $(".itemSteps").addClass('d-none');
-                        $(".itemSteps:first").removeClass('d-none');
-
-                        /*$("#Step1").removeClass('d-none');
-                        $("#Step1").css({'width': '100%'});*/
-                        console.log("100", 100);
-                    }
-
-                    $("[id*=Step]").removeClass('active');
-                    $("[id*=Step1]").addClass('active');
-
-                    $("#accionBotonSiguiente").addClass('d-none');
-                    $("#accionBotonSiguiente").attr('actualTab', 1);
-
-                    $("#accionBotonAnterior").addClass('d-none');
-
-
-                    $(".progressbar li").css({'width': '20%'});
-
-                    $("#inputLimpiarDatosHidden").val(this.value);
-                    $("#inputLimpiarDatosHidden2").val(this.value);
-                });
-            });
-        </script>
-
-
-        <!--<div class="page">
-          <form id="importFile">
-            <div class="row">
-              <div class="col-lg-5">
-                <label class="form-label">
-                  Limpiar información <a href="" id="download_ejemplo" style="margin-top: 15px;">Descargar ejemplo</a>
-                </label>
-                <select class="form-select" id="accion" name="accion">
-                  <option value="">Selecciona una opción</option>
-                  <option value="1">Limpiar datos de la institución</option>
-                  <option value="2">Limpiar datos del alumno</option>
-                  <option value="3">Limpiar datos del docente</option>
-                  <option value="4">Importar instituciones</option>
-                  <option value="5">Importar alumnos</option>
-                  <option value="6">Importar docentes</option>
-                </select>
-              </div>
-              <div class="col-lg-4">
-                <label class="form-label">
-                  Subir archivo
-                  <button class="btn btn-lg registro" id="archivo">Cargar <i class="fa fa-upload" aria-hidden="true"></i></button>
-                </label>
-                  <input type="file" name="limpiar" id="limpiar" style="display: none;">
-              </div>
-              <div class="col-lg-3">
-                <br>
-                <button class="btn btn-lg registro" id="procesar">Procesar archivo</button>
-              </div>
-            </div>
-          </form>
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="alert alert-warning" role="alert" id="info" style="display: none;"></div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="alert alert-warning" role="alert" id="mensaje" style="display: none;"></div>
-            </div>
-          </div>
-        </div>-->
     </section>
     <div class="row">
         <div class="offset-lg-9 col-lg-3">
@@ -549,58 +394,117 @@
 <script>
     $(document).ready(function () {
 
+        /*##################################################################*/
+        /*##################################################################*/
+        /**Al presionar el boton de siguiente tab se iluminaran las siguientes
+         * */
+        $("#accionBotonSiguiente").click(function () {
+            /** Limpiamos los status de lo que ya se haya procesado*/
+            $('#importFile .mensaje').html("");
+            $('#importFile2 .mensaje').html("");
 
-        /*##################################################################*/
-        /*##################################################################*/
-        /*Funciones que hacen el efecto de pasar al siguiente paso*/
-        function nextTab(elem) {
-            $(elem).next().find('a[data-toggle="tab"]').click();
-        }
-        function prevTab(elem) {
-            $(elem).prev().find('a[data-toggle="tab"]').click();
-        }
-        $('.nav-tabs > li a[title]').tooltip();
-        $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-            var $target = $(e.target);
-            if ($target.parent().hasClass('disabled')) {
-                return false;
+            $("#accionBotonAnterior").removeClass('d-none');
+
+            var actualTab = this.getAttribute('actualTab');
+            var siguienteTab = parseInt(actualTab) + 1;
+
+            if (actualTab != 4) {
+                /** Seccion de mostrar contenido de cada paso*/
+                $("[class*=seccionPaso" + actualTab + "]").addClass('d-none');
+                $("[class*=seccionPaso" + siguienteTab + "]").removeClass('d-none');
+
+                /** Seccion de tabs en verde pasos*/
+                $("[id*=Step" + actualTab + "]").removeClass('active');
+                this.setAttribute('actualTab', siguienteTab);
+                $("[id*=Step" + siguienteTab + "]").addClass('active');
+            }
+            if(actualTab == 3){
+                $("#accionBotonSiguiente").addClass('d-none');
             }
         });
-        $(".next-step").click(function (e) {
-            var $active = $('.wizard .nav-tabs li.active');
-            $active.next().removeClass('disabled');
-            nextTab($active);
-        });
-        $(".prev-step").click(function (e) {
-            var $active = $('.wizard .nav-tabs li.active');
-            prevTab($active);
-
-        });
         /*##################################################################*/
         /*##################################################################*/
+        /**Al presionar el boton de siguiente tab se iluminaran las siguientes
+         * */
+        $("#accionBotonAnterior").click(function () {
+            /** Limpiamos los status de lo que ya se haya procesado*/
+            $('#importFile .mensaje').html("");
+            $('#importFile2 .mensaje').html("");
 
+            var actualTab = $("#accionBotonSiguiente").attr('actualTab');
+            var siguienteTab = parseInt(actualTab) - 1;
+
+            /** Mostramos el boton de siguiente por si se oculta*/
+            $("#accionBotonSiguiente").removeClass('d-none');
+
+            if (actualTab != 1) {
+                /*Seccion de mostrar contenido de cada paso*/
+                $("[class*=seccionPaso" + actualTab + "]").addClass('d-none');
+                $("[class*=seccionPaso" + siguienteTab + "]").removeClass('d-none');
+
+                /*Seccion de tabs en verde pasos*/
+                $("[id*=Step" + actualTab + "]").removeClass('active');
+                $("#accionBotonSiguiente").attr('actualTab', siguienteTab);
+                $("[id*=Step" + siguienteTab + "]").addClass('active');
+            }
+            if(actualTab == 2){
+                $("#accionBotonAnterior").addClass('d-none');
+            }
+        });
+
+        /*##################################################################*/
+        /*##################################################################*/
+        /**+
+         * MOSTRAR BOT SIGUIENTE, MOSTRAR TABLA, CAMBIA TITULO SIMBOLOGIA
+         *
+         * Cuando se de click en el boton descargar empezara a mostrarse el boton de siguiente
+         * Se cambiar titulo de simbologia
+         * Se mostrara tabla con simbologia correspondiente
+         */
+        $("#botonDownloadi").click(function () {
+
+            var tabla_mostrar_simbologia = $("#download_ejemplo").attr('tabla');
+
+            $(".tabla_mostrar_simbologia").addClass('d-none');
+            $("#"+tabla_mostrar_simbologia).removeClass('d-none');
+
+            //$("#accionBotonSiguiente").removeClass('d-none');
+        });
+
+        /*##################################################################*/
+        /*##################################################################*/
+        /**
+         *  Primer paso select acciones, se crea seleccion de tipo de elemento a cargar para asignar variables y descargas
+         *  */
         $("#accion").change(function (e) {
             $(".mensaje").hide();
             $(".mensaje").html("");
+            /** Si no se selecciona nada ocultamos botones y todo*/
             if ($(this).val() == "") {
                 $("#download_ejemplo").attr("href", "#");
                 $("#info").hide();
                 $("#info").html();
-            } else if ($(this).val() == 1) {
+            }
+            /** Plantillas de instituciones*/
+            else if ($(this).val() == 1) {
                 $("#download_ejemplo").attr("href", context + "importar/plantilla_instituciones.csv");
                 $("#download_ejemplo").attr("nombre_archivo", "plantilla_instituciones.csv");
                 $("#download_ejemplo").attr("tabla", "plantilla_instituciones");
                 $("#download_ejemplo").attr("resultante", "importar_instituciones.csv");
                 $("#info").show();
                 $("#info").html("Retorna un archivo con la siguiente estructura<br> CCT/Institución/Modulos/Grupos");
-            } else if ($(this).val() == 2) {
+            }
+            /** Plantilla de alumnos*/
+            else if ($(this).val() == 2) {
                 $("#download_ejemplo").attr("href", context + "importar/plantilla_alumnos.csv");
                 $("#download_ejemplo").attr("nombre_archivo", "plantilla_alumnos.csv");
                 $("#download_ejemplo").attr("tabla", "plantilla_alumnos");
                 $("#download_ejemplo").attr("resultante", "importar_alumnos.csv");
                 $("#info").show();
                 $("#info").html("Retorna un archivo con la siguiente estructura<br> Nombre/Apellido paterno/Apellido materno/CURP/Genero/Modulo/Institución/Grado");
-            } else if ($(this).val() == 3) {
+            }
+            /** Plantilla de docentes*/
+            else if ($(this).val() == 3) {
                 $("#download_ejemplo").attr("href", context + "importar/plantilla_docentes.csv");
                 $("#download_ejemplo").attr("nombre_archivo", "plantilla_docentes.csv");
                 $("#download_ejemplo").attr("tabla", "plantilla_docentes");
@@ -612,49 +516,87 @@
                 $("#info").hide();
                 $("#info").html();
             }
+
+
+            /** ########################## */
+            $("[class*=seccionPaso]").addClass('d-none');
+
+            if(this.value != ""){
+                $("[class*=seccionPaso1]").removeClass('d-none');
+                $("#Step1").html("Paso 1");
+                $(".itemSteps").removeClass('d-none');
+
+            }else{
+                $("#Step1").html("Esperando selección...");
+
+                /*Ocultamos los circulos y ampliamos el primero*/
+                $("[id*='Step']").addClass('d-none');
+
+                $(".itemSteps").addClass('d-none');
+                $(".itemSteps:first").removeClass('d-none');
+            }
+
+            $("[id*=Step]").removeClass('active');
+            $("[id*=Step1]").addClass('active');
+
+            $("#accionBotonSiguiente").removeClass('d-none');
+            $("#accionBotonSiguiente").attr('actualTab', 1);
+
+            $("#accionBotonAnterior").addClass('d-none');
+
+
+            $(".progressbar li").css({'width': '20%'});
+
+            $("#inputLimpiarDatosHidden").val(this.value);
+            $("#inputLimpiarDatosHidden2").val(this.value);
+
+            var nombre_archivo = $("#download_ejemplo").attr('nombre_archivo');
+            $(".nombre_archivo").html(nombre_archivo);
+
+            var resultante = $("#download_ejemplo").attr('resultante');
+            $(".resultante").html(resultante);
         });
 
-        /*$("#archivo").click(function (e) {
-            e.preventDefault();
-            var accion = $("#accion").val();
-            $(".limpiar").click();
-        });*/
-
+        /*##################################################################*/
+        /*##################################################################*/
+        /**
+         * Cuando el boton de procesar archivo ya sea para formatear o para cargar
+         * */
         $(".procesar").click(function (e) {
             var accion = 0;
 
-            /*Verificamos el numero de formulario (debido a codigo anterior para no refactorizar mucho)*/
+            /** Verificamos el numero de formulario (debido a codigo anterior para no refactorizar mucho)*/
             var numero_de_formulario = this.getAttribute('formularioNumero');
 
-            /*Formulario 1 es el limpiar plantilla*/
-            if(numero_de_formulario == '1'){
-                /*Verificamos el formdata a enviar*/
+            /** Formulario 1 es el limpiar plantilla*/
+            if(numero_de_formulario == 1){
+                /**Verificamos el formdata a enviar*/
                 var form = new FormData($('#importFile')[0]);
-                /*El valor de input hidden es el numero de accion a realizar en backend*/
+                /** El valor de input hidden es el numero de accion a realizar en backend*/
                 accion = $("#inputLimpiarDatosHidden").val();
 
                 var cajaMensaje = $('#importFile .mensaje');
                 var limpiar = $('#importFile .limpiar');
             }else{
-                /*Verificamos el formdata a enviar*/
-                var form = new FormData($('#importFile2')[0]);
 
-                /*El valor de input hidden es el numero de accion a realizar en backend*/
+                /** El valor de input hidden es el numero de accion a realizar en backend*/
                 var valor = $("#inputLimpiarDatosHidden2").val();
+
                 var cajaMensaje = $('#importFile2 .mensaje');
                 var limpiar = $('#importFile2 .limpiar');
 
-                /*Revisar backend serie de opciones anteriores*/
+                /** Revisar backend serie de opciones anteriores*/
                 if(parseInt(valor) + 3 <= 6){
-                    console.log("dentro del parse", valor);
                     $("#inputLimpiarDatosHidden2").val(parseInt(valor) + 3)
                 }
+
+                /** Verificamos el formdata a enviar*/
+                var form = new FormData($('#importFile2')[0]);
+
                 accion = $("#inputLimpiarDatosHidden2").val();
-                console.log("accion", accion);
             }
 
             e.preventDefault();
-
 
             $.ajax({
                 url: context + 'admin/limpiar_datos',
@@ -685,7 +627,6 @@
                     cajaMensaje.show();
                 },
                 success: function (data) {
-
                     limpiar.val('');
                     cajaMensaje.html(data.mensaje);
 
@@ -698,6 +639,12 @@
                         }
                     }else{
                         cajaMensaje.html("<p style='color: red;'>"+data.mensaje+"</p>");
+                        if (data.data != null) {
+                            generarCSV(data.data, true, data.titulo);
+                        }
+                        if (data.data1 != null) {
+                            generarCSV(data.data1, true, data.titulo1);
+                        }
                     }
                     $(".procesar").removeClass('disabled');
 

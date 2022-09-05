@@ -5944,7 +5944,7 @@
 		public function limpiar_datos() {
 			$accion = $_POST['accion'];
 
-			$ruta = __DIR__."/../../importar/";
+			$ruta = __DIR__."/../../importar/temp/";
 			// $file = file_get_contents($file['tmp_name']);
 			$nombre = $_FILES['limpiar']['name'];
 			$temporal = $_FILES['limpiar']['tmp_name'];
@@ -5971,6 +5971,38 @@
 			}
 
 			if ($move == 1) {
+
+                $celdas_excel = ['A', 'B', 'C', 'D', 'E', 'F', 'G',' H', 'I'];
+
+                $campos_alumnos = [
+                    'Nombre',
+                    'Apellido paterno',
+                    'Apellido materno',
+                    'CURP',
+                    'Genero',
+                    'Modulo',
+                    'Institución',
+                    'Grado',
+                    'Letra'
+                ];
+
+                $campos_institucion = [
+                    'CCT',
+                    'Nombre',
+                    'Modulo',
+                    'Grado',
+                    'Letra'
+                ];
+
+                $campos_docentes = [
+                    'Nombre',
+                    'Apellido paterno',
+                    'Apellido materno', # Puede venir vacio
+                    'CURP',             # Puede venir vacio
+                    'Genero',           # Puede venir vacio
+                    'Institucion'
+                ];
+
 				switch ($accion) {
 					case '1': // Limpiar datos de la institución
 
@@ -5987,7 +6019,7 @@
 						while (($claves = fgetcsv($fichero1, 10000)) != FALSE) {
                             if($y == 0){
                                 if(count($claves) != 5 || $claves[0] != 'CCT' || $claves[1] != 'Nombre' || $claves[2] != 'Modulo' || $claves[3] != 'Grado' || $claves[4] != 'Letra'){
-                                    $mensaje = "Fallo al verificar la información, verifica que el archivo sea el correcto (error en nombre de columnas requeridas).";
+                                    $mensaje = "Fallo al verificar la información, verifica que el archivo sea el correcto y que no tenga mas o menos columnas o datos volando (error en nombre de columnas requeridas).";
                                     $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
                                     exit;
                                 }
@@ -6001,6 +6033,98 @@
                                     $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
                                     exit;
                                 }
+
+
+                                $cct = strtoupper($this->eliminar_espacio($claves[0]) );
+                                $nombre = strtoupper($this->eliminar_espacio($claves[1]) );
+                                $modulo = strtoupper($this->eliminar_espacio($claves[2]) );
+                                $grado = strtoupper($this->eliminar_espacio($claves[3]) );
+                                $letra = strtoupper($this->eliminar_espacio($claves[4]) );
+
+                                ##################################
+                                # SECCIONES DE VALIDACIONES
+                                ##################################
+                                #Verificamos que datos importantes no vengan vacios ni caracteres no permitidos
+
+                                if((!$this->solo_letra_acento_numeros_espacio_n($nombre)) || empty($nombre)) {
+                                    $mensaje = "*La linea ($y) debe contener un nombre valido usando solo letras y espacios, sin caracteres especiales.";
+                                    $this->renderJSON(array("error" => 1, "mensaje" => $mensaje));
+                                    exit;
+                                }
+                                if(strlen($cct) != 10 || !$this->solo_letra_numeros($cct)){
+                                    $mensaje = "Verifica que el CCT este correcto (10 letras), error en CCT: ".$cct." ubicado en la celda: A".$y." de tu archivo, no caracteres especiales.";
+                                    $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                    exit;
+                                }
+                                foreach ($campos_institucion as $key => $verifica_vacio){
+                                    #Validaciones para todos los campos
+                                    if(empty($this->eliminar_espacio($claves[$key]))){
+                                        $mensaje = "Verifica que tu campo: '".$verifica_vacio."', no este vacio, error en la celda: ".$celdas_excel[$key]."".($y)." de tu archivo.";
+                                        $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                        exit;
+                                    }
+                                    #Validaciones para todos los campos
+                                    if(!$this->solo_letra_acento_numeros_espacio_n($claves[$key])){
+                                        $mensaje = "Verifica que la celda '".$celdas_excel[$key]."".($y)."'  solo tenga letras, espacios, sin números y sin caracteres especiales.";
+                                        $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                        exit;
+                                    }
+                                    #Validacion de modulo y grado
+                                    if($key == 2 || $key == 3){
+                                        if($claves[$key] < 1 || $claves[$key] > 10 || !ctype_digit($claves[$key])){
+                                            $mensaje = $campos_institucion[$key]." no valido en la celda ".$celdas_excel[$key]."".($y).", (1-10)";
+                                            $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                            exit;
+                                        }
+                                        #Validacion concordancia entre modulos y niveles
+                                        if($key == 3){
+                                            $error = 0;
+                                            $mensaje = "";
+                                            switch ($claves[$key]){
+                                                case 3: if($claves[2] != 1 && $claves[2] != 4 && $claves[2] != 10) $error = 1; break;
+                                                case 1: if($claves[2] != 2 && $claves[2] != 8) $error = 1; break;
+                                                case 2: if($claves[2] != 3 && $claves[2] != 9) $error = 1; break;
+                                                case 4: if($claves[2] != 5) $error = 1; break;
+                                                case 5: if($claves[2] != 6) $error = 1; break;
+                                                case 6: if($claves[2] != 7) $error = 1; break;
+                                                default: $error = 1; break;
+                                            }
+                                            if($error){
+                                                $mensaje .= "Error en celda ".$celdas_excel[$key]."".($y).", Grado: ".$claves[$key].", Modulo: ".$claves[2]."  
+                                                <br>Recuerda la siguiente tabla del paso anterior:
+                                                <br>Modulo: 1, Grado: 3, 3o de Preescolar
+                                                <br>Modulo: 2, Grado: 1, 1o de Primaria
+                                                <br>Modulo: 3, Grado: 2, 2o de Primaria
+                                                <br>Modulo: 4, Grado: 3, 3o de Primaria
+                                                <br>Modulo: 5, Grado: 4, 4o de Primaria
+                                                <br>Modulo: 6, Grado: 5, 5o de Primaria
+                                                <br>Modulo: 7, Grado: 6, 6o de Primaria
+                                                <br>Modulo: 8, Grado: 1, 1o de Secundaria
+                                                <br>Modulo: 9, Grado: 2, 2o de Secundaria
+                                                <br>Modulo: 10, Grado: 3, 3o de Secundaria";
+                                                $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                                exit;
+                                            }
+                                        }
+                                    }
+
+                                    #Validacion de letra
+                                    if($key == 4){
+                                        if(ctype_digit($claves[$key]) || !$this->solo_letra($claves[$key]) || (strlen($claves[$key]) != 1 && !empty($claves[$key]))){
+                                            $mensaje = "Verifica que la celda '".$celdas_excel[$key]."".($y)."'  solo contenga una letra.";
+                                            $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                            exit;
+                                        }
+                                    }
+                                }
+
+                                ##################################
+
+
+
+
+
+
 
 								array_push($ccts, array($cctL));
 							}
@@ -6043,7 +6167,7 @@
 							$modulos = "";
 							
 							$cctInstitucional = $json[$i][0];
-							for ($j=0; $j < count($valores); $j++) { 
+							for ($j=0; $j < count($valores); $j++) {
 								if ($json[$i][0] == $valores[$j][0]) {
 									if ($valores[$j][2] == 1) {
 										if ($contador == 0) {
@@ -6124,8 +6248,18 @@
 
 						while (($datos = fgetcsv($fichero, 10000)) != FALSE) {
                             if($x == 0){
-                                if(count($datos) != 9 || $datos[0] != 'Nombre' || $datos[1] != 'Apellido paterno' || $datos[2] != 'Apellido materno' || $datos[3] != 'CURP' || $datos[4] != 'Genero' || $datos[5] != 'Modulo' || $datos[6] != 'Institucion' || $datos[7] != 'Grado' || $datos[8] != 'Letra'){
-                                    $mensaje = "Fallo al verificar la información, verifica que el archivo sea el correcto (error en nombre de columnas requeridas).";
+                                if(count($datos) != 9 ||
+                                    $datos[0] != 'Nombre' ||
+                                    $datos[1] != 'Apellido paterno' ||
+                                    $datos[2] != 'Apellido materno' ||
+                                    $datos[3] != 'CURP' ||
+                                    $datos[4] != 'Genero' ||
+                                    $datos[5] != 'Modulo' ||
+                                    $datos[6] != 'Institucion' ||
+                                    $datos[7] != 'Grado' ||
+                                    $datos[8] != 'Letra'){
+
+                                    $mensaje = "Fallo al verificar la información, verifica que el archivo sea el correcto y que no tenga mas o menos columnas o datos volando (error en nombre de columnas requeridas).";
                                     $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
                                     exit;
                                 }
@@ -6133,6 +6267,7 @@
 
 							$x++;
 							if ($x > 1) {
+
 								$nombre = strtoupper($this->eliminar_espacio($datos[0]) );
 								$paterno = strtoupper($this->eliminar_espacio($datos[1]) );
 								$materno = strtoupper($this->eliminar_espacio($datos[2]) );
@@ -6147,12 +6282,101 @@
 
 								$curp = empty($curp) ? strtoupper( substr( md5($nombre.$paterno.$materno.$grado) ,0, 18) ) : $curp;
 
-                                if(strlen($curp) != 18){
-                                    $mensaje = "Verifica que el CURP este correcto (18 letras), error en CURP: ".$curp." ubicado en la linea: ".$x." de tu archivo.";
+                                ##################################
+                                # SECCIONES DE VALIDACIONES
+                                ##################################
+                                #Verificamos que datos importantes no vengan vacios ni caracteres no permitidos
+                                if(strlen($curp) != 18 || !$this->solo_letra_numeros($curp)){
+                                    $mensaje = "Verifica que el CURP en la celda: D".$x." este correcto (18 letras), caracteres no válidos, dejar vacio para generar un CURP genérico.";
                                     $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
                                     exit;
                                 }
-								
+                                if((!$this->solo_letra_acento_espacio_n($nombre)) || !$this->solo_letra_acento_espacio_n($paterno) || !$this->solo_letra_acento_espacio_n($materno)) {
+                                    $mensaje = "*La linea ($x) debe contener un nombre y mínimo un apellido usando solo letras, espacios, sin números y sin caracteres especiales.";
+                                    $this->renderJSON(array("error" => 1, "mensaje" => $mensaje));
+                                    exit;
+                                }
+                                if( empty($nombre) || (empty($paterno) && empty($materno)) ){
+                                    $mensaje = "-La linea ($x) debe contener un nombre y mínimo un apellido usando solo letras, espacios, sin números y sin caracteres especiales.";
+                                    $this->renderJSON(array("error" => 1, "mensaje" => $mensaje));
+                                    exit;
+                                }
+                                if($genero != 'H' && $genero != 'M' && $genero != ''){
+                                    $mensaje = "Género no válido en celda E".$x.", solo se permite: H o M.";
+                                    $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                    exit;
+                                }
+                                if(strlen($cct) != 10){
+                                    $mensaje = "Verifica que el CCT este correcto (10 letras), error en CCT: ".$cct." ubicado en la celda: G".$x." de tu archivo.";
+                                    $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                    exit;
+                                }
+                                foreach ($campos_alumnos as $key => $verifica_vacio){
+                                    if($key == 0 || $key == 5 || $key == 6 || $key == 7){
+                                        if(empty($this->eliminar_espacio($datos[$key]))){
+                                            $mensaje = "Verifica que tu campo: '".$verifica_vacio."', no este vacio, error en la celda: ".$celdas_excel[$key]."".($x)." de tu archivo.";
+                                            $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                            exit;
+                                        }
+                                        #Validacion de modulo y grado
+                                        if($key == 5 || $key == 7){
+                                            if($datos[$key] < 1 || $datos[$key] > 10 || !ctype_digit($datos[$key])){
+                                                $mensaje = $campos_alumnos[$key]." no valido en la celda ".$celdas_excel[$key]."".($x).", (1-10)";
+                                                $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                                exit;
+                                            }
+                                            #Validacion concordancia entre modulos y niveles
+                                            if($key == 7){
+                                                $error = 0;
+                                                $mensaje = "";
+                                                switch ($datos[$key]){
+                                                    case 3: if($datos[5] != 1 && $datos[5] != 4 && $datos[5] != 10) $error = 1; break;
+                                                    case 1: if($datos[5] != 2 && $datos[5] != 8) $error = 1; break;
+                                                    case 2: if($datos[5] != 3 && $datos[5] != 9) $error = 1; break;
+                                                    case 4: if($datos[5] != 5) $error = 1; break;
+                                                    case 5: if($datos[5] != 6) $error = 1; break;
+                                                    case 6: if($datos[5] != 7) $error = 1; break;
+                                                    default: $error = 1; break;
+                                                }
+                                                if($error){
+                                                    $mensaje .= "Error en celda ".$celdas_excel[$key]."".($x).", Grado: ".$datos[$key].", Modulo: ".$datos[5]."  
+                                                    <br>Recuerda la siguiente tabla del paso anterior:
+                                                    <br>Modulo: 1, Grado: 3, 3o de Preescolar
+                                                    <br>Modulo: 2, Grado: 1, 1o de Primaria
+                                                    <br>Modulo: 3, Grado: 2, 2o de Primaria
+                                                    <br>Modulo: 4, Grado: 3, 3o de Primaria
+                                                    <br>Modulo: 5, Grado: 4, 4o de Primaria
+                                                    <br>Modulo: 6, Grado: 5, 5o de Primaria
+                                                    <br>Modulo: 7, Grado: 6, 6o de Primaria
+                                                    <br>Modulo: 8, Grado: 1, 1o de Secundaria
+                                                    <br>Modulo: 9, Grado: 2, 2o de Secundaria
+                                                    <br>Modulo: 10, Grado: 3, 3o de Secundaria";
+                                                    $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                                    exit;
+                                                }
+                                            }
+                                        }
+                                        if($key == 6){
+                                            if(!$this->solo_letra_acento_numeros_espacio_n($datos[$key])){
+                                                $mensaje = "Verifica que la celda '".$celdas_excel[$key]."".($x)."'  solo tenga letras, espacios, sin números y sin caracteres especiales.";
+                                                $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                                exit;
+                                            }
+                                        }
+                                    }
+                                    #Validacion de letra
+                                    if($key == 8){
+                                        if(ctype_digit($datos[$key]) || !$this->solo_letra($datos[$key]) || (strlen($datos[$key]) != 1 && !empty($datos[$key]))){
+                                            $mensaje = "Verifica que la celda '".$celdas_excel[$key]."".($x)."'  solo contenga una letra.";
+                                            $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                            exit;
+                                        }
+                                    }
+                                }
+
+                                ##################################
+
+
 								if (!empty($curp)) {
 									array_push($usuariosOk, array(
 										'Nombre' => $nombre,
@@ -6209,7 +6433,7 @@
 						while (($datos = fgetcsv($fichero, 10000)) != FALSE) {
                             if($x == 0){
                                 if(count($datos) != 6 || $datos[0] != 'Nombre' || $datos[1] != 'Apellido paterno' || $datos[2] != 'Apellido materno' || $datos[3] != 'CURP' || $datos[4] != 'Genero' || $datos[5] != 'Institucion'){
-                                    $mensaje = "Fallo al verificar la información, verifica que el archivo sea el correcto (error en nombre de columnas requeridas).";
+                                    $mensaje = "Fallo al verificar la información, verifica que el archivo sea el correcto y que no tenga mas o menos columnas o datos volando (error en nombre de columnas requeridas).";
                                     $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
                                     exit;
                                 }
@@ -6226,11 +6450,74 @@
 
 								$curp = empty($curp) ? strtoupper(substr( md5($nombre.$paterno.$materno.$cct) ,0, 18) ) : $curp;
 
-                                if(strlen($curp) != 18){
-                                    $mensaje = "Verifica que el CURP este correcto (18 letras), error en CURP: ".$curp." ubicado en la linea: ".$x." de tu archivo.";
+
+                                ##################################
+                                # SECCIONES DE VALIDACIONES
+                                ##################################
+                                #Verificamos que datos importantes no vengan vacios ni caracteres no permitidos
+                                if(strlen($curp) != 18 || !$this->solo_letra_numeros($curp)){
+                                    $mensaje = "Verifica que el CURP: ".$curp." en la celda: D".($x)." este correcto (18 letras), caracteres no válidos, dejar vacio para generar un CURP genérico.";
                                     $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
                                     exit;
                                 }
+                                if((!$this->solo_letra_acento_espacio_n($nombre)) || !$this->solo_letra_acento_espacio_n($paterno) || !$this->solo_letra_acento_espacio_n($materno)) {
+                                    $mensaje = "*La linea (".($x).") debe contener un nombre y mínimo un apellido usando solo letras, espacios, sin números y sin caracteres especiales.";
+                                    $this->renderJSON(array("error" => 1, "mensaje" => $mensaje));
+                                    exit;
+                                }
+                                if( empty($nombre) || (empty($paterno) && empty($materno)) ){
+                                    $mensaje = "-La linea (".($x).") debe contener un nombre y mínimo un apellido usando solo letras, espacios, sin números y sin caracteres especiales.";
+                                    $this->renderJSON(array("error" => 1, "mensaje" => $mensaje));
+                                    exit;
+                                }
+                                if($genero != 'H' && $genero != 'M' && $genero != ''){
+                                    $mensaje = "Género no válido en celda E".($x).", solo se permite: H o M.";
+                                    $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                    exit;
+                                }
+
+                                ####### INICIO VALIDACION CCT
+                                #Validamos CCT, primer caso pertenece a mas de 1 institucion, else solo a una
+                                if(empty($cct) || strlen($cct) < 10 || !$this->solo_letra_numeros_coma($cct)){
+                                    $mensaje = "Verifica que el CCT este correcto (10 letras), error en CCT: ".$cct." ubicado en la celda: F".($x)." de tu archivo.";
+                                    $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                    exit;
+                                }
+                                if($this->solo_letra_numeros_coma($cct)) {
+                                    if(!$this->solo_letra_numeros($cct) && strlen($cct) == 10){
+                                        $mensaje = "Verifica que el CCT este correcto (10 letras), error en CCT: ".$cct." ubicado en la celda: F".($x)." de tu archivo.";
+                                        $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                        exit;
+                                    }
+                                    #Como funciona la validacion de mas de 1 institucion:
+                                    #  $x1 = (int)($cadena / 10);
+                                    #  $y = ($x-1);
+                                    #  $z = $x . $y;
+                                    #  $z == strlen($x)                    -> Tiene la longitud necesaria porque...
+                                    # "1234567890"                         -> Pertenece a 1 institucion (strlen() = 10)
+                                    # "1234567890,1234567890,1234567890"   -> Pertenece a 3 instituciones (strlen() = 32)
+
+                                    $x1 = intval(strlen($cct) / 10); #Dato 1 $x
+                                    $y = $x1 -1;
+                                    $z = intval($x1 . $y);
+                                    if($z != strlen($cct)){
+                                        $mensaje = "El docente pertenece a mas de 1 CCT, verifica que este correcto (CCT1,CCT2,CCT3), error en la celda: F".($x)." de tu archivo.";
+                                        $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                        exit;
+                                    }
+                                }
+                                ####### FIN VALIDACION CCT
+
+                                foreach ($campos_docentes as $key => $verifica_vacio){
+                                    if($key == 0 || $key == 5){
+                                        if(empty($this->eliminar_espacio($datos[$key]))){
+                                            $mensaje = "Verifica que tu campo: '".$verifica_vacio."', no este vacio, error en la celda: ".$celdas_excel[$key]."".($x)." de tu archivo.";
+                                            $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
+                                            exit;
+                                        }
+                                    }
+                                }
+                                ##################################
 
 								$auxCCT = explode(",", $cct);
 								for ($i=0; $i < count($auxCCT); $i++) { 
@@ -6247,7 +6534,7 @@
 											}
 
                                             if(strlen($auxCCT[$i]) != 10){
-                                                $mensaje = "Verifica que el CCT este correcto (10 letras), error en CCT: ".$auxCCT[$i]." ubicado en la linea: ".$x." de tu archivo.";
+                                                $mensaje = "Verifica que el CCT este correcto (10 letras), error en CCT: ".$auxCCT[$i]." ubicado en la celda F".($x)." de tu archivo.";
                                                 $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
                                                 exit;
                                             }
@@ -6314,7 +6601,7 @@
 						while(($datos = fgetcsv($fichero,1000)) != FALSE){
                             if($x == 0){
                                 if(count($datos) != 4 || $datos[0] != 'CCT' || $datos[1] != 'NombreInstitucion' || $datos[2] != 'Accesos' || $datos[3] != 'Grupos'){
-                                    $mensaje = "Fallo al verificar la información, verifica que el archivo sea el correcto (error en nombre de columnas requeridas).";
+                                    $mensaje = "Fallo al verificar la información, verifica que el archivo sea el correcto y que no tenga mas o menos columnas o datos volando (error en nombre de columnas requeridas).";
                                     $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
                                     exit;
                                 }
@@ -6390,13 +6677,13 @@
 							$respuesta = (new PasswordReset())->agregarPassUsuario((object) $recover);
 						}
 
+						$totalReg = ($x-1);
                         if(count($instituciones) == 0){
 						    $mensaje = "Las ".$regAdd." instituciones ya habian sido registradas.";
                         }else{
 						    $mensaje = "Se registro un total de ".$regAdd." instituciones de ".$totalReg." registros.";
                         }
 
-						$totalReg = ($x-1);
 						$this->renderJSON(array("error"=>0,"mensaje" => $mensaje));
 					    break;
 					case '5': // Registrar usuarios
@@ -6417,7 +6704,7 @@
 
                             if($x == 0){
                                 if(count($datos) != 8 || $datos[0] != 'Nombre' || $datos[1] != 'Paterno' || $datos[2] != 'Materno' || $datos[3] != 'CURP' || $datos[4] != 'Genero' || $datos[5] != 'Modulo' || $datos[6] != 'Institucion' || $datos[7] != 'Grupo'){
-                                    $mensaje = "Fallo al verificar la información, verifica que el archivo sea el correcto (error en nombre de columnas requeridas).";
+                                    $mensaje = "Fallo al verificar la información, verifica que el archivo sea el correcto y que no tenga mas o menos columnas o datos volando (error en nombre de columnas requeridas).";
                                     $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
                                     exit;
                                 }
@@ -6425,12 +6712,16 @@
 
 							$x++;
 							if($x > 1){
-								// Validar campo CURP que no venga vacio desde el Excel
+
+                                // Validar campo CURP que no venga vacio desde el Excel
 								$curp = $this->eliminar_espacio($datos[3]);
 								$nombre = $this->eliminar_espacio($datos[0]);
 								$paterno = $this->eliminar_espacio($datos[1]);
 								$materno = $this->eliminar_espacio($datos[2]);
+                                $genero = strtoupper($this->eliminar_espacio($datos[4]) ); #Solo empleado para validarse
 								$cct = $this->eliminar_espacio($datos[6]);
+
+
 								if (!empty($curp)) {
 									// Validar CURP existente
 									$check = (new Administrador())->check_matricula($curp);
@@ -6587,6 +6878,8 @@
 						$cadena1 = null;
 						if (count($noRegistrado) > 0) {
 							$cadena1 = $noRegistrado;
+    						$this->renderJSON(array("error"=>1,"mensaje" => $mensaje, "titulo" => "usuarios_NO_cargados", "data1" => $cadena1, "titulo1" => "usuarios_no_cargados"));
+                            exit;
 						}
 						$cadena2 = null;
 						if( count( $registerOk ) > 0 ) {
@@ -6611,7 +6904,7 @@
 
                             if($x == 0){
                                 if(count($datos) != 6 || $datos[0] != 'Nombre' || $datos[1] != 'Paterno' || $datos[2] != 'Materno' || $datos[3] != 'CURP' || $datos[4] != 'Genero' || $datos[5] != 'Institucion'){
-                                    $mensaje = "Fallo al verificar la información, verifica que el archivo sea el correcto (error en nombre de columnas requeridas).";
+                                    $mensaje = "Fallo al verificar la información, verifica que el archivo sea el correcto y que no tenga mas o menos columnas o datos volando (error en nombre de columnas requeridas).";
                                     $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
                                     exit;
                                 }
@@ -6739,8 +7032,11 @@
 							}
 							// echo "</pre>";
 							$mensaje = "Se registro un total de ".$regAdd." usuarios de ".$totalReg." registros.";
-						} else {
+						}
+                        #######################
+                        else {
 							$mensaje = "no hay registros para importar";
+                            $this->renderJSON(array("error"=>1,"mensaje" => $mensaje, "titulo" => "usuarios_NO_cargados", "data1" => $cadena1, "titulo1" => "usuarios_no_cargados"));
 						}
 						$cadena1 = null;
 						if (count($noRegistrado) > 0) {
@@ -6771,4 +7067,36 @@
 			$value = trim($value);
 			return utf8_encode($value);
 		}
+
+
+        public function solo_letra_acento_espacio_n($value){
+            if(empty($value)) return true;
+
+            $pattern = "/^[a-zA-Z ,.áéíóúÁÉÍÓÚñÑ]+$/";
+            return (bool) preg_match($pattern, $value);
+        }
+
+        public function solo_letra_acento_numeros_espacio_n($value){
+            if(empty($value)) return true;
+
+            $pattern = "/^[a-zA-Z0-9 ,.áéíóúÁÉÍÓÚñÑ]+$/";
+            return (bool) preg_match($pattern, $value);
+        }
+
+        public function solo_letra_numeros($value){
+            $pattern = "/^[a-zA-Z0-9]+$/";
+            return (bool) preg_match($pattern, $value);
+        }
+
+        public function solo_letra_numeros_coma($value){
+            $pattern = "/^[a-zA-Z0-9,]+$/";
+            return (bool) preg_match($pattern, $value);
+        }
+
+        public function solo_letra($value){
+            if(empty($value)) return true;
+
+            $pattern = "/^[a-zA-Z ]+$/";
+            return (bool) preg_match($pattern, $value);
+        }
 	}
