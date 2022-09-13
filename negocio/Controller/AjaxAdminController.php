@@ -6608,7 +6608,7 @@
                             }
 
 							$x++;
-							if($x > 1){
+							if($x > 1){ 
 								$checkR = array('LGF0270028' => $datos[0]);
 								// echo "Aqui";
 								$obtenerInstitucion = (new Instituciones())->obtenInstitucion((object) $checkR);
