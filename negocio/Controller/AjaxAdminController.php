@@ -6608,7 +6608,7 @@
                             }
 
 							$x++;
-							if($x > 1){ 
+							if($x > 1){
 								$checkR = array('LGF0270028' => $datos[0]);
 								// echo "Aqui";
 								$obtenerInstitucion = (new Instituciones())->obtenInstitucion((object) $checkR);
@@ -6807,7 +6807,7 @@
 											"CURP" => $curp,
 											"GradoEscolar" => $datos[5],
 											"Insitucion" => $cct,
-											"Motivo" => "La siguiente CURP ".$curp." ya se encuentra registrada en el sistema."
+											"Motivo" => "La siguiente CURP ".$curp." ya se encuentra registrada en el sistema 1."
 										));
 									}
 								} else {
@@ -6853,7 +6853,8 @@
 											"ApellidoPaterno" => $usuarios[$i]['LGF0010003'],
 											"ApellidoMaterno" => $usuarios[$i]['LGF0010004'],
 											"Usuario" => $usuarios[$i]['LGF0010005'],
-											"Contraseña" => $usuarios[$i]['LGF0010005']
+											"Contraseña" => $usuarios[$i]['LGF0010005'],
+											"Curp" => $usuarios[$i]['LGF0010040']
 										) );
 									}
 								} else {
@@ -6865,26 +6866,26 @@
 										"CURP" => $usuarios[$i]['LGF0010040'],
 										"GradoEscolar" => ($usuarios[$i]['LGF0010024'] == 1 ? 1 : ($usuarios[$i]['LGF0010024']-1)),
 										"Insitucion" => $usuarios[$i]['LGF0010041'],
-										"Motivo" => "La siguiente CURP ".$usuarios[$i]['LGF0010040']." ya se encuentra registrada en el sistema."
+										"Motivo" => "La siguiente CURP ".$usuarios[$i]['LGF0010040']." ya se encuentra registrada en el sistema.."
 									));
 								}
 							}
 							// echo "</pre>";
-							$mensaje = "Se registro un total de ".$regAdd." usuarios de ".$totalReg." registros.";
+							$mensaje = "Se registro un total de ".$regAdd." usuarios de ".$totalReg." registros..";
 						} else {
 							$totalReg = count($noRegistrado);
 							$mensaje = "Los ".$totalReg." registros del archivo seleccionado ya se encuentran cargados en el sistema.";
 						}
-						$cadena1 = null;
-						if (count($noRegistrado) > 0) {
-							$cadena1 = $noRegistrado;
-    						$this->renderJSON(array("error"=>1,"mensaje" => $mensaje, "titulo" => "usuarios_NO_cargados", "data1" => $cadena1, "titulo1" => "usuarios_no_cargados"));
-                            exit;
-						}
-						$cadena2 = null;
+						$cadena1 = $noRegistrado;
+                        $cadena2 = $registerOk;
+						/*if (count($noRegistrado) > 0) {*/
+							/*$cadena1 = $noRegistrado;*/
+    						#$this->renderJSON(array("error"=>1,"mensaje" => $mensaje, "titulo" => "usuarios_NO_cargados", "data1" => $cadena1, "titulo1" => "usuarios_no_cargados"));
+                            /*exit;
+						}*/
+						/*$cadena2 = null;
 						if( count( $registerOk ) > 0 ) {
-							$cadena2 = $registerOk;
-						}
+						}*/
 						$this->renderJSON(array("error"=>0,"mensaje" => $mensaje, "data"=>$cadena2, "titulo" => "usuarios_cargados", "data1" => $cadena1, "titulo1" => "usuarios_no_cargados"));
 						//$this->renderJSON(array("error"=>0,"mensaje" => $mensaje, "data"=>$cadena1, "titulo"=>"datos_existentes_alumnos"));
 					    break;
