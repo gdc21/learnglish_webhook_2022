@@ -631,20 +631,12 @@
                     cajaMensaje.html(data.mensaje);
 
                     if(data.error != 1){
-                        if (data.data != null) {
-                            generarCSV(data.data, true, data.titulo);
-                        }
-                        if (data.data1 != null) {
-                            generarCSV(data.data1, true, data.titulo1);
-                        }
+                        generarCSV(data.data, true, data.titulo);
+                        generarCSV(data.data1, true, data.titulo1);
                     }else{
                         cajaMensaje.html("<p style='color: red;'>"+data.mensaje+"</p>");
-                        if (data.data != null) {
-                            generarCSV(data.data, true, data.titulo);
-                        }
-                        if (data.data1 != null) {
-                            generarCSV(data.data1, true, data.titulo1);
-                        }
+                        generarCSV(data.data, true, data.titulo);
+                        generarCSV(data.data1, true, data.titulo1);
                     }
                     $(".procesar").removeClass('disabled');
 
