@@ -399,6 +399,7 @@
         /**Al presionar el boton de siguiente tab se iluminaran las siguientes
          * */
         $("#accionBotonSiguiente").click(function () {
+            $(".procesar").removeClass('disabled');
             /** Limpiamos los status de lo que ya se haya procesado*/
             $('#importFile .mensaje').html("");
             $('#importFile2 .mensaje').html("");
@@ -427,6 +428,7 @@
         /**Al presionar el boton de siguiente tab se iluminaran las siguientes
          * */
         $("#accionBotonAnterior").click(function () {
+            $(".procesar").removeClass('disabled');
             /** Limpiamos los status de lo que ya se haya procesado*/
             $('#importFile .mensaje').html("");
             $('#importFile2 .mensaje').html("");
@@ -627,6 +629,7 @@
                     cajaMensaje.show();
                 },
                 success: function (data) {
+                    $(".procesar").removeClass('disabled');
                     limpiar.val('');
                     cajaMensaje.html(data.mensaje);
 
@@ -639,7 +642,6 @@
                         generarCSV(data.data1, true, data.titulo1);
                     }
 
-                    $(".procesar").removeClass('disabled');
 
                 }
             });

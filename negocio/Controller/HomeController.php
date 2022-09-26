@@ -795,7 +795,7 @@ class HomeController extends Controller_Learnglish
             $imagen = $this->obtenerImagen("A", $genero, 1);
         } else if ($_SESSION['perfil'] == 4 || $_SESSION['perfil'] == 3 || $_SESSION['perfil'] == 6) {
             $urls = $this->obtenerURL($levelLeccion, 3, $niveles [0] ["LGF0140005"]);
-            $imagen = $this->obtenerImagen($levelLeccion, $genero, 1);
+            $imagen = $this->obtenerImagen($levelLeccion, $genero, 0);
         } else if ($_SESSION['perfil'] == 2) {
             $urls = $this->obtenerURL($user[0]['LGF0010024'], 3, $niveles [0] ["LGF0140005"]);
             $imagen = $this->obtenerImagen($user[0]['LGF0010024'], $genero, 1);
@@ -1996,14 +1996,14 @@ class HomeController extends Controller_Learnglish
                 "urlRe_10" => $urlRe_10
             );
             return $array;
-        } else if ($seccion == 3) { // Menu de secundaria
+        } else if ($seccion == 3) { // Menu de preescolar
             $aux = explode(",", $niveles);
             $usuario = $_SESSION['idUsuario'];
             $color = $color;
             $array = array();
             foreach ($aux as $value) {
-                switch ($value) {
-                    case '2':
+                switch ($value) { //Modulo
+                    case '1':
                         $fondo1 = "#" . $color;
                         $url_1 = CONTEXT . "Home/lessons/1/";
                         $urlg_1 = CONTEXT . "Home/guides/1/";

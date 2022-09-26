@@ -208,16 +208,31 @@ class EstadisticasCliente extends UniversalDatabase {
     }
 
     public function estadisticasPorFecha_Alm_Doc($perfil, $fecha_ini, $fecha_fin){
+        #Si son docentes buscamos el nivel segun la institucion perteneciente
+        #nivel 1 = modulos 1
+        #nivel 2 = modulos 2,3,4,5,6,7
+        #nivel 3 = modulos 8,9,10
+        if($perfil == 6){
+            $niveles1 = " LGF0010038 in (select LGF0300002 from lg00030 where LGF0300003 in (1)) ";
+            $niveles2 = " LGF0010038 in (select LGF0300002 from lg00030 where LGF0300003 in (2,3,4,5,6,7)) ";
+            $niveles3 = " LGF0010038 in (select LGF0300002 from lg00030 where LGF0300003 in (8,.9,10)) ";
+        }
+        #Si son alumnos el nivel esta designado en la culumna 23
+        elseif ($perfil == 2){
+            $niveles1 = " LGF0010023 = 1 ";
+            $niveles2 = " LGF0010023 = 2 ";
+            $niveles3 = " LGF0010023 = 3 ";
+        }
         $this->query = "SELECT 
             LGF0140002 AS nombre_nivel,
             
             (SELECT count(distinct(usuarios.LGF0010001)) FROM lg00001 AS usuarios
                WHERE usuarios.LGF0010030 BETWEEN TIMESTAMP('$fecha_ini') AND DATE_ADD(timestamp('$fecha_fin'), INTERVAL '1439:59' minute_second)  
-               AND LGF0010007 = $perfil AND upper(LGF0010021) = 'H' AND LGF0010023 = 1
+               AND LGF0010007 = $perfil AND upper(LGF0010021) = 'H' AND $niveles1
             ) AS H_registrados,
             (SELECT count(distinct(usuarios.LGF0010001)) FROM lg00001 AS usuarios
                WHERE usuarios.LGF0010030 BETWEEN TIMESTAMP('$fecha_ini') AND DATE_ADD(timestamp('$fecha_fin'), INTERVAL '1439:59' minute_second)  
-               AND LGF0010007 = $perfil AND upper(LGF0010021) = 'M' AND LGF0010023 = 1
+               AND LGF0010007 = $perfil AND upper(LGF0010021) = 'M' AND $niveles1
             ) AS M_registrados,
             (SELECT H_registrados + M_registrados) AS T_registrados,
             
@@ -228,7 +243,7 @@ class EstadisticasCliente extends UniversalDatabase {
                     usuarios.LGF0010007 = $perfil 
                     AND usuarios.LGF0010001 = log_session.LGF0360002 
                     AND upper( usuarios.LGF0010021 ) = 'H' 
-                    AND LGF0010023 = 1
+                    AND $niveles1
                     AND log_session.LGF0360004 BETWEEN TIMESTAMP ( '$fecha_ini' ) 
                     AND DATE_ADD( TIMESTAMP ( '$fecha_fin' ), INTERVAL '1439:59' MINUTE_SECOND )
                     AND usuarios.LGF0010030 BETWEEN TIMESTAMP ( '$fecha_ini' ) 
@@ -241,7 +256,7 @@ class EstadisticasCliente extends UniversalDatabase {
                     usuarios.LGF0010007 = $perfil 
                     AND usuarios.LGF0010001 = log_session.LGF0360002 
                     AND upper( usuarios.LGF0010021 ) = 'M' 
-                    AND LGF0010023 = 1
+                    AND $niveles1
                     AND log_session.LGF0360004 BETWEEN TIMESTAMP ( '$fecha_ini' ) 
                     AND DATE_ADD( TIMESTAMP ( '$fecha_fin' ), INTERVAL '1439:59' MINUTE_SECOND )
                     AND usuarios.LGF0010030 BETWEEN TIMESTAMP ( '$fecha_ini' ) 
@@ -256,11 +271,11 @@ class EstadisticasCliente extends UniversalDatabase {
             
             (SELECT count(distinct(usuarios.LGF0010001)) FROM lg00001 AS usuarios
                WHERE usuarios.LGF0010030 BETWEEN TIMESTAMP('$fecha_ini') AND DATE_ADD(timestamp('$fecha_fin'), INTERVAL '1439:59' minute_second)  
-               AND LGF0010007 = $perfil AND upper(LGF0010021) = 'H' AND LGF0010023 = 2
+               AND LGF0010007 = $perfil AND upper(LGF0010021) = 'H' AND $niveles2
             ) AS H_registrados,
             (SELECT count(distinct(usuarios.LGF0010001)) FROM lg00001 AS usuarios
                WHERE usuarios.LGF0010030 BETWEEN TIMESTAMP('$fecha_ini') AND DATE_ADD(timestamp('$fecha_fin'), INTERVAL '1439:59' minute_second)  
-               AND LGF0010007 = $perfil AND upper(LGF0010021) = 'M' AND LGF0010023 = 2
+               AND LGF0010007 = $perfil AND upper(LGF0010021) = 'M' AND $niveles2
             ) AS M_registrados,
             (SELECT H_registrados + M_registrados) AS T_registrados,
             
@@ -271,7 +286,7 @@ class EstadisticasCliente extends UniversalDatabase {
                     usuarios.LGF0010007 = $perfil 
                     AND usuarios.LGF0010001 = log_session.LGF0360002 
                     AND upper( usuarios.LGF0010021 ) = 'H' 
-                    AND LGF0010023 = 2
+                    AND $niveles2
                     AND log_session.LGF0360004 BETWEEN TIMESTAMP ( '$fecha_ini' ) 
                     AND DATE_ADD( TIMESTAMP ( '$fecha_fin' ), INTERVAL '1439:59' MINUTE_SECOND )
                     AND usuarios.LGF0010030 BETWEEN TIMESTAMP ( '$fecha_ini' ) 
@@ -284,7 +299,7 @@ class EstadisticasCliente extends UniversalDatabase {
                     usuarios.LGF0010007 = $perfil 
                     AND usuarios.LGF0010001 = log_session.LGF0360002 
                     AND upper( usuarios.LGF0010021 ) = 'M' 
-                    AND LGF0010023 = 2
+                    AND $niveles2
                     AND log_session.LGF0360004 BETWEEN TIMESTAMP ( '$fecha_ini' ) 
                     AND DATE_ADD( TIMESTAMP ( '$fecha_fin' ), INTERVAL '1439:59' MINUTE_SECOND )
                     AND usuarios.LGF0010030 BETWEEN TIMESTAMP ( '$fecha_ini' ) 
@@ -299,11 +314,11 @@ class EstadisticasCliente extends UniversalDatabase {
             
             (SELECT count(distinct(usuarios.LGF0010001)) FROM lg00001 AS usuarios
                WHERE usuarios.LGF0010030 BETWEEN TIMESTAMP('$fecha_ini') AND DATE_ADD(timestamp('$fecha_fin'), INTERVAL '1439:59' minute_second)  
-               AND LGF0010007 = $perfil AND upper(LGF0010021) = 'H' AND LGF0010023 = 3
+               AND LGF0010007 = $perfil AND upper(LGF0010021) = 'H' AND $niveles3
             ) AS H_registrados,
             (SELECT count(distinct(usuarios.LGF0010001)) FROM lg00001 AS usuarios
                WHERE usuarios.LGF0010030 BETWEEN TIMESTAMP('$fecha_ini') AND DATE_ADD(timestamp('$fecha_fin'), INTERVAL '1439:59' minute_second)  
-               AND LGF0010007 = $perfil AND upper(LGF0010021) = 'M' AND LGF0010023 = 3
+               AND LGF0010007 = $perfil AND upper(LGF0010021) = 'M' AND $niveles3
             ) AS M_registrados,
             (SELECT H_registrados + M_registrados) AS T_registrados,
             
@@ -314,7 +329,7 @@ class EstadisticasCliente extends UniversalDatabase {
                     usuarios.LGF0010007 = $perfil 
                     AND usuarios.LGF0010001 = log_session.LGF0360002 
                     AND upper( usuarios.LGF0010021 ) = 'H' 
-                    AND LGF0010023 = 3
+                    AND $niveles3
                     AND log_session.LGF0360004 BETWEEN TIMESTAMP ( '$fecha_ini' ) 
                     AND DATE_ADD( TIMESTAMP ( '$fecha_fin' ), INTERVAL '1439:59' MINUTE_SECOND )
                     AND usuarios.LGF0010030 BETWEEN TIMESTAMP ( '$fecha_ini' ) 
@@ -327,7 +342,7 @@ class EstadisticasCliente extends UniversalDatabase {
                     usuarios.LGF0010007 = $perfil 
                     AND usuarios.LGF0010001 = log_session.LGF0360002 
                     AND upper( usuarios.LGF0010021 ) = 'M' 
-                    AND LGF0010023 = 3
+                    AND $niveles3
                     AND log_session.LGF0360004 BETWEEN TIMESTAMP ( '$fecha_ini' ) 
                     AND DATE_ADD( TIMESTAMP ( '$fecha_fin' ), INTERVAL '1439:59' MINUTE_SECOND )
                     AND usuarios.LGF0010030 BETWEEN TIMESTAMP ( '$fecha_ini' ) 
@@ -336,7 +351,6 @@ class EstadisticasCliente extends UniversalDatabase {
             (SELECT H_activos + M_activos) AS T_activos
              
             FROM lg00014 WHERE LGF0140001 = 3;";
-
 
         return $this->doSelect();
     }

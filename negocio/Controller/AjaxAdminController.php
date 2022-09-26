@@ -6268,13 +6268,14 @@
 							$x++;
 							if ($x > 1) {
 
-								$nombre = strtoupper($this->eliminar_espacio($datos[0]) );
-								$paterno = strtoupper($this->eliminar_espacio($datos[1]) );
-								$materno = strtoupper($this->eliminar_espacio($datos[2]) );
+								$nombre = strtoupper($this->eliminar_espacio($datos[0]));
+								$paterno = strtoupper($this->eliminar_espacio($datos[1]));
+								$materno = strtoupper($this->eliminar_espacio($datos[2]));
 								$curp = strtoupper($this->eliminar_espacio($datos[3], 1) );
 								$genero = strtoupper($this->eliminar_espacio($datos[4]) );
 								$modulo = $this->eliminar_espacio($datos[5]);
 								$cct = strtoupper($this->eliminar_espacio($datos[6],1) );
+
 
 								$grado = $this->eliminar_espacio($datos[7]);
 								$letra = $this->eliminar_espacio($datos[8]);
@@ -6291,16 +6292,17 @@
                                     $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
                                     exit;
                                 }
-                                if((!$this->solo_letra_acento_espacio_n($nombre)) || !$this->solo_letra_acento_espacio_n($paterno) || !$this->solo_letra_acento_espacio_n($materno)) {
-                                    $mensaje = "*La linea ($x) debe contener un nombre y mínimo un apellido usando solo letras, espacios, sin números y sin caracteres especiales.";
+                               /* if(!$this->solo_letra_acento_espacio_n($nombre) || !$this->solo_letra_acento_espacio_n($paterno) || !$this->solo_letra_acento_espacio_n($materno)) {
+
+                                    $mensaje = "*La linea ($x) debe contener un nombre y mínimo un apellido usando solo letras, espacios, sin números y sin caracteres especiales. ->".!$this->solo_letra_acento_espacio_n($nombre)."-".!$this->solo_letra_acento_espacio_n($paterno)."-".!$this->solo_letra_acento_espacio_n($materno)."";
                                     $this->renderJSON(array("error" => 1, "mensaje" => $mensaje));
                                     exit;
                                 }
                                 if( empty($nombre) || (empty($paterno) && empty($materno)) ){
-                                    $mensaje = "-La linea ($x) debe contener un nombre y mínimo un apellido usando solo letras, espacios, sin números y sin caracteres especiales.";
+                                    $mensaje = "-La linea ($x) debe contener un nombre y mínimo un apellido usando solo letras, espacios, sin números y sin caracteres especiales.2";
                                     $this->renderJSON(array("error" => 1, "mensaje" => $mensaje));
                                     exit;
-                                }
+                                }*/
                                 if($genero != 'H' && $genero != 'M' && $genero != ''){
                                     $mensaje = "Género no válido en celda E".$x.", solo se permite: H o M.";
                                     $this->renderJSON(array("error"=>1,"mensaje" => $mensaje));
@@ -7065,39 +7067,41 @@
 					//}
 				}
 			}
-			$value = trim($value);
-			return utf8_encode($value);
+            $string = trim($value);
+
+			$value2=utf8_encode($string);
+            return $value2;
 		}
 
 
         public function solo_letra_acento_espacio_n($value){
             if(empty($value)) return true;
 
-            $pattern = "/^[a-zA-Z ,.áéíóúÁÉÍÓÚñÑ]+$/";
-            return (bool) preg_match($pattern, $value);
+            $pattern = "/^[a-zA-Z,.áéíóúÁÉÍÓÚñÑ ]+$/";
+            return (bool) preg_match($pattern, ($value));
         }
 
         public function solo_letra_acento_numeros_espacio_n($value){
             if(empty($value)) return true;
 
             $pattern = "/^[a-zA-Z0-9 ,.áéíóúÁÉÍÓÚñÑ]+$/";
-            return (bool) preg_match($pattern, $value);
+            return (bool) preg_match($pattern, trim($value));
         }
 
         public function solo_letra_numeros($value){
             $pattern = "/^[a-zA-Z0-9]+$/";
-            return (bool) preg_match($pattern, $value);
+            return (bool) preg_match($pattern, trim($value));
         }
 
         public function solo_letra_numeros_coma($value){
             $pattern = "/^[a-zA-Z0-9,]+$/";
-            return (bool) preg_match($pattern, $value);
+            return (bool) preg_match($pattern, trim($value));
         }
 
         public function solo_letra($value){
             if(empty($value)) return true;
 
             $pattern = "/^[a-zA-Z ]+$/";
-            return (bool) preg_match($pattern, $value);
+            return (bool) preg_match($pattern, trim($value));
         }
 	}
