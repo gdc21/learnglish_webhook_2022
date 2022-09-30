@@ -6036,10 +6036,17 @@
 
 
                                 $cct = strtoupper($this->eliminar_espacio($claves[0]) );
+                                $cct = str_replace(' ', '', $cct);
+
                                 $nombre = strtoupper($this->eliminar_espacio($claves[1]) );
+
                                 $modulo = strtoupper($this->eliminar_espacio($claves[2]) );
+
                                 $grado = strtoupper($this->eliminar_espacio($claves[3]) );
+                                $grado = str_replace(' ', '', $grado);
+
                                 $letra = strtoupper($this->eliminar_espacio($claves[4]) );
+                                $letra = str_replace(' ', '', $letra);
 
                                 ##################################
                                 # SECCIONES DE VALIDACIONES
@@ -6271,17 +6278,36 @@
 								$nombre = strtoupper($this->eliminar_espacio($datos[0]));
 								$paterno = strtoupper($this->eliminar_espacio($datos[1]));
 								$materno = strtoupper($this->eliminar_espacio($datos[2]));
+
 								$curp = strtoupper($this->eliminar_espacio($datos[3], 1) );
+                                $curp = str_replace(' ', '', $curp);
+
 								$genero = strtoupper($this->eliminar_espacio($datos[4]) );
 								$modulo = $this->eliminar_espacio($datos[5]);
+                                $modulo = str_replace(' ', '', $modulo);
+
 								$cct = strtoupper($this->eliminar_espacio($datos[6],1) );
+                                $cct = str_replace(' ', '', $cct);
 
 
 								$grado = $this->eliminar_espacio($datos[7]);
-								$letra = $this->eliminar_espacio($datos[8]);
-								$grupo = "GRUPO ".$grado.$letra;
+                                $grado = str_replace(' ', '', $grado);
 
-								$curp = empty($curp) ? strtoupper( substr( md5($nombre.$paterno.$materno.$grado) ,0, 18) ) : $curp;
+								$letra = $this->eliminar_espacio($datos[8]);
+                                $letra = str_replace(' ', '', $letra);
+
+								$grupo = "GRUPO ".$grado.$letra;
+                                $grupo = str_replace(' ', '', $grupo);
+
+                                if(empty($curp)){
+                                    $curp = strtoupper(substr( md5($nombre.$paterno.$materno.$cct) ,0, 18) );
+                                }else{
+                                    if(strlen($curp) > 0 && strlen($curp) < 18){
+                                        for($i=strlen($curp); $i < 18; $i++){
+                                            $curp = $curp."X";
+                                        }
+                                    }
+                                }
 
                                 ##################################
                                 # SECCIONES DE VALIDACIONES
@@ -6446,11 +6472,25 @@
 								$nombre = strtoupper($this->eliminar_espacio($datos[0]) );
 								$paterno = strtoupper($this->eliminar_espacio($datos[1]) );
 								$materno = strtoupper($this->eliminar_espacio($datos[2]) );
-								$curp = strtoupper($this->eliminar_espacio($datos[3], 1) );
-								$genero = strtoupper($this->eliminar_espacio($datos[4]) );
-								$cct = strtoupper($this->eliminar_espacio($datos[5],1) );
 
-								$curp = empty($curp) ? strtoupper(substr( md5($nombre.$paterno.$materno.$cct) ,0, 18) ) : $curp;
+								$curp = strtoupper($this->eliminar_espacio($datos[3], 1) );
+                                $curp = str_replace(' ', '', $curp);
+
+								$genero = strtoupper($this->eliminar_espacio($datos[4]) );
+                                $genero = str_replace(' ', '', $genero);
+
+								$cct = strtoupper($this->eliminar_espacio($datos[5],1) );
+                                $cct = str_replace(' ', '', $cct);
+
+                                if(empty($curp)){
+                                    $curp = strtoupper(substr( md5($nombre.$paterno.$materno.$cct) ,0, 18) );
+                                }else{
+                                    if(strlen($curp) > 0 && strlen($curp) < 18){
+                                        for($i=strlen($curp); $i < 18; $i++){
+								            $curp = $curp."X";
+                                        }
+                                    }
+                                }
 
 
                                 ##################################
