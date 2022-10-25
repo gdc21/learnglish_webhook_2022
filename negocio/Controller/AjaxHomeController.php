@@ -469,23 +469,25 @@ class AjaxHomeController extends Controller_Learnglish {
 		$seccion = $_POST['seccion'];
 		$grupo = $_POST['grupo'];
 		$fecha = $_POST['fecha'];
+        $origen = $grupo;
 
-		/**
+        /**
 		 * Seccion del tutor
 		 */
 		$tutor = false;
 		$alumno = 0;
-		if (!is_numeric($grupo)) {
-			for ($i=0; $i < strlen($grupo); $i++) { 
+
+		/*if (!is_numeric($grupo)) {
+			for ($i=0; $i < strlen($grupo); $i++) {
 				if (!is_numeric($grupo[$i])) {
 					$tutor = true;
-					$origen = $grupo[$i];
+                    $origen = $grupo[$i];
 					$aux = explode($grupo[$i], $grupo);
 					$posicion = $i;
 					$alumno = $aux[1];
 				}
 			}
-		}
+		}*/
 		// echo "Alumno: ".$alumno."\n";
 
 		$usuariosid = "";
@@ -511,7 +513,8 @@ class AjaxHomeController extends Controller_Learnglish {
 			// print_r($users);
 			$modulo = $users[0]["LGF0010024"];
 		}
-		
+        #echo "Ini2: ".$seccion." > $grupo";
+
 		if ($seccion == 1) {
 			$this->registro_evaluaciones($usuariosid, $modulo, $fecha);
 		} else {
@@ -521,16 +524,20 @@ class AjaxHomeController extends Controller_Learnglish {
 
 	public function registro_evaluaciones($usuariosid, $modulo, $fecha) {
 		$lecciones = (new Administrador())->obtenerMaxLecciones();
-		
+        
 		$datos = (new Administrador())->registro_evaluaciones($usuariosid, $lecciones[0]['num'], $modulo);
-		
+
 		foreach ($datos as $key => $value) {
 			for ($i=1; $i <= $lecciones[0]['num']; $i++) { 
 				$posicion = 0;
 				
 				$suma = (new Administrador())->obtener_promedios($i, 3, $value['id'], $fecha);
-				
-				$promedio = round($suma[0]["promL".$i] / $suma[0]['total']);
+
+                try{
+				    $promedio = round($suma[0]["promL".$i] / $suma[0]['total']);
+                }catch(DivisionByZeroError $e){
+                    $promedio = 0;
+                }
 				if ($i==1) {
 					$total = $promedio;
 				} else {
@@ -548,7 +555,8 @@ class AjaxHomeController extends Controller_Learnglish {
 		foreach ($datos as $dato) {
 			$aux = explode("|", $dato['promedio']);
 			$nombre = $dato['nombre']." ".$dato['apepat']." ".$dato['apemat'];
-			$columnas.="<tr><td>".$nombre."</td>";
+			$columnas.="<tr>
+                            <td><a target='_blank' href='".CONTEXT."admin/editUsuario/".$dato["id"]."'>$nombre</a></td>";
 			$suma = 0;
 			$contador1 = 0;
 			for ($i=0; $i < count($aux); $i++) { 

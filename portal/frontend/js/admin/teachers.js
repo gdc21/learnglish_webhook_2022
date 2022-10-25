@@ -31,28 +31,34 @@ function cargar_tabla(buscar) {
 			$("#tbl_docentes tbody").html(tabla);
 		},
 		success: function (resp) {
-			console.log("resp", resp);
+
 			// console.log(resp);
 			var cuerpo = "";
 			$.each(resp.cuerpo, function (i, cont) {
+
 				var aux = cont.grupo.split(",");
 				var alumnos = cont.alumnos.split(",");
 				var nivel = cont.nivel.split(",");
 				var grupoid = cont.gruposid.split(",");
 				var moduloid = cont.moduloid.split(",");
+				var cct = cont.cct.split(",");
 				cuerpo+="<tr>";
 		        cuerpo+=
 					"<td rowspan="+aux.length+" style='vertical-align: middle;'>" +
 						"<a href='"+context+"admin/estadisticasSistema/"+cont.usuarioid+"/docentes'>Reporte grupal</a>" +
 					"</td>";
+		        cuerpo+="<td rowspan='"+aux.length+"' style='vertical-align: middle;'>"+cct+"</td>";
 		        cuerpo+="<td rowspan="+aux.length+" style='vertical-align: middle;'>"+cont.nombre+"</td>";
-	          	cuerpo+="<td class='"+((aux[0] == "" || aux[0] == null) ? 'complemento' : '')+"'>";
-	          	if ((aux[0] == "" || aux[0] == null)) {
-	          		cuerpo+="<a onclick='mostrar_grupo("+cont.usuarioid+")'>Asignar grupo</a>";
-	          	} else {
-	          		cuerpo+=aux[0];
-	          	}
+
+	          	cuerpo+="<td>";
+				cuerpo+="<a style='color: red;' onclick='mostrar_grupo("+cont.usuarioid+")'>Asignar grupo</a>";
+	          	if(aux[0] != "" || aux[0] != null) {
+					  cuerpo+="<br>";
+	          	} /*else {
+	          	}*/
+				cuerpo+=aux[0];
 	          	cuerpo+="</td>";
+
 	          	cuerpo+="<td>"+alumnos[0]+"</td>";
 	          	cuerpo+="<td class='"+obtener_clase(moduloid[0])+"'>"+((moduloid[0] == "" || moduloid[0] == 0) ? 'Asignar grado' : convertir_modulo_grado(moduloid[0]))+"</td>";
 	          	cuerpo+="<td class='"+obtener_clase(moduloid[0])+"'>";
@@ -98,8 +104,7 @@ function cargar_tabla(buscar) {
 					"info": "Mostrando _START_ de _END_",
 					"search": "Buscar"
 				},
-				"order": [[ 3, "desc" ]], //or asc 
-				columnDefs: [{ type: 'de_date', targets: 3 }]
+
 			});
 		}
 	});

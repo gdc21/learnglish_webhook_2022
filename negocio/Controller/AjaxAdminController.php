@@ -3573,6 +3573,7 @@
 		public function asignar_grupo() {
 			$usuario = $_POST['usuario'];
 			$grupo = $_POST['grupo'];
+
 			$data = array(
 				"LGF0290006" => $usuario
 			);
@@ -3907,6 +3908,7 @@
 				$nivel = "";
 				$gruposid = "";
 				$moduloid = "";
+                $insti_name = "";
 				foreach ($docentes as $key1 => $docent) {
 					if ($docent['nivel'] == "" || $docent['nivel'] == null) {
 						$docent['nivel'] = 0;
@@ -3918,24 +3920,27 @@
 							$alumnos = $docent['alumnos'];
 							$nivel = $docent['nivel'];
 							$moduloid = $docent['moduloid'];
+                            $insti_name = $docent['nombre_institucion'];
 						} else {
 							$gruposid.= ",".$docent['grupoid'];
 							$grupos.= ",".$docent['gruponame'];
 							$alumnos.= ",".$docent['alumnos'];
 							$nivel.= ",".$docent['nivel'];
 							$moduloid.= ",".$docent['moduloid'];
+                            $insti_name.= ",".$docent['nombre_institucion'];
 						}
 					}
 				}
 				
 				$newData[] = array(
-					'usuarioid' => $docente['usuarioid'],
-					'nombre' => $docente['nombre'],
-					'grupo' => trim($grupos, ","),
-					'alumnos' => trim($alumnos, ","),
-					'nivel' => trim($nivel, ","),
+					'usuarioid'=> $docente['usuarioid'],
+					'nombre'   => $docente['nombre'],
+					'grupo'    => trim($grupos, ","),
+					'alumnos'  => trim($alumnos, ","),
+					'nivel'    => trim($nivel, ","),
 					'gruposid' => trim($gruposid, ","),
 					'moduloid' => trim($moduloid, ","),
+                    'cct'      => trim($insti_name, ","),
 				);
 			}
 

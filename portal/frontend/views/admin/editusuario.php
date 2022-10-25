@@ -185,6 +185,11 @@
 							<div class="col-lg-4 offset-lg-4">
 								<button type="submit" id="updateUsuario" class="btn btn-lg registro text-center">Guardar</button>
 							</div>
+							<div class="mt-5 col-lg-4 offset-lg-4">
+								<button type="button" id="deleteUsuario" id_usuario="<?php echo $usuario['LGF0010001']; ?>" class="btn btn-lg registro text-center" style="background: red !important;">
+                                    Eliminar
+                                </button>
+							</div>
 						</div>
 					</form>
 				</div>
@@ -194,3 +199,31 @@
 </section>
 
 <script src="<?php echo CONTEXT ?>portal/frontend/js/admin/usuarios.js"></script>
+<script>
+    function eliminar(id) {
+        var confirma = confirm("¿Est\u00E1s seguro de eliminar este registro?");
+        if (confirma) {
+            // console.log("Eliminado")
+            $.ajax({
+                type: 'POST',
+                url: context+'admin/deleteUsuario',
+                data: {id: id},
+                dataType: 'json',
+                success: function(resp) {
+                    // console.log(resp)
+                    if (resp.error) {
+                        alert(resp.error);
+                    } else {
+                        alert(resp.mensaje);
+                        window.location.href = context+"admin/manager";
+                    }
+                }
+            });
+        } else {
+            // console.log("Error")
+        }
+    }
+    $("#deleteUsuario").click(function(){
+        eliminar(this.getAttribute('id_usuario'));
+    })
+</script>

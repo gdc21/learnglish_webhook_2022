@@ -1327,7 +1327,7 @@
 
 		public function obtenerMaxLecciones($query = "") {
 			if ($query != "") {
-				$this->query = "SELECT MAX(LGF0160007) num FROM lg00016".$query;
+				$this->query = "SELECT MAX(LGF0160007) num FROM lg00016 ".$query;
 			} else {
 				$this->query = "SELECT MAX(LGF0160007) num FROM lg00016";
 			}
@@ -1590,7 +1590,30 @@
 			} else if ($_SESSION['perfil'] == 4) {
 				$condicion = "AND LGF0010038 = ".$_SESSION['idUsuario']."";
 			}
-			$this->query = "SELECT LGF0010001 AS usuarioid, CONCAT(LGF0010002,' ',LGF0010003,' ',LGF0010004) AS nombre, LGF0010038 AS institucionid, LGF0290001 as grupoid, LGF0290002 AS gruponame,(SELECT COUNT(*) FROM lg00001 t WHERE t.LGF0010039 = t2.LGF0290001 AND t.LGF0010007 = 2) as alumnos, (SELECT LGF0150004 FROM lg00015 WHERE LGF0150001 = t2.LGF0290005) as nivel, t2.LGF0290005 as moduloid FROM lg00001 t1 LEFT JOIN lg00029 t2 ON LGF0290006 = LGF0010001 WHERE LGF0010007 = 6 $condicion ORDER BY LGF0010001";
+			$this->query = "SELECT  CONCAT(LGF0270002, ' <br>', LGF0270028) as nombre_institucion, 
+                                    LGF0010001 AS usuarioid, 
+                                    CONCAT(LGF0010002,' ',LGF0010003,' ',LGF0010004) AS nombre, 
+                                    LGF0010038 AS institucionid, 
+                                    LGF0290001 as grupoid, 
+                                    LGF0290002 AS gruponame,
+                                    (
+                                        SELECT COUNT(*) 
+                                        FROM lg00001 t 
+                                        WHERE t.LGF0010039 = t2.LGF0290001 AND 
+                                              t.LGF0010007 = 2
+                                    ) as alumnos, 
+                                    (
+                                        SELECT LGF0150004 
+                                        FROM lg00015 
+                                        WHERE LGF0150001 = t2.LGF0290005
+                                    ) as nivel, 
+                                    t2.LGF0290005 as moduloid 
+                                    FROM lg00001 t1 LEFT JOIN lg00029 t2 
+                                                    ON LGF0290006 = LGF0010001
+                                        LEFT JOIN lg00027 t3 
+                                                    ON LGF0270001 = LGF0010038
+                                    WHERE LGF0010007 = 6 $condicion 
+                                    ORDER BY LGF0010001";
 			// echo $this->query;
 			return $this->doSelect();
 		}

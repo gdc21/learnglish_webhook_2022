@@ -1124,6 +1124,7 @@
 				$alumnos = "";
 				$nivel = "";
 				$gruposid = "";
+                $insti_name = "";
 				foreach ($docentes as $key1 => $docent) {
 					if ($docent['nivel'] == "" || $docent['nivel'] == null) {
 						$docent['nivel'] = 0;
@@ -1134,11 +1135,14 @@
 							$grupos = $docent['gruponame'];
 							$alumnos = $docent['alumnos'];
 							$nivel = $docent['nivel'];
+							$insti_name = $docent['nombre_institucion'];
+
 						} else {
 							$gruposid.= ",".$docent['grupoid'];
 							$grupos.= ",".$docent['gruponame'];
 							$alumnos.= ",".$docent['alumnos'];
 							$nivel.= ",".$docent['nivel'];
+							$insti_name.= ",".$docent['nombre_institucion'];
 						}
 					}
 				}
@@ -1150,6 +1154,7 @@
 					'alumnos' => trim($alumnos, ","),
 					'nivel' => trim($nivel, ","),
 					'gruposid' => trim($gruposid, ","),
+					'cct' => trim($insti_name, ","),
 				);
 			}
 			

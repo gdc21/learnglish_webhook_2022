@@ -85,7 +85,7 @@
                 <option value="">[ Seleccionar institucion ]</option>
                 <?php foreach($this->temp['instituciones'] as $institucion) { ?>
                     <option value="<?php echo $institucion['LGF0270001']; ?>">
-                        <?php echo "Id: ".$institucion['LGF0270001']." => ".$institucion['LGF0270002']; ?>
+                        <?php echo "CCT: ".$institucion['LGF0270028']." => ".$institucion['LGF0270002']; ?>
                     </option>
                 <?php } ?>
             </select>

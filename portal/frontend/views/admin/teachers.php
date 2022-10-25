@@ -61,6 +61,7 @@
     <thead>
       <tr>
         <th>Reportes grupales</th>
+        <th>Nombre escuéla</th>
         <th>Docente</th>
         <th>Grupo</th>
         <th>Alumnos</th>
@@ -116,8 +117,8 @@
       <div class="modal-footer">
         <div class="alert " id="mensaje" role="alert" style="display: none;"></div>
         <form action="">
-          <input type="hidden" id="usuario">
-          <input type="hidden" id="grupo">
+          <input type="hidden" name="usuario" id="usuario">
+          <input type="hidden" name="grupo" id="grupo">
           <button type="button" class="btn btn-primary" id="asignar">Asignar</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         </form>
@@ -253,7 +254,15 @@
         if (resp.respuesta == 0) {
           contenido = '<h4>Seleccione un grupo</h4><div class="row">';
           $.each(resp.contenido, function (i, value) {
-            contenido+='<div class="col-lg-4"><div class="form-check"><input class="form-check-input" type="radio" name="grupo" id="grupo_'+value.LGF0290001+'" value="'+value.LGF0290001+'"><label class="form-check-label" onclick="asignar_grupo('+value.LGF0290001+','+usuario+')" for="grupo_'+value.LGF0290001+'">&nbsp;'+value.LGF0290002+'</label></div></div>';
+            contenido+=
+                '<div class="col-lg-4">' +
+                    '<div class="form-check">' +
+                '       <input class="form-check-input" type="radio" name="grupo" id="grupo_'+value.LGF0290001+'" value="'+value.LGF0290001+'">' +
+                '       <label class="form-check-label" onclick="asignar_grupo('+value.LGF0290001+','+usuario+')" for="grupo_'+value.LGF0290001+'">' +
+                '           &nbsp;'+value.LGF0290002+
+                        '</label>' +
+                '   </div>' +
+                '</div>';
           });
           contenido+='</div>';
           $("#respuesta").append(contenido);
