@@ -1178,7 +1178,7 @@
 				$condicion = " AND t1.LGF0010038 = ".$result[0]['LGF0010038'];
 			}
 
-			$this->query = "SELECT t1.LGF0010001 as clave, t1.LGF0010002, t1.LGF0010003, t1.LGF0010004, t2.LGF0270002 AS nombreInstitucion, t1.LGF0010038 as idInstitucion, t3.LGF0290002 as grupo, t3.LGF0290001 as idgrupo FROM lg00001 t1 LEFT JOIN lg00027 t2 ON t2.LGF0270001 = t1.LGF0010038 LEFT JOIN lg00029 t3 ON t3.LGF0290006 = t1.LGF0010001 WHERE t1.LGF0010007 = 6 ".$condicion." GROUP BY clave";
+			$this->query = "SELECT t1.LGF0010001 as clave, t1.LGF0010002, t1.LGF0010003, t1.LGF0010004, t2.LGF0270002 AS nombreInstitucion, t1.LGF0010038 as idInstitucion, t3.LGF0290002 as grupo, t3.LGF0290001 as idgrupo FROM lg00001 t1 LEFT JOIN lg00027 t2 ON t2.LGF0270001 = t1.LGF0010038 LEFT JOIN lg00029 t3 ON t3.LGF0290006 = t1.LGF0010001 WHERE t1.LGF0010007 = 6 ".$condicion." GROUP BY clave ORDER BY LGF0010002";
 			// echo $this->query;
 			return $this->doSelect();
 			/*if (empty($usuario)) {

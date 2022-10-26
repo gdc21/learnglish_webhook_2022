@@ -17,7 +17,7 @@
 								<option value="">Selecciona una institucion</option>
 							<?php endif ?>
 							<?php foreach ($this->temp['instituciones'] as $institucion): ?>
-								<option value="<?php echo $institucion['LGF0270001']; ?>"><?php echo $institucion['LGF0270002']; ?></option>
+								<option value="<?php echo $institucion['LGF0270001']; ?>"><?php echo $institucion['LGF0270028']." ".$institucion['LGF0270002']; ?></option>
 							<?php endforeach ?>
 						</select>
 						<span class="error"></span>
