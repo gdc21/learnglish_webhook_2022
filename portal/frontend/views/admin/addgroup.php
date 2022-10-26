@@ -61,7 +61,7 @@
 						<select name="docente" id="docente" class="form-control">
 							<option value="">Selecciona un docente</option>
 							<?php foreach ($this->temp['docentes'] as $docente): ?>
-								<option value="<?php echo $docente['clave']; ?>"><?php echo $docente['nombre']; ?></option>
+								<option value="<?php echo $docente['clave']; ?>"><?php echo $docente['nombreInstitucion']." ".$docente['nombre']; ?></option>
 							<?php endforeach ?>
 						</select>
 						<span class="error"></span>

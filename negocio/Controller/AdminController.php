@@ -1056,7 +1056,8 @@
 			foreach ($docentes as $docente) {
 				// print_r($docente);
 				$data[] = array(
-					"clave" => $docente['clave'],
+					"clave"  => $docente['clave'],
+					"nombreInstitucion"    => $docente['cctInstitucion'],
 					"nombre" => $docente['LGF0010002']." ".$docente['LGF0010003']." ".$docente['LGF0010004']
 				);
 			}
