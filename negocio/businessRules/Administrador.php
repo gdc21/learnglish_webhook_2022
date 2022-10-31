@@ -136,7 +136,7 @@
 
         public function verificarUobtenerEvaluacionGuardada($data){
             $this->query ="SELECT * FROM lg00042 WHERE 
-                    LGF0420002 = '".$data['id_usuario']."';";
+                    LGF0420002 = '".$data['id_usuario']."' and LGF0420008 = '".$data['trimestre']."';";
             return $this->doSelect ();
 
         }

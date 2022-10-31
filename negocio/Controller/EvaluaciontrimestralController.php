@@ -1,12 +1,18 @@
 <?php
 	class EvaluaciontrimestralController extends Controller_Learnglish {
 
-		private $trimestre = 2;
+		private $trimestre;
 		public $oda = "";
 		private $intentosPermitidos = 2;
 
 		public function __construct() {
 			parent::__construct ();
+
+			$datos = (new Accesomodulos())->obtenAccesomodulos((object)array(
+				"LGF0430002" => "ExamenTrimestral"
+			));
+			$trimestre_db = explode(',', $datos[0]['LGF0430008']);
+			$this->trimestre = $trimestre_db[1];
 
 			if (isset ( $_SESSION ["userLogged"] )) {
 				if ($_SESSION ["tipoSesion"] != 2) {
@@ -160,7 +166,13 @@
 			){
 				$this->Redirect ('evaluaciontrimestral', 'evaluacionlistarlecciones');
 			}
-			$this->temp['encabezado'] = self::encabezado("Resultados de evaluación trimestral <br>Abril - Junio");
+
+			$datos = (new Accesomodulos())->obtenAccesomodulos((object)array(
+				"LGF0430002" => "ExamenTrimestral"
+			));
+			$lapso = explode(',', $datos[0]['LGF0430008']);
+
+			$this->temp['encabezado'] = self::encabezado("Resultados de evaluación trimestral <br>$lapso[0]");
 			$this->temp['respuestasExamen'] = $_SESSION['respuestasExamen'];
 			#$this->temp['respuestasComprobar'] = $_SESSION['respuestasComprobar'];
 			$this->temp['preguntasFinales'] = $_SESSION['preguntasFinales'];
@@ -300,12 +312,18 @@
 				return $this->Redirect();
 			}
 
-			$this->temp['encabezado'] = self::encabezado("Evaluación trimestral <br>Abril - Junio");
+			$datos = (new Accesomodulos())->obtenAccesomodulos((object)array(
+				"LGF0430002" => "ExamenTrimestral"
+			));
+			$lapso = explode(',', $datos[0]['LGF0430008']);
+
+			$this->temp['encabezado'] = self::encabezado("Evaluación trimestral <br>$lapso[0]");
 
 			if(isset($_SESSION['statusNoPreguntas'])){
 				$this->temp['mensajeUsuario'] = $_SESSION['statusNoPreguntas'];
 				unset($_SESSION['statusNoPreguntas']);
 			}
+
 
 			$this->render();
 		}

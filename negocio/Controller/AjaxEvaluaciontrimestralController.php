@@ -2,10 +2,15 @@
 class AjaxEvaluaciontrimestralController extends Controller_Learnglish {
 
     private $intentosPermitidos = 2;
-    private $trimestre = 2;
+    private $trimestre;
 
 	public function __construct() {
 		parent::__construct ();
+        $datos = (new Accesomodulos())->obtenAccesomodulos((object)array(
+            "LGF0430002" => "ExamenTrimestral"
+        ));
+        $trimestre_db = explode(',', $datos[0]['LGF0430008']);
+        $this->trimestre = $trimestre_db[1];
 	}
 
     public function obtenerleccionesalumnodesdeid(){
