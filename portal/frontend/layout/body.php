@@ -156,7 +156,13 @@
                     </div>
                     <div class="modal-body row">
                         <div class="col-md-6 d-flex align-items-center text-justify">
-                            <h4>La evaluación trimestral correspondiente al periodo abril-junio estará disponible del 22 de junio al 15 de julio.</h4>
+                            <?php
+                                $datos = (new Accesomodulos())->obtenAccesomodulos((object)array(
+                                    "LGF0430002" => "ExamenTrimestral"
+                                ));
+                                $lapso = explode(',', $datos[0]['LGF0430008']);
+                            ?>
+                            <h4>La evaluación correspondiente al periodo <?php echo $lapso[0]; ?> ya se encuentra disponible.</h4>
                         </div>
                         <div class="col-md-6 text-center">
                             <img src="<?php echo ARCHIVO_FISICO; ?>grammarQ2021_06_15_17_02_46.png" alt="" >
