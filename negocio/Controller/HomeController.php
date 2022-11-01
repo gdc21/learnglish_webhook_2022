@@ -16,7 +16,7 @@ class HomeController extends Controller_Learnglish
 
                 $ruta = IMG."perfil/".$img_usuario;
 
-                if(!is_file(__DIR__.'./../../portal/IMG/perfil/'.$img_usuario)){
+                if(!is_file(__DIR__.'/../../portal/IMG/perfil/'.$img_usuario)){
                     $ruta = IMG."default.png";
                 }
                 $this->temp ["img_usuario"] = $ruta;
