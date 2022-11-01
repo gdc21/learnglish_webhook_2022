@@ -10,12 +10,14 @@ class HomeController extends Controller_Learnglish
         parent::__construct();
         if (isset ($_SESSION ["userLogged"])) {
             if ($_SESSION ["tipoSesion"] != 2) {
-                $img_usuario = (new Usuarios ())->obtenUsuario(( object )array(
+                $img_usuario = (new Usuarios ())->obtenUsuario ( ( object ) array (
                     "LGF0010001" => $this->userid
-                )) [0] ["LGF0010009"];
-                $ruta = IMG . "perfil/" . $img_usuario;
-                if (!is_array(@getimagesize($ruta))) {
-                    $ruta = IMG . "default.png";
+                ) ) [0] ["LGF0010009"];
+
+                $ruta = IMG."perfil/".$img_usuario;
+
+                if(!is_file(__DIR__.'./../../portal/IMG/perfil/'.$img_usuario)){
+                    $ruta = IMG."default.png";
                 }
                 $this->temp ["img_usuario"] = $ruta;
             }

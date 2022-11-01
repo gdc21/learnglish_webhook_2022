@@ -10,29 +10,18 @@
 			if (!isset($_SESSION["userLogged"]) || !in_array($_SESSION ["perfil"],array(1,3,4))) {
 				$this->Redirect ();
 			}
-			if (isset ( $_SESSION ["userLogged"] )) {
-				$img_usuario = (new Usuarios ())->obtenUsuario ( ( object ) array (
-						"LGF0010001" => $this->userid 
-				) ) [0] ["LGF0010009"];
-				// $this->temp ["img_usuario"] = (empty ( $img_usuario ) ? IMG . 'default.png' : $img_usuario);
-				$ruta = IMG."perfil/".$img_usuario;
-				// echo $ruta;
-				if (!is_array(@getimagesize($ruta))) {
-					$ruta = IMG."default.png";
-				}
-				$this->temp ["img_usuario"] = $ruta;
-			}
-			
-			/*if ($_SESSION ["perfil"] == 6) {
-				if (isset ( $_GET ["action"] )) {
-					if (($_GET ["action"] == "index" || $_GET ["action"] == "objetos")) {
-						return;
-					} else {
-						$this->Redirect ();
-					}
-				}
-				return;
-			}*/
+
+            $img_usuario = (new Usuarios ())->obtenUsuario ( ( object ) array (
+                    "LGF0010001" => $this->userid
+            ) ) [0] ["LGF0010009"];
+
+            $ruta = IMG."perfil/".$img_usuario;
+
+            if(!is_file(__DIR__.'./../../portal/IMG/perfil/'.$img_usuario)){
+                $ruta = IMG."default.png";
+            }
+            $this->temp ["img_usuario"] = $ruta;
+
 		}
 		public function index() {
 			$this->render ();

@@ -597,13 +597,13 @@ class AjaxHomeController extends Controller_Learnglish {
 	}
 
 	public function profile() {
-		$password = $_POST['password'];
+		/*$password = $_POST['password'];
 		$pass = $_POST['pass'];
-		$email = $_POST['email'];
+		$email = $_POST['email'];*/
 		$foto = $_FILES['foto']['name'];
-		$informacion = $_POST['informacion'];
+		/*$informacion = $_POST['informacion'];*/
 
-		if ($informacion == 1) {
+		/*if ($informacion == 1) {
 			$check = (new Administrador())->informacion_usuario($_SESSION['idUsuario']);
 			if ($_SESSION['perfil'] == 1 || $_SESSION['perfil'] == 2 || $_SESSION['perfil'] == 6) {
 				$datos = $check[0]['LGF0010002']."|".$check[0]['LGF0010003']."|".$check[0]['LGF0010004']."|".$check[0]['LGF0010005'];
@@ -627,7 +627,7 @@ class AjaxHomeController extends Controller_Learnglish {
 			$username = $_POST['user'];
 			$check = (new Administrador())->check_nombre_usuario($username);
 			$this->renderJSON(array("error" => $check[0]['total']));
-		} else {
+		} else {*/
 			$nombreIMG = "";
 			if ($foto != "") {
 				$fileTmpPath = $_FILES['foto']['tmp_name'];
@@ -641,9 +641,9 @@ class AjaxHomeController extends Controller_Learnglish {
 				$time = time();
 				$newFileName = $time.'.'.$fileExtension;
 				
-				$allowedfileExtensions = array('jpg', 'png', 'mp3', 'mp4');
+				$allowedfileExtensions = array('jpg', 'png');
+                $uploadFileDir = __DIR__.'./../../portal/IMG/perfil/';
 				if (in_array($fileExtension, $allowedfileExtensions)) {
-					$uploadFileDir = __DIR__.'/../../portal/IMG/perfil/';
 					$dest_path = $uploadFileDir.$newFileName;
 					if(move_uploaded_file($fileTmpPath, $dest_path)) {
 						$nombreIMG = $newFileName;
@@ -651,9 +651,34 @@ class AjaxHomeController extends Controller_Learnglish {
 						$nombreIMG = $this->archivo_base64($campo);
 					}
 				}
-			}
 
-			if ($_SESSION['perfil'] == 3) {
+                $data = [];
+                if ($nombreIMG != "") {
+                    $data["LGF0010009"] = $nombreIMG;
+
+                    $verificaHayFotoUsuario = (new Usuarios())->obtenUsuario((object) array(
+                        "LGF0010001" => $_SESSION['idUsuario']
+                    ));
+
+                    if(is_file($uploadFileDir.$verificaHayFotoUsuario[0]['LGF0010009'])){
+                        unlink($uploadFileDir.$verificaHayFotoUsuario[0]['LGF0010009']);
+                    }
+
+                    (new Usuarios())->actualizarUsuario((object) $data, (object) array (
+                        "LGF0010001" => $_SESSION['idUsuario']
+                    ));
+
+                    $this->renderJSON(array("mensaje" => "Información actualizada exitosamente."));
+                }
+                else{
+                    $this->renderJSON(array("mensaje" => "Tipo de archivo no compatible."));
+                }
+			}else{
+                $this->renderJSON(array("mensaje" => "Archivo requerido."));
+            }
+
+
+			/*if ($_SESSION['perfil'] == 3) {
 				if ($_POST['uName'] != "") {
 					$data['LGF0280002'] = $_POST['uName'];
 				}
@@ -775,7 +800,7 @@ class AjaxHomeController extends Controller_Learnglish {
 					echo $key." => ".$value."\n<br>";
 				}*/
 
-				$username = $_POST['cUser'];
+				/*$username = $_POST['cUser'];
 				$check = (new Administrador())->check_nombre_usuario($username);
 				if ($check[0]['total'] == 1) {
 					$this->renderJSON(array("mensaje" => "El nombre de usuario <b>$user</b> ya existe en el sistema"));
@@ -809,42 +834,43 @@ class AjaxHomeController extends Controller_Learnglish {
 				
 				if ($password != "" && $email != "") {
 					$data['LGF0010012'] = $email;
-					$data['LGF0010006'] = $password;
+					$data['LGF0010006'] = $password;*/
 
+                    /*$data = [];
 					if ($nombreIMG != "") {
 						$data["LGF0010009"] = $nombreIMG;
-					}
+					}*/
 
 					/*echo "1<pre>";
 					print_r($data);
 					echo "</pre>";*/
 					// die();
 
-					$respuesta = (new Usuarios())->actualizarUsuario((object) $data, (object) array (
+					/*$respuesta = (new Usuarios())->actualizarUsuario((object) $data, (object) array (
 						"LGF0010001" => $_SESSION['idUsuario']
 					));
-					$this->renderJSON(array("mensaje" => "Información actualizada exitosamente."));
-				} else if ($password == "" && $email != "") {
+					$this->renderJSON(array("mensaje" => "Información actualizada exitosamente."));*/
+				/*} else if ($password == "" && $email != "") {
 					$data['LGF0010012'] = $email;
 					if ($nombreIMG != "") {
 						$data["LGF0010009"] = $nombreIMG;
-					}
+					}*/
 					/*echo "2<pre>";
 					print_r($data);
-					echo "</pre>";*/
+					echo "</pre>";
 					$respuesta = (new Usuarios())->actualizarUsuario((object) $data, (object) array (
 						"LGF0010001" => $_SESSION['idUsuario']
 					));
 					$this->renderJSON(array("mensaje" => "Información actualizada exitosamente."));
-				} else if ($password != "" && $email == "") {
+				/*} else if ($password != "" && $email == "") {
 					$data['LGF0010006'] = $password;
 					if ($nombreIMG != "") {
 						$data["LGF0010009"] = $nombreIMG;
-					}
+					}*/
 					/*echo "3<pre>";
 					print_r($data);
 					echo "</pre>";*/
-					$respuesta = (new Usuarios())->actualizarUsuario((object) $data, (object) array (
+					/*$respuesta = (new Usuarios())->actualizarUsuario((object) $data, (object) array (
 						"LGF0010001" => $_SESSION['idUsuario']
 					));
 					$this->renderJSON(array("mensaje" => "Información actualizada exitosamente."));
@@ -854,14 +880,14 @@ class AjaxHomeController extends Controller_Learnglish {
 					}
 					$respuesta = (new Usuarios())->actualizarUsuario((object) $data, (object) array (
 						"LGF0010001" => $_SESSION['idUsuario']
-					));
+					));*/
 					/*echo "4<pre>";
 					print_r($data);
 					echo "</pre>";*/
-					$this->renderJSON(array("mensaje" => "Información actualizada exitosamente."));
+					/*$this->renderJSON(array("mensaje" => "Información actualizada exitosamente."));
 				}
-			}
-		}
+			}*/
+		/*}*/
 	}
 
 	/**

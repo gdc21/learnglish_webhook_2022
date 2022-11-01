@@ -14,18 +14,7 @@
 			$trimestre_db = explode(',', $datos[0]['LGF0430008']);
 			$this->trimestre = $trimestre_db[1];
 
-			if (isset ( $_SESSION ["userLogged"] )) {
-				if ($_SESSION ["tipoSesion"] != 2) {
-					$img_usuario = (new Usuarios ())->obtenUsuario ( ( object ) array (
-							"LGF0010001" => $this->userid
-					) ) [0] ["LGF0010009"];
-					$ruta = IMG."perfil/".$img_usuario;
-					if (!is_array(@getimagesize($ruta))) {
-						$ruta = IMG."default.png";
-					}
-					$this->temp ["img_usuario"] = $ruta;
-				}
-			}
+			$this->temp ["img_usuario"] = IMG."default.png";;
 		}
 
 
