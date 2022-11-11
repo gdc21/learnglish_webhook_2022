@@ -99,10 +99,10 @@
                 </select>
                 <div id="infoGrupo" class="w-100 my-2"></div>
 
-                <b class="mt-4">Selecciona un docente (se asignará al grupo que seleccionaste):</b>
+                <!--<b class="mt-4">Selecciona un docente (se asignará al grupo que seleccionaste):</b>
                 <select name="docentes" class="form-control mb-4" id="selectDocentes">
                     <option value="">[ Define al profesor del grupo ]</option>
-                </select>
+                </select>-->
 
                 <textarea name="alumnosCurp" id="alumnos" cols="30" rows="10" class="form-control" placeholder="CURP_ALUMNO,CURP_ALUMNO,CURP_ALUMNO"></textarea>
 
@@ -217,7 +217,7 @@
         $("#resultados")[0].style.display = 'none';
 
         var selectGrupos = document.querySelector("#selectGrupos");
-        var selectDocentes = document.querySelector("#selectDocentes");
+        /*var selectDocentes = document.querySelector("#selectDocentes");*/
         var info_grupo = $("#infoGrupo")[0];
         var listadoAlumnosModal = $("#listadoAlumnosModal")[0];
 
@@ -320,7 +320,7 @@
                 info_grupo.innerHTML += data['info'][0]['nombre_docente'] != null ? "Docente:"+data["info"][0]["nombre_docente"]+"<br>": 'No tiene docente asignado';
                 if(data['info'][0]['nombre_docente'] != null){
 
-                    var botonCambiarDocente = document.createElement('button');
+                    /*var botonCambiarDocente = document.createElement('button');
                     botonCambiarDocente.classList.add('btn');
                     botonCambiarDocente.classList.add('mr-3');
                     botonCambiarDocente.classList.add('boton-mostrar-alumnos');
@@ -336,7 +336,7 @@
 
                     info_grupo.append(botonCambiarDocente);
 
-                    selectDocentes.disabled = true;
+                    selectDocentes.disabled = true;*/
                 }
 
 
@@ -369,9 +369,9 @@
                 selectGrupos.innerHTML = '';
                 selectGrupos.innerHTML = '<option value="">[ Seleccione un GRUPO ]</option>';
 
-                selectDocentes.innerHTML = '';
+                /*selectDocentes.innerHTML = '';
                 selectDocentes.innerHTML = '<option value="">[ Seleccione un DOCENTE ]</option>';
-                selectDocentes.disabled = true;
+                selectDocentes.disabled = true;*/
                 console.log("true", true);
 
                 $("#alumnos")[0].disabled = true;
@@ -392,7 +392,7 @@
                     return;
                 }
                 else{
-                    selectDocentes.disabled = false;
+                    /*selectDocentes.disabled = false;*/
                     $("#alumnos")[0].disabled = false;
                     $("#cargarAlumnosAgrupo")[0].disabled = false;
 
@@ -402,7 +402,7 @@
                     selectGrupos.innerHTML = '';
                     selectGrupos.innerHTML = '<option value="">[ Seleccione un GRUPO ]</option>';
 
-                    selectDocentes.innerHTML = '';
+                    /*selectDocentes.innerHTML = '';
                     selectDocentes.innerHTML = '<option value="">[ Seleccione un DOCENTE ]</option>';
 
                     data['docentes'].forEach(function(item, index){
@@ -410,7 +410,7 @@
                         option.value = item['id'];
                         option.innerHTML = "Docente: "+id_institucion+" => "+item['nombre'];
                         selectDocentes.append(option);
-                    })
+                    })*/
                 }
 
                 if(data['grupos'] != 0){
@@ -440,7 +440,7 @@
                 var data = getInfoAjax('asignaralumnosagrupodesdecurps', {
                     curps: curps,
                     grupo: selectGrupos.value,
-                    docente: selectDocentes.value,
+                    /*docente: selectDocentes.value,*/
                     institucion: $("#instituciones").val()
                 }, 'admin');
 

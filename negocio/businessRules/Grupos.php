@@ -22,4 +22,9 @@
 		public function obtenGrupo($lg00029="",$total=false) {
 			return $this->crud->read($lg00029,$total);
 		}
+
+        public function eliminaGrupo($lg00029)
+        {
+            return $this->crud->delete($lg00029);
+        }
 	}

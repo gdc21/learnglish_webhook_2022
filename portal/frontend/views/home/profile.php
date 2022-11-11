@@ -13,17 +13,7 @@ if ($_SESSION['perfil'] == 1 || $_SESSION['perfil'] == 2 || $_SESSION['perfil'] 
 		<input type="hidden" id="perfil" value="<?php echo $_SESSION['perfil']; ?>">
 		<table class="FormularioStyle align_left" id="A_t_Neval">
 			<tbody>
-				<?php if ($_SESSION['perfil'] == 2) :
-					$login = (new Administrador())->informacionUsuario($_SESSION['idUsuario']);
-				?>
-					<tr>
-						<td class="nameCampo">Institución</td>
-						<td>
-							<div id="institucion"><?php echo $login[0]['institucion'];?></div>
-							<span class="error"></span>
-						</td>
-					</tr>
-				<?php endif ?>
+
 				<tr>
 					<td class="nameCampo">Nombre</td>
 					<td>
@@ -34,6 +24,19 @@ if ($_SESSION['perfil'] == 1 || $_SESSION['perfil'] == 2 || $_SESSION['perfil'] 
 
 					</td>
 				</tr>
+
+                <tr>
+                    <td class="nameCampo">CCT</td>
+                    <td>
+                        <div>
+                            <span id="nombre2"><?php echo $this->temp['institucion']; ?></span>
+
+                        </div>
+
+                    </td>
+                </tr>
+
+
 				<tr>
 					<td class="nameCampo">Fotografía</td>
 					<td>

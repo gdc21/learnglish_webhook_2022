@@ -655,7 +655,7 @@
 
 		public function editUsuario($id) {
 			$this->temp['encabezado'] = self::encabezado("Módulo de Administrador Learnglish");
-			$this->temp['info'] = (new Administrador())->informacion_usuario($id);
+			$this->temp['info'] = (new Administrador())->informacion_usuario_alm($id);
 			$this->temp['instituciones'] = (new Administrador())->lista_instituciones();
 			$this->temp['perfil'] = (new Administrador())->lista_perfiles();
 			$this->temp['grados'] = (new Administrador())->obtener_modulos();

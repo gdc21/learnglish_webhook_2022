@@ -1498,6 +1498,7 @@ class HomeController extends Controller_Learnglish
      */
     public function profile()
     {
+        $obtenerInstitucion = '';
         $datos = (new Administrador())->informacion();
         if ($_SESSION['perfil'] == 3) {
             $email = $datos[0]['LGF0280018'];
@@ -1507,16 +1508,19 @@ class HomeController extends Controller_Learnglish
             $email = $datos[0]['LGF0270027'];
             $user = $datos[0]['LGF0270024'];
             $name = $datos[0]['LGF0270002'];
+            $obtenerInstitucion = $datos[0]['LGF0270028'];
         } else {
             $email = $datos[0]['LGF0010012'];
             $name = $datos[0]['LGF0010002'] . " " . $datos[0]['LGF0010003'] . " " . $datos[0]['LGF0010004'];
             $user = $datos[0]['LGF0010005'];
             $obtenerInstitucion = (new Instituciones())->obtenInstitucion((object)array('LGF0270001' => $datos[0]['LGF0010038']));
+            $obtenerInstitucion = $obtenerInstitucion[0]['LGF0270028'];
         }
+
         $this->temp['usuario'] = $user;
         $this->temp['nombre'] = $name;
         $this->temp['email'] = $email;
-        $this->temp['institucion'] = $obtenerInstitucion[0]['LGF0270002'];
+        $this->temp['institucion'] = $obtenerInstitucion;
         $this->temp['encabezado'] = self::encabezado("Perfil del usuario");
         $this->render();
     }

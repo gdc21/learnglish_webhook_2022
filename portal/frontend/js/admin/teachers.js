@@ -40,23 +40,26 @@ function cargar_tabla(buscar) {
 				var alumnos = cont.alumnos.split(",");
 				var nivel = cont.nivel.split(",");
 				var grupoid = cont.gruposid.split(",");
-				var moduloid = cont.moduloid.split(",");
+				var moduloid = cont.moduloid.split(",").sort();
 				var cct = cont.cct.split(",");
 				cuerpo+="<tr>";
 		        cuerpo+=
 					"<td rowspan="+aux.length+" style='vertical-align: middle;'>" +
 						"<a href='"+context+"admin/estadisticasSistema/"+cont.usuarioid+"/docentes'>Reporte grupal</a>" +
 					"</td>";
-		        cuerpo+="<td rowspan='"+aux.length+"' style='vertical-align: middle;'>"+cct+"</td>";
+		        cuerpo+="<td rowspan='"+aux.length+"' style='vertical-align: middle;'>"+cct[0]+"</td>";
 		        cuerpo+="<td rowspan="+aux.length+" style='vertical-align: middle;'>"+cont.nombre+"</td>";
 
 	          	cuerpo+="<td>";
-				cuerpo+="<a style='color: red;' onclick='mostrar_grupo("+cont.usuarioid+")'>Asignar grupo</a>";
-	          	if(aux[0] != "" || aux[0] != null) {
-					  cuerpo+="<br>";
-	          	} /*else {
-	          	}*/
-				cuerpo+=aux[0];
+				cuerpo+="<a style='color: red;' onclick='mostrar_grupo("+cont.usuarioid+")'>Asignar grupo</a><br><br>";
+	          	if(aux[0] !== "") {
+					cuerpo+=aux[0];
+					cuerpo+="<br><i onclick='eliminar_grupo("+grupoid[0]+")' " +
+						"			style='cursor: pointer;' " +
+						"			class='complemento ml-3 fa fa-trash-o' " +
+						"			aria-hidden='true'></i>";
+	          	} else {
+	          	}
 	          	cuerpo+="</td>";
 
 	          	cuerpo+="<td>"+alumnos[0]+"</td>";
@@ -72,22 +75,26 @@ function cargar_tabla(buscar) {
 		        if (aux.length > 0) {
 		        	for (var i=1; i < aux.length; i++) {
 			            cuerpo+="<tr>";
-			            cuerpo+="<td class='"+((aux[i] == "" || aux[i] == null) ? 'complemento' : '')+"'>";
-			                if (aux[0] == "" || aux[0] == null) {
-			                	cuerpo+="<a onclick='mostrar_grupo("+cont.usuarioid+")'>Asignar grupo</a>";
-			                } else {
-			                	cuerpo+=aux[i];
-			                }
-		                cuerpo+="</td>";
-		                cuerpo+="<td>"+alumnos[i]+"</td>";
-		                cuerpo+="<td class='"+obtener_clase(moduloid[i])+"'>"+((moduloid[i] == "" || moduloid[i] == 0) ? 'Asignar grado' : convertir_modulo_grado(moduloid[i]))+"</td>";
-						cuerpo+="<td class='"+obtener_clase(moduloid[i])+"'>";
-							if (grupoid[i] != 0) {
-								cuerpo+="<a href='"+context+"home/results/"+grupoid[i]+"/"+$("#campo").val()+"' style='text-decoration: none !important;'>Reportes</a>";
-							} else {
-								cuerpo+="Sin Reportes";
-							}
-						cuerpo+="</td>";
+							cuerpo+="<td class='"+((aux[i] == "" || aux[i] == null) ? 'complemento' : '')+"'>";
+								/*if (aux[0] == "" || aux[0] == null) {
+									cuerpo+="<a onclick='mostrar_grupo("+cont.usuarioid+")'>>>>>>>Asignar grupo</a>";
+								} else {*/
+								cuerpo+=aux[i];
+								cuerpo+="<br><i onclick='eliminar_grupo("+grupoid[i]+")' " +
+									"			style='cursor: pointer;' " +
+									"			class='complemento ml-3 fa fa-trash-o' " +
+									"			aria-hidden='true'></i>";
+								/*}*/
+							cuerpo+="</td>";
+							cuerpo+="<td>"+alumnos[i]+"</td>";
+							cuerpo+="<td class='"+obtener_clase(moduloid[i])+"'>"+((moduloid[i] == "" || moduloid[i] == 0) ? 'Asignar grado' : convertir_modulo_grado(moduloid[i]))+"</td>";
+							cuerpo+="<td class='"+obtener_clase(moduloid[i])+"'>";
+								if (grupoid[i] != 0) {
+									cuerpo+="<a href='"+context+"home/results/"+grupoid[i]+"/"+$("#campo").val()+"' style='text-decoration: none !important;'>Reportes</a>";
+								} else {
+									cuerpo+="Sin Reportes";
+								}
+							cuerpo+="</td>";
 			            cuerpo+="</tr>";
 			        }
 			    }

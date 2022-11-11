@@ -7,7 +7,9 @@
 
         public function asignaralumnosagrupodesdecurps(){
             $grupo = $_POST['grupo'];
-            $docente = $_POST['docente'];
+            /*$docente = $_POST['docente'];*/
+            /*Operacion cancelada*/
+            $docente = '';
             $curps = $_POST['curps'];
             $institucion = $_POST['institucion'];
 
@@ -3549,6 +3551,25 @@
 			}
 			$this->renderJSON(array("contenido" => $tabla, "error" => $error));
 		}
+
+        public function eliminar_grupo() {
+            $grupo = $_POST['grupo'];
+
+            $grupos = (new Administrador())->informacionGrupo($grupo);
+
+            if ($grupos[0]['totalAlumnos'] == 0) {
+                $res = (new Grupos())->eliminaGrupo((object) array(
+                    "LGF0290001" => $grupo
+                ));
+                if($res){
+                    $this->renderJSON(array("recargar"=>1,"respuesta"=>'Listo, grupo eliminado correctamente'));
+                }else{
+                    $this->renderJSON(array("recargar"=>0,"respuesta"=>"Algo fallo, volver a intentar"));
+                }
+            } else {
+                $this->renderJSON(array("recargar"=>0,"respuesta"=>"Grupo con alumnos asignados, operación NO AUTORIZADA"));
+            }
+        }
 
 		public function mostrar_grupo() {
 			$usuario = $_POST['usuario'];

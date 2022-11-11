@@ -240,6 +240,24 @@
 </style>
 <script src="//cdn.datatables.net/plug-ins/1.10.19/sorting/date-de.js"></script>
 <script>
+
+    function eliminar_grupo(grupoId){
+        if(confirm("¿Seguro que deseas borrar al grupo?")){
+            $.ajax({
+                url: context+"admin/eliminar_grupo",
+                type: "POST",
+                data: {grupo: grupoId},
+                dataType: "json",
+                success: function (resp) {
+                    alert(resp.respuesta);
+                    if(resp.recargar){
+                        location.reload();
+                    }
+                }
+            });
+        }
+    }
+
   function mostrar_grupo(usuario) {
     $("#modal_grupo").modal('show');
     $.ajax({
@@ -252,19 +270,18 @@
       },
       success: function (resp) {
         if (resp.respuesta == 0) {
-          contenido = '<h4>Seleccione un grupo</h4><div class="row">';
+          contenido = '<h4>Seleccione un grupo</h4>';
           $.each(resp.contenido, function (i, value) {
             contenido+=
-                '<div class="col-lg-4">' +
-                    '<div class="form-check">' +
-                '       <input class="form-check-input" type="radio" name="grupo" id="grupo_'+value.LGF0290001+'" value="'+value.LGF0290001+'">' +
-                '       <label class="form-check-label" onclick="asignar_grupo('+value.LGF0290001+','+usuario+')" for="grupo_'+value.LGF0290001+'">' +
-                '           &nbsp;'+value.LGF0290002+
-                        '</label>' +
-                '   </div>' +
-                '</div>';
+                '<div class="mt-3 form-check">' +
+            '       <input class="form-check-input" type="radio" name="grupo" id="grupo_'+value.LGF0290001+'" value="'+value.LGF0290001+'">' +
+            '       <label class="form-check-label" onclick="asignar_grupo('+value.LGF0290001+','+usuario+')" for="grupo_'+value.LGF0290001+'">' +
+            '           '+value.LGF0290002+' -- '+value.nombre_modulo+' <br> Docente: '+(value.nombre_docente)+
+                        '<br><a target="_blank" href="'+context+'/admin/editGroup/'+value.LGF0290001+'">Editar grupo</a>' +
+                    '</label>' +
+            '   </div>';
+            contenido+='</div>';
           });
-          contenido+='</div>';
           $("#respuesta").append(contenido);
         } else {
         }

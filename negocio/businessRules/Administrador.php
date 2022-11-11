@@ -474,6 +474,13 @@
 			return $this->doSelect();
 		}
 
+        public function informacion_usuario_alm($id) {
+
+            $this->query = "SELECT *FROM lg00001 WHERE LGF0010001 = ".$id;
+
+            return $this->doSelect();
+        }
+
 		public function informacion_usuario($id) {
 			if ($_SESSION['perfil'] == 1 || $_SESSION['perfil'] == 2 || $_SESSION['perfil'] == 6) {
 				if (is_numeric($id)) {
@@ -572,8 +579,11 @@
                 t2.LGF0270002, 
                 t1.LGF0290005, 
                 (SELECT COUNT(t3.LGF0010039) FROM lg00001 t3 WHERE t3.LGF0010039 = t1.LGF0290001) as totalAlumnos, 
-                t3.LGF0150002 as nombre_modulo
-                    FROM lg00029 t1 
+                t3.LGF0150002 as nombre_modulo,
+                CONCAT(LGF0010002,' ', LGF0010003, ' ', LGF0010004) AS nombre_docente
+                    FROM lg00029 t1
+                        left JOIN lg00001 t4 
+                        ON t1.LGF0290006 = t4.LGF0010001 
                         JOIN lg00027 t2 
                         ON t2.LGF0270001 = t1.LGF0290004
                         JOIN lg00015 t3 
@@ -1145,10 +1155,13 @@
 
         public function obtener_docentes_desde_institucion($institucion){
             $this->query = "SELECT 
-                LGF0010001 as id, 
+                LGF0010001 as id,
+                LGF0270028 as cct_docente,
                 CONCAT(LGF0010002,' ', LGF0010003, ' ', LGF0010004) as nombre 
-                FROM lg00001
-                WHERE LGF0010007 = 6 AND LGF0010038 = ".$institucion;
+                FROM lg00001, lg00027
+                WHERE LGF0010007 = 6 AND
+                      LGF0270001 = LGF0010038 and 
+                      LGF0010038 = ".$institucion;
 
             return $this->doSelect();
         }
@@ -1603,12 +1616,12 @@
 			} else if ($_SESSION['perfil'] == 4) {
 				$condicion = "AND LGF0010038 = ".$_SESSION['idUsuario']."";
 			}
-			$this->query = "SELECT  CONCAT(LGF0270002, ' <br>', LGF0270028) as nombre_institucion, 
+			$this->query = "SELECT  CONCAT(LGF0270002, '<br><br>', LGF0270028) as nombre_institucion, 
                                     LGF0010001 AS usuarioid, 
-                                    CONCAT(LGF0010002,' ',LGF0010003,' ',LGF0010004) AS nombre, 
+                                    CONCAT(LGF0010002,' ',LGF0010003,' ',LGF0010004, '<br><br>', LGF0270028) AS nombre, 
                                     LGF0010038 AS institucionid, 
                                     LGF0290001 as grupoid, 
-                                    LGF0290002 AS gruponame,
+                                    LGF0290002 AS gruponame,                                 
                                     (
                                         SELECT COUNT(*) 
                                         FROM lg00001 t 
