@@ -29,4 +29,26 @@ $(document).ready(function () {
 		    }
 		});
 	});
+
+	$("#institucion").change(function(){
+		$.ajax({
+			type: "POST",
+			data: {institucion: $("#institucion").val()},
+			url: context+"admin/gruposyprofesoresdeinstitucion",
+			dataType: "json",
+			success: function (resp) {
+				console.log("Hola")
+				var lista = "";
+
+				lista = "<option value=''>Selecciona un docente</option>";
+
+				$.each(resp.docentes, function (pos, val) {
+					lista+= "<option value='"+val.id+"' >"+val.cct_docente+" "+val.nombre+"</option>";
+				});
+				$("#docente").html("");
+				$("#docente").html(lista);
+			}
+		});
+
+	});
 });

@@ -40,7 +40,7 @@ function cargar_tabla(buscar) {
 				var alumnos = cont.alumnos.split(",");
 				var nivel = cont.nivel.split(",");
 				var grupoid = cont.gruposid.split(",");
-				var moduloid = cont.moduloid.split(",").sort();
+				var moduloid = cont.moduloid.split(",");
 				var cct = cont.cct.split(",");
 				cuerpo+="<tr>";
 		        cuerpo+=

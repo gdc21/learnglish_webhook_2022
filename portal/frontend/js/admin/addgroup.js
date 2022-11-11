@@ -65,7 +65,6 @@ $(document).ready(function () {
 		}
 	});
 	$("#institucion").change(function(){
-		console.log("Hola")
 		$.ajax({
 			type: "POST",
 			data: {institucion: $("#institucion").val()},
@@ -75,7 +74,7 @@ $(document).ready(function () {
 				console.log("Hola")
 				var lista = "";
 
-				lista = "<option value=''>Selecciona un docente-</option>";
+				lista = "<option value=''>Selecciona un docente</option>";
 
 				$.each(resp.docentes, function (pos, val) {
 					lista+= "<option value='"+val.id+"' >"+val.cct_docente+" "+val.nombre+"</option>";

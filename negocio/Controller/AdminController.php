@@ -1076,7 +1076,7 @@
 				// print_r($docente);
 				$data[] = array(
 					"clave" => $docente['clave'],
-					"nombre" => $docente['LGF0010002']." ".$docente['LGF0010003']." ".$docente['LGF0010004']
+					"nombre" => $docente['cctInstitucion']."-".$docente['LGF0010002']." ".$docente['LGF0010003']." ".$docente['LGF0010004']
 				);
 			}
 			$this->temp['cicloEscolar'] = $cicloEscolar;

@@ -277,7 +277,7 @@
             '       <input class="form-check-input" type="radio" name="grupo" id="grupo_'+value.LGF0290001+'" value="'+value.LGF0290001+'">' +
             '       <label class="form-check-label" onclick="asignar_grupo('+value.LGF0290001+','+usuario+')" for="grupo_'+value.LGF0290001+'">' +
             '           '+value.LGF0290002+' -- '+value.nombre_modulo+' <br> Docente: '+(value.nombre_docente)+
-                        '<br><a target="_blank" href="'+context+'/admin/editGroup/'+value.LGF0290001+'">Editar grupo</a>' +
+                        '<br><a target="_blank" href="'+context+'admin/editGroup/'+value.LGF0290001+'">Editar grupo</a>' +
                     '</label>' +
             '   </div>';
             contenido+='</div>';

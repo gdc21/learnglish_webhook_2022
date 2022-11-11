@@ -338,7 +338,7 @@
 			if ($_SESSION['perfil'] == 1) {
 				$condicion = "";
 			} else if ($_SESSION['perfil'] == 3) { // Cliente
-				$this->query = "SELECT LGF0270001, LGF0270002 FROM lg00027 WHERE LGF0270021 = ".$_SESSION['idUsuario'];
+				$this->query = "SELECT LGF0270001, LGF0270002, LGF0270028 FROM lg00027 WHERE LGF0270021 = ".$_SESSION['idUsuario'];
 				$result = $this->doSelect();
 				for ($i=0; $i < count($result); $i++) { 
 					if ($i == 0) {
