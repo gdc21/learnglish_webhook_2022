@@ -3557,7 +3557,7 @@
 
             $grupos = (new Administrador())->informacionGrupo($grupo);
 
-            if ($grupos[0]['totalAlumnos'] == 0) {
+            if ($grupos[0]['totalAlumnos'] == 0 || $grupos[0]['totalAlumnos'] == null) {
                 $res = (new Grupos())->eliminaGrupo((object) array(
                     "LGF0290001" => $grupo
                 ));

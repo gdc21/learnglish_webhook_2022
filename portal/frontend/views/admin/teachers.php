@@ -258,6 +258,23 @@
         }
     }
 
+    function eliminar_grupo_close_modal(grupoId){
+        if(confirm("¿Seguro que deseas borrar al grupo?")){
+            $.ajax({
+                url: context+"admin/eliminar_grupo",
+                type: "POST",
+                data: {grupo: grupoId},
+                dataType: "json",
+                success: function (resp) {
+                    alert(resp.respuesta);
+                    if(resp.recargar){
+                        $("#modal_grupo").modal('hide');
+                    }
+                }
+            });
+        }
+    }
+
   function mostrar_grupo(usuario) {
     $("#modal_grupo").modal('show');
     $.ajax({
@@ -278,6 +295,10 @@
             '       <label class="form-check-label" onclick="asignar_grupo('+value.LGF0290001+','+usuario+')" for="grupo_'+value.LGF0290001+'">' +
             '           '+value.LGF0290002+' -- '+value.nombre_modulo+' <br> Docente: '+(value.nombre_docente)+
                         '<br><a target="_blank" href="'+context+'admin/editGroup/'+value.LGF0290001+'">Editar grupo</a>' +
+                        '<br><i onclick="eliminar_grupo_close_modal('+value.LGF0290001+')"' +
+						'			style="cursor: pointer;" ' +
+						'			class="complemento ml-4 fa fa-trash-o" ' +
+						'			aria-hidden="true"></i>'+
                     '</label>' +
             '   </div>';
             contenido+='</div>';

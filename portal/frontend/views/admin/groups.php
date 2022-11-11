@@ -250,6 +250,8 @@
 
             var botonModal = document.createElement('button');
             botonModal.classList.add('btn');
+            botonModal.classList.add('my-2');
+            botonModal.classList.add('d-block');
             botonModal.classList.add('boton-mostrar-alumnos');
             botonModal.setAttribute('data-bs-toggle', 'modal');
             botonModal.setAttribute('data-bs-target', '#modalAlumnosMostrar');
