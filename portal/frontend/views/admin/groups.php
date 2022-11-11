@@ -90,6 +90,7 @@
                 <?php } ?>
             </select>
 
+            <div id="instituciones_excel"></div>
             <div id="notificaciones"></div>
 
             <div id="resultados">
@@ -172,6 +173,47 @@
 </style>
 <script>
     $(function (){
+
+        function generarCSV(JSONData, ShowLabel, titulo) {
+
+            var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+            var CSV = '';
+
+            if (ShowLabel) {
+                var row = "";
+
+                for (var index in arrData[0]) {
+                    row += index + ',';
+                }
+                row = row.slice(0, -1);
+                CSV += row + '\r\n';
+            }
+
+            for (var i = 0; i < arrData.length; i++) {
+                var row = "";
+                for (var index in arrData[i]) {
+                    row += '"' + arrData[i][index] + '",';
+                }
+                row.slice(0, row.length - 1);
+                CSV += row + '\r\n';
+            }
+
+            if (CSV == '') {
+                alert("Invalid data");
+                return;
+            }
+
+            var fileName = titulo;
+            var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+            var link = document.createElement("a");
+            link.href = uri;
+            link.style = "visibility:hidden";
+            link.download = fileName + ".csv";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
 
 
         $("#alumnos").change(function(){
@@ -310,6 +352,28 @@
                 }
             }
 
+
+            var botonExcel = document.createElement('button');
+            botonExcel.classList.add('btn');
+            botonExcel.classList.add('my-2');
+            botonExcel.classList.add('d-block');
+            botonExcel.classList.add('boton-mostrar-alumnos');
+            botonExcel.setAttribute('grupo', id_grupo);
+            botonExcel.type = "button";
+            botonExcel.innerHTML = "Exportar alumnos de grupo";
+            botonExcel.onclick = function(){
+                var grupo_id = this.getAttribute('grupo');
+                $.ajax({
+                    type: "POST",
+                    data: {id: grupo_id},
+                    url: context+'admin/listar_alumnos_grupo_especifico',
+                    dataType: 'json',
+                    success: function (data) {
+                        generarCSV(data.lista, true, data.lista[0].CCT+"__"+data.lista[0].nombre_grupo);
+                    }
+                });
+            }
+
             if(data){
                 console.log("data", data);
                 agregar_html(info_grupo, data['info'][0]['nombre'], 'Nombre grupo:'+data['info'][0]['nombre']+"<br>");
@@ -344,7 +408,10 @@
 
 
                 if(data['info'][0]['totalAlumnos'] != null && data['info'][0]['totalAlumnos'] > 0){
+                    /*Boton para ver alumnos de grupo modal*/
                     info_grupo.append(botonModal);
+                    /*Boton para exportar alumnos de grupo*/
+                    info_grupo.append(botonExcel);
                 }
 
 
@@ -356,11 +423,42 @@
          * Verificamos que se seleccione un modulo para mostrar las lecciones
          */
         $("#instituciones").change(function(item){
+            var id_institucion = this.value;
+
+            /** Obtener csv alumnos de institucion */
+            $("#instituciones_excel").html('');
+
+            var botonExcel = document.createElement('button');
+            botonExcel.classList.add('btn');
+            botonExcel.classList.add('my-2');
+            botonExcel.classList.add('d-block');
+            botonExcel.classList.add('boton-mostrar-alumnos');
+            botonExcel.setAttribute('institucion', id_institucion);
+            botonExcel.type = "button";
+            botonExcel.innerHTML = "Exportar alumnos de institución";
+            botonExcel.onclick = function(){
+                var institucion_id = this.getAttribute('institucion');
+                $.ajax({
+                    type: "POST",
+                    data: {id: institucion_id},
+                    url: context+'admin/listar_alumnos_institucion_especifica',
+                    dataType: 'json',
+                    success: function (data) {
+                        generarCSV(data.lista, true, "Alumnos__"+data.lista[0].CCT);
+                    }
+                });
+            }
+
+            if(id_institucion != ''){
+                $("#instituciones_excel").append(botonExcel);
+            }
+
+
+
             document.querySelector('#enlaceEditarGrupo')?.remove();
             listadoAlumnosModal.innerHTML = '';
             info_grupo.innerHTML = '';
 
-            var id_institucion = this.value;
             var data = getInfoAjax('gruposyprofesoresdeinstitucion', {institucion: id_institucion}, 'admin');
 
             if(data){
@@ -470,6 +568,7 @@
                     }else if(data['result'] == 'updated_correctly'){
                         $("#instituciones")[0].style.display = 'none';
                         $("#resultados")[0].style.display = 'none';
+                        $("#instituciones_excel").html('');
                         $("b").hide();
                         $("button").hide();
                         $("h4").hide();

@@ -19,7 +19,24 @@
                     $complemento = " LGF0010038 = ".$institucion.", ";
                 }
 
-                $this->query = 'UPDATE lg00001 SET '.$complemento.' LGF0010039 = '.$grupo.' WHERE LGF0010040 IN ("'.implode('", "', $curps).'")';
+                /** Obtener el modulo del grupo y usarlo para actualizar datos de alumno*/
+
+                $modulo_desde_grupo = (new Grupos())->obtenGrupo((object) array(
+                    "LGF0290001" => $grupo
+                ))[0]['LGF0290005'];
+
+                $data = (new Administrador())->leccion_modulo($modulo_desde_grupo);
+                $dataN = (new Administrador())->modulos($modulo_desde_grupo);
+                $leccion = $data[0]['id'];
+                $nivel = $dataN[0]['nivel'];
+
+
+                $this->query = 'UPDATE lg00001 SET '.$complemento.' LGF0010039 = '.$grupo.',
+                                LGF0010023 = '.$nivel.',
+                                LGF0010024 = '.$modulo_desde_grupo.',
+                                LGF0010025 = '.$leccion.', 
+                                LGF0010026 = 1 
+                                WHERE LGF0010007 = 2 and LGF0010040 IN ("'.implode('", "', $curps).'")';
                 $accion2 = $this->doSingleQuery();
                 if($accion2){
                     return true;
@@ -41,7 +58,7 @@
                 CONCAT(LGF0010002," ",LGF0010003," ",LGF0010004) as nombre,
                 LGF0010040 as curp
                 FROM lg00001 
-                WHERE LGF0010040 IN ("'.implode('", "', $curps).'")';
+                WHERE LGF0010007 = 2 and LGF0010040 IN ("'.implode('", "', $curps).'")';
                 #return $this->query;
 
             return $this->doSelect();
@@ -1747,18 +1764,53 @@
 			return $this->doSelect();
 		}
 
-        public function listar_alumnos_grupo($id) {
+        public function listar_alumnos_institucion($id) {
 
             $this->query = "SELECT 
-                    LGF0010001 AS id, 
+                    LGF0010001 AS id,
                     CONCAT(LGF0010002,' ', LGF0010003, ' ', LGF0010004) as nombre,
+                    LGF0010002 as nombre_simple,
+                    LGF0010003 as a_paterno,
+                    LGF0010004 as a_materno,
                     LGF0010040 AS curp, 
+                    LGF0010021 as genero,
+                    LGF0010024 as modulo, 
+                    LGF0150002 as nombre_modulo, 
+                    LGF0290002 as nombre_grupo,
                     LGF0270002 AS institucion, 
                     LGF0270028 AS CCT    
-                    FROM lg00001, lg00027  
+                    FROM lg00001 
+                        left join lg00029 on LGF0290001 = LGF0010039, lg00027, lg00015   
                     WHERE LGF0010007 = 2  
                       AND LGF0010008 = 1
                       AND LGF0270001 = LGF0010038                     
+                      AND LGF0150001 = LGF0010024                                                              
+                      AND LGF0010038 = ".$id;
+
+            return $this->doSelect();
+        }
+
+        public function listar_alumnos_grupo($id) {
+
+            $this->query = "SELECT 
+                    LGF0010001 AS id,
+                    CONCAT(LGF0010002,' ', LGF0010003, ' ', LGF0010004) as nombre,
+                    LGF0010002 as nombre_simple,
+                    LGF0010003 as a_paterno,
+                    LGF0010004 as a_materno,
+                    LGF0010040 AS curp, 
+                    LGF0010021 as genero,
+                    LGF0010024 as modulo, 
+                    LGF0150002 as nombre_modulo, 
+                    LGF0290002 as nombre_grupo,
+                    LGF0270002 AS institucion, 
+                    LGF0270028 AS CCT    
+                    FROM lg00001, lg00027, lg00015, lg00029
+                    WHERE LGF0010007 = 2  
+                      AND LGF0010008 = 1
+                      AND LGF0270001 = LGF0010038                     
+                      AND LGF0150001 = LGF0010024                     
+                      AND LGF0290001 = LGF0010039                     
                       AND LGF0010039 = ".$id;
 
             return $this->doSelect();

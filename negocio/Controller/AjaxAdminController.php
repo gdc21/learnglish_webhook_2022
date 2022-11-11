@@ -59,7 +59,7 @@
                 }else{
                     $this->renderJSON ( array (
                         'result' => "invalid_data",
-                        'msg'    => 'Los alumnos NO APARECEN en la base, NINGÚN registro se actualizó, verifica y vuelve a intentar.',
+                        'msg'    => 'Los alumnos NO APARECEN en la base o hay docentes colados, NINGÚN registro se actualizó, verifica y vuelve a intentar.',
                     ) );
                 }
             }
@@ -972,6 +972,14 @@
 				$this->renderJSON(array("error" => "Ya no tienes licencias para poder registrar más usuarios."));
 			}
 		}
+
+        public function listar_alumnos_institucion_especifica(){
+            $id = $_POST['id'];
+
+            $lista = (new Administrador())->listar_alumnos_institucion($id);
+
+            $this->renderJSON(array("lista" => $lista));
+        }
 
         public function listar_alumnos_grupo_especifico(){
             $id = $_POST['id'];
