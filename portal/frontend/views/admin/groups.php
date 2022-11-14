@@ -105,7 +105,7 @@
                     <option value="">[ Define al profesor del grupo ]</option>
                 </select>-->
 
-                <textarea name="alumnosCurp" id="alumnos" cols="30" rows="10" class="form-control" placeholder="CURP_ALUMNO,CURP_ALUMNO,CURP_ALUMNO"></textarea>
+                <textarea name="alumnosCurp" id="alumnos" cols="30" rows="10" class="form-control" placeholder="CURP_ALUMNO&#10;CURP_ALUMNO&#10;CURP_ALUMNO"></textarea>
 
                 <button class="btn mx-auto btn-warning text-white mt-3 mb-5" id="varificacionDeFallos">
                     <h5>Verificar si hay fallos... </h5>
@@ -230,7 +230,7 @@
                 $("#status").html("<b style='color: red;'>Introduce el listado de CURPS faltantes.</b>");
             }else{
                 alumnos_cargar.value = alumnos_cargar.value.toUpperCase();
-                alumnos_cargar.value = alumnos_cargar.value.replaceAll('\n', '');
+                alumnos_cargar.value = alumnos_cargar.value.replaceAll('\n', ',');
                 alumnos_cargar.value = alumnos_cargar.value.replaceAll(' ', '');
                 alumnos_cargar.value = alumnos_cargar.value.replaceAll('\t', '');
                 alumnos_cargar.value = alumnos_cargar.value.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
