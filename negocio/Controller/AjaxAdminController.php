@@ -983,8 +983,9 @@
 
         public function listar_alumnos_grupo_especifico(){
             $id = $_POST['id'];
+            $orden = $_POST['orden'];
 
-            $lista = (new Administrador())->listar_alumnos_grupo($id);
+            $lista = (new Administrador())->listar_alumnos_grupo($id, $orden);
 			$this->renderJSON(array("lista" => $lista));
         }
 

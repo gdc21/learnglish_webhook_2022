@@ -1790,7 +1790,13 @@
             return $this->doSelect();
         }
 
-        public function listar_alumnos_grupo($id) {
+        public function listar_alumnos_grupo($id, $orden) {
+
+            if($orden == ''){
+                $orderBy = ' ORDER BY LGF0010002 ';
+            }else{
+                $orderBy = ' ORDER BY '.$orden." ";
+            }
 
             $this->query = "SELECT 
                     LGF0010001 AS id,
@@ -1811,7 +1817,8 @@
                       AND LGF0270001 = LGF0010038                     
                       AND LGF0150001 = LGF0010024                     
                       AND LGF0290001 = LGF0010039                     
-                      AND LGF0010039 = ".$id;
+                      AND LGF0010039 = ".$id.
+                    $orderBy;
 
             return $this->doSelect();
         }
