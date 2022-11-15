@@ -449,7 +449,7 @@ class AjaxHomeController extends Controller_Learnglish {
 		} else {
 			$error = 0;
 		}
-		$color = "#000";
+
 		foreach ($grupos as $grupo) {
 			if ($grupo['nivelid'] == 2) {
 				$clase = "primaria";
@@ -457,10 +457,32 @@ class AjaxHomeController extends Controller_Learnglish {
 				$clase = "secundaria";
 			}
 			// Linea con opcion de configuración de acceso a lecciones por criterio del docente
-			$tabla.="<tr><td>".$grupo['grupo']."</td><td>".$grupo['alumnos']."</td><td class='".$clase."'>".$grupo['nivel']."</td><td class='".$clase."'>".$grupo['lecciones']."</td><td class='".$clase."'><a href='".CONTEXT."home/guides/".$grupo['modulo']."/".$grupo['id']."' style='color: ".$color.";'>Guías</a></td><td class='".$clase."'><a href='".CONTEXT."home/means/".$grupo['modulo']."/".$grupo['id']."' style='color: ".$color.";'>Recursos</a></td><td class='".$clase."'><a href='".CONTEXT."home/results/".$grupo['id']."/".$grupo['nivelid']."' style='color: ".$color.";'>Reportes</a></td><td><a onclick='gestionar_lecciones(".$grupo['modulo'].",".$grupo['id'].",".$grupo['docenteid'].")'>Gestionar accesos a lecciones</a></td></tr>";
+			$tabla.="<tr>
+                        <td>".$grupo['grupo']."</td>
+                        <td>".$grupo['alumnos']."</td>
+                        <td class='".$clase."'>".$grupo['nivel']."</td>
+                        <td class='".$clase."'>".$grupo['lecciones']."</td>
+                        <td class='".$clase."'>
+                            <a href='".CONTEXT."home/guides/".$grupo['modulo']."/".$grupo['id']."' >Guías</a>
+                        </td>
+                        <td class='".$clase."'>
+                            <a href='".CONTEXT."home/means/".$grupo['modulo']."/".$grupo['id']."' >Recursos</a>
+                        </td>
+                        <td class='".$clase."'>
+                            <a href='".CONTEXT."home/results/".$grupo['id']."/".$grupo['nivelid']."' >Reportes</a>
+                        </td>
+                        <td>
+                            <a style='color: #0d6efd;' onclick='gestionar_lecciones(".$grupo['modulo'].",".$grupo['id'].",".$grupo['docenteid'].")'>Gestionar accesos a lecciones</a>
+                        </td>
+                        <td>
+                            <button class='btn my-2 d-block boton-mostrar-alumnos' data-bs-toggle='modal' grupo='".$grupo['id']."' data-bs-target='#modalAlumnosMostrar' style='color: #0d6efd;'   >
+                                Ver alumnos de grupo
+                            </button>
+                        </td>
+                     </tr>";
 			
 			// Linea original
-			//$tabla.="<tr><td>".$grupo['grupo']."</td><td>".$grupo['alumnos']."</td><td class='".$clase."'>".$grupo['nivel']."</td><td class='".$clase."'>".$grupo['lecciones']."</td><td class='".$clase."'><a href='".CONTEXT."home/guides/".$grupo['modulo']."/".$grupo['id']."' style='color: ".$color.";'>Guías</a></td><td class='".$clase."'><a href='".CONTEXT."home/means/".$grupo['modulo']."/".$grupo['id']."' style='color: ".$color.";'>Recursos</a></td><td class='".$clase."'><a href='".CONTEXT."home/results/".$grupo['id']."/".$grupo['nivelid']."' style='color: ".$color.";'>Reportes</a></td></tr>";
+			//$tabla.="<tr><td>".$grupo['grupo']."</td><td>".$grupo['alumnos']."</td><td class='".$clase."'>".$grupo['nivel']."</td><td class='".$clase."'>".$grupo['lecciones']."</td><td class='".$clase."'><a href='".CONTEXT."home/guides/".$grupo['modulo']."/".$grupo['id']."' >Guías</a></td><td class='".$clase."'><a href='".CONTEXT."home/means/".$grupo['modulo']."/".$grupo['id']."' >Recursos</a></td><td class='".$clase."'><a href='".CONTEXT."home/results/".$grupo['id']."/".$grupo['nivelid']."' >Reportes</a></td></tr>";
 		}
 		$this->renderJSON(array("contenido" => $tabla, "error" => $error));
 	}

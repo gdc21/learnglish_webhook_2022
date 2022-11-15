@@ -1,5 +1,13 @@
 $(document).ready(function () {
+	console.log("function hola");
 	cargar_grupos();
+
+
+
+
+
+
+
 
 	$("#saveGL").click(function (e) {
 		e.preventDefault();
@@ -74,6 +82,59 @@ function cargar_grupos() {
 						"previous": "Anterior"
 					},
 					"info": "Mostrando _START_ de _END_",
+				}
+			});
+
+
+
+			$(".boton-mostrar-alumnos").click(function(){
+
+				var id_grupo = this.getAttribute('grupo');
+				var listadoAlumnosModal = $("#listadoAlumnosModal")[0];
+
+				var data2 = getInfoAjax('listar_alumnos_grupo_especifico', {id: id_grupo}, 'admin');
+
+				if(data2){
+					listadoAlumnosModal.innerHTML = '';
+
+					var tablaAlumnos = document.createElement('table');
+					tablaAlumnos.classList.add('table');
+					tablaAlumnos.classList.add('tabla');
+					tablaAlumnos.id = 'tabla';
+
+					var campos_tabla = ['nombre', 'institucion', 'curp', 'CCT'];
+
+					var tbody = document.createElement('tbody');
+					var thead = document.createElement('thead');
+
+					data2['lista'].forEach(function(item, indiceArray){
+						var tr = document.createElement('tr');
+						tbody.append(tr);
+
+						campos_tabla.forEach(function(elemento, indice_campos){
+							if (indiceArray == 0){
+								var th = document.createElement('th');
+								th.innerHTML = elemento;
+								thead.append(th);
+
+								if(indice_campos == campos_tabla.length-1){
+									var th = document.createElement('th');
+									th.innerHTML = "Acciones";
+									thead.append(th);
+
+									tablaAlumnos.append(thead);
+									tablaAlumnos.append(tbody);
+								}
+							}
+							var td = document.createElement('td');
+							td.innerHTML = item[elemento];
+							tr.append(td);
+
+						});
+					});
+
+					listadoAlumnosModal.append(tablaAlumnos);
+
 				}
 			});
 		}

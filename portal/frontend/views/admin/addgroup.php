@@ -13,9 +13,9 @@
 					<td class="nameCampo">Institución</td>
 					<td>
 						<select name="institucion" id="institucion" class="form-control">
-							<?php if ($_SESSION['perfil'] != 4): ?>
-								<option value="">Selecciona una institucion</option>
-							<?php endif ?>
+
+                            <option value="">Selecciona una institucion</option>
+
 							<?php foreach ($this->temp['instituciones'] as $institucion): ?>
 								<option value="<?php echo $institucion['LGF0270001']; ?>"><?php echo $institucion['LGF0270028']." ".$institucion['LGF0270002']; ?></option>
 							<?php endforeach ?>
