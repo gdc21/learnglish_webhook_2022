@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../persistencia/dao/DaoLG00015.php';
-class Modulo {
+class Modulo extends UniversalDatabase {
 	private $crud;
 	/**
 	 * Inicializacion del objeto
@@ -56,5 +56,14 @@ class Modulo {
 	public function eliminaModulo($lg00015) {
 		return $this->crud->delete ( $lg00015 );
 	}
+
+    public function obtenerModulosDeInstitucion($institucion){
+        $this->query = "SELECT distinct(LGF0150001) as id, LGF0150002 as nombre 
+                        from lg00015,lg00030
+                        where LGF0300003 = LGF0150001 and
+                              LGF0300002 = ".$institucion;
+
+        return $this->doSelect();
+    }
 }
 ?>

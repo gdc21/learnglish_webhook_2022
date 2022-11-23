@@ -87,6 +87,37 @@ class Usuarios  extends UniversalDatabase {
         return $this->doSelect();
     }
 
+    public function obtenerUsuariosDesdeInstitucionCurpNombre($nombre, $institucion, $exacto){
+        $isLike = '';
+        if($exacto == ''){ //Sera consulta de coincidencia
+            $isLike = "and (   
+                            LGF0010040 LIKE '%".$nombre."%' or 
+                            concat(LGF0010002, ' ',  LGF0010003, ' ',LGF0010004) LIKE '%".$nombre."%'
+                        ) ";
+        }elseif($exacto == 'si'){ //Sera consulta exacta de curp
+            $isLike = "and LGF0010040 = '".$nombre."'";
+        }
+
+        $this->query = "SELECT LGF0010001 as id, 
+            LOWER(LGF0010002) as nombre, 
+            LOWER(LGF0010003) as ap1, 
+            LOWER(LGF0010004) as ap2,
+            LGF0010040 as curp,
+            lg00014.LGF0140002 as nivel, 
+            lg00015.LGF0150002 as modulo,
+            LGF0270002 as escuela
+            from lg00001, lg00027, lg00014, lg00015
+            where   lg00014.LGF0140001=lg00001.LGF0010023 and 
+                    lg00015.LGF0150001=lg00001.LGF0010024 and 
+                    lg00027.LGF0270001=lg00001.LGF0010038 and 
+                    LGF0010038 = ".$institucion." and
+                    LGF0010007 = 2  ".
+                    $isLike.
+                    " ORDER BY LGF0010002 LIMIT 10";
+
+        return $this->doSelect();
+    }
+
     public function obtenerLeccionesParaAlumnos($id_usuario){
         $this->query = "SELECT 
             LGF0010001,

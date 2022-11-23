@@ -732,6 +732,26 @@ class HomeController extends Controller_Learnglish
         return $data[0]['nombre'];
     }
 
+    public function teacher_students($id_grupo){
+        $is_my_group = (new Grupos())->obtenGrupo((object)array(
+            'LGF0290001' => $id_grupo,
+            'LGF0290006' => $_SESSION['idUsuario']
+        ));
+
+        if(count($is_my_group) == 0){
+            $this->Redirect();
+        }
+        $this->temp['lista'] = (new Administrador())->listar_alumnos_grupo($id_grupo, 'LGF0010002');
+
+        $this->temp['nombre_grupo'] = $is_my_group[0]['LGF0290002'];
+        $this->temp['modulo'] = $this->convertir_modulo_grado($is_my_group[0]['LGF0290005']);
+        $this->temp['id_modulo'] = $is_my_group[0]['LGF0290005'];
+        $this->temp['id_grupo'] = $id_grupo;
+        $this->temp['id_institucion'] = $is_my_group[0]['LGF0290004'];
+
+        $this->render();
+    }
+
     public function preschool()
     {
         $modulo = 1;
@@ -800,7 +820,7 @@ class HomeController extends Controller_Learnglish
             $imagen = $this->obtenerImagen($levelLeccion, $genero, 0);
         } else if ($_SESSION['perfil'] == 2) {
             $urls = $this->obtenerURL($user[0]['LGF0010024'], 3, $niveles [0] ["LGF0140005"]);
-            $imagen = $this->obtenerImagen($user[0]['LGF0010024'], $genero, 1);
+            $imagen = $this->obtenerImagen($user[0]['LGF0010024'], $genero, 0);
         }
 
         /**
@@ -1639,11 +1659,37 @@ class HomeController extends Controller_Learnglish
 
     public function teacher()
     {
-        $niveles = (new Administrador())->informacion_nivel();
-        // print_r($niveles);
-        $this->temp['preescolar'] = $niveles[0]['color'];
-        $this->temp['primaria'] = $niveles[1]['color'];
-        $this->temp['secundaria'] = $niveles[2]['color'];
+        $institucion = (new Usuarios())->obtenUsuario((object)array(
+            'LGF0010001' => $_SESSION['idUsuario']
+        ))[0]['LGF0010038'];
+
+        $this->temp['modulos_disponibles'] = (new Modulo())->obtenerModulosDeInstitucion($institucion);
+
+
+
+        if($_POST){
+            if($_POST['numero'] != '' && $_POST['letra'] != '' && $_POST['version'] != '' && $_POST['modulo'] != ''){
+
+                $nombreGrupo = "Grupo ".$_POST['numero']."".$_POST['letra'].".".$_POST['version'];
+                $modulo = $_POST['modulo'];
+
+                $creargrupo = (new Grupos())->addGrupo((object)array(
+                    'LGF0290002' => $nombreGrupo,
+                    'LGF0290003' => 1,
+                    'LGF0290004' => $institucion,
+                    'LGF0290005' => $modulo,
+                    'LGF0290006' => $_SESSION['idUsuario']
+                ));
+
+                if($creargrupo){
+                    $_SESSION['status'] = "<b style='color: green'>Grupo creado correctamente</b>";
+                }
+            }else{
+                $_SESSION['status'] = "<b style='color: red;'>Datos faltantes para la creacion del grupo</b>";
+            }
+            $this->Redirect('home', 'teacher');
+        }
+
         $this->render();
     }
 
@@ -2044,7 +2090,7 @@ class HomeController extends Controller_Learnglish
     public function obtenerImagen($niveles, $genero, $seccion)
     {
         $niveles = trim($niveles, ",");
-        if ($seccion == 0) { // Menu primaria
+        if ($seccion == 0) { // Menu prescolar
             $aux = explode(",", $niveles);
             $img1 = "";
             $img2 = "";

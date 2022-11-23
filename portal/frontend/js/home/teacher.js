@@ -1,13 +1,5 @@
 $(document).ready(function () {
-	console.log("function hola");
 	cargar_grupos();
-
-
-
-
-
-
-
 
 	$("#saveGL").click(function (e) {
 		e.preventDefault();
@@ -68,69 +60,114 @@ function mostrarTablaAlumnos(id_grupo, modal, orden){
 
 	if(data2){
 		modal.innerHTML = '';
-		/*Ordenar por*/
-		var ordenNombre = document.createElement('button');
-		ordenNombre.classList.add('btn');
-		ordenNombre.classList.add('shadow');
-		ordenNombre.classList.add('text-white');
-		ordenNombre.classList.add('btn-info');
-		ordenNombre.innerText = "Ordenar por nombre";
-		ordenNombre.onclick = function(){
-			mostrarTablaAlumnos(id_grupo, modal, 'LGF0010002');
-		}
-		/*Ordenar por*/
-		var ordenApellido = document.createElement('button');
-		ordenApellido.classList.add('btn');
-		ordenApellido.classList.add('shadow');
-		ordenApellido.classList.add('ms-3');
-		ordenApellido.classList.add('text-white');
-		ordenApellido.classList.add('btn-warning');
-		ordenApellido.innerText = "Ordenar por apellido paterno";
-		ordenApellido.onclick = function(){
-			mostrarTablaAlumnos(id_grupo, modal, 'LGF0010003');
-		}
 
-		modal.append(ordenNombre);
-		modal.append(ordenApellido);
+		if(data2['permiso'] == 1){
+			/*Administrar, Se creo el boton en el lado de la vista para validacion de modulo
+			permitir edicion a docente este activo*/
+			var adminAlumnos = document.createElement('a');
+			adminAlumnos.target = '_blank';
+			adminAlumnos.href = context + 'home/teacher_students/'+id_grupo;
+			adminAlumnos.classList.add('btn');
+			adminAlumnos.classList.add('shadow');
+			adminAlumnos.classList.add('ms-3');
+			adminAlumnos.classList.add('text-white');
+			adminAlumnos.classList.add('btn-success');
+			adminAlumnos.innerText = "Administrar alumnos";
+
+			modal.append(adminAlumnos);
+		}
 
 		var tablaAlumnos = document.createElement('table');
 		tablaAlumnos.classList.add('table');
 		tablaAlumnos.classList.add('tabla');
-		tablaAlumnos.id = 'tabla';
+		tablaAlumnos.id = 'tablaAlumnos';
 
 		var campos_tabla = ['nombre_simple', 'a_paterno', 'a_materno', 'institucion', 'curp', 'CCT'];
 
+		if(data2['permiso'] == 1){
+			campos_tabla = (","+campos_tabla.toString()).split(',');
+		}
+
 		var tbody = document.createElement('tbody');
 		var thead = document.createElement('thead');
+		var trThead = document.createElement('tr');
 
+		if(data2['lista'].length > 0){
+			data2['lista'].forEach(function(item, indiceArray){
+				var tr = document.createElement('tr');
+				tbody.append(tr);
 
-		data2['lista'].forEach(function(item, indiceArray){
-			var tr = document.createElement('tr');
-			tbody.append(tr);
+				campos_tabla.forEach(function(elemento, indice_campos){
+					if(indice_campos == 0){
+						var td = document.createElement('td');
+						if(data2['permiso'] == 1){
 
-			campos_tabla.forEach(function(elemento, indice_campos){
-				if (indiceArray == 0){
-					var th = document.createElement('th');
-					if(elemento == 'nombre_simple'){
-						th.innerHTML = 'nombre';
+							var botonEliminar = document.createElement('button');
+							botonEliminar.classList.add('btn');
+							botonEliminar.classList.add('btn-danger');
+							botonEliminar.classList.add('font-1x');
+							botonEliminar.innerText = 'Quitar del grupo';
+							botonEliminar.setAttribute('grupo', id_grupo);
+							botonEliminar.setAttribute('id_alumno', item['id']);
+							botonEliminar.onclick = function(){
+
+								if(!confirm("¿Seguro que desear quitar al alumno del grupo?")){
+									return;
+								}
+
+								var data2 = getInfoAjax('eliminar_alumno_grupo',
+									{id_grupo: id_grupo, alumno: item['id']},
+									'admin');
+
+								if(data2){
+									alert(data2['mensaje']);
+									if(data2['status'] == 1){
+										location.reload();
+									}
+								}
+							}
+
+							td.append(botonEliminar);
+							tr.append(td);
+						}
+					}
+					if (indiceArray == 0){
+						var th = document.createElement('th');
+						if(elemento == 'nombre_simple'){
+							th.innerHTML = 'nombre';
+						}else{
+							th.innerHTML = elemento;
+						}
+						trThead.append(th);
+						thead.append(trThead);
+
+						if(indice_campos == campos_tabla.length-1){
+							tablaAlumnos.append(thead);
+							tablaAlumnos.append(tbody);
+						}
+					}
+
+					if(data2['permiso'] == 1){
+						if(indice_campos != 0){
+							var td = document.createElement('td');
+							td.innerHTML = item[elemento];
+							tr.append(td);
+						}
 					}else{
-						th.innerHTML = elemento;
+						var td = document.createElement('td');
+						td.innerHTML = item[elemento];
+						tr.append(td);
 					}
-					thead.append(th);
-
-					if(indice_campos == campos_tabla.length-1){
-						tablaAlumnos.append(thead);
-						tablaAlumnos.append(tbody);
-					}
-				}
-				var td = document.createElement('td');
-				td.innerHTML = item[elemento];
-				tr.append(td);
-
+				});
 			});
-		});
 
-		modal.append(tablaAlumnos);
+			modal.append(tablaAlumnos);
+			$("#tablaAlumnos").dataTable({
+				language: {
+					search: "Buscar alumno: ",
+				}
+			});
+		}
 
 	}
 }
@@ -141,7 +178,6 @@ function cargar_grupos() {
 		data: {grupos: 'grupos'},
 		dataType: 'json',
 		success: function (resp) {
-			console.log(resp)
 			$("#contenido_tabla tbody").html(resp.contenido);
 			$('#contenido_tabla').dataTable({
 				searching: false,
@@ -157,18 +193,36 @@ function cargar_grupos() {
 				}
 			});
 
-
-
+			/* Cuando ya se carga la data lista de grupos, hay un boton que dice
+			* ver alumnos del grupo, esta cargara un listado en el modal con la
+			* funcion mostrarTablaAlumnos*/
 			$(".boton-mostrar-alumnos").click(function(){
-
 				var id_grupo = this.getAttribute('grupo');
 				var listadoAlumnosModal = $("#listadoAlumnosModal")[0];
 
 				mostrarTablaAlumnos(id_grupo, listadoAlumnosModal, 'LGF0010002');
-
-
-
 			});
+
+			$(".eliminar_grupo").click(function(){
+
+				if(confirm("¿Seguro que deseas borrar al grupo?")){
+
+					var grupoId = this.getAttribute('grupo');
+
+					$.ajax({
+						url: context+"admin/eliminar_grupo",
+						type: "POST",
+						data: {grupo: grupoId},
+						dataType: "json",
+						success: function (resp) {
+							alert(resp.respuesta);
+							if(resp.recargar){
+								location.reload();
+							}
+						}
+					});
+				}
+			})
 		}
 	});
 }

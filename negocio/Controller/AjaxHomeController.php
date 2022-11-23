@@ -19,14 +19,73 @@ class AjaxHomeController extends Controller_Learnglish {
 
     }
 
-    public function obtenerUsuariosBusquedaEvaluacionTrimestral(){
-        $nombre = $_POST['nombre'];
-        $alumnos = (new Usuarios())->obtenerUsuariosDesdeInstitucion($nombre);
+    public function asignarAlumnosGrupoVerificandoInstGrupo(){
+        $alumnos = $_POST['alumnos'];
+        $alumnosCantidad = $_POST['alumnosCantidad'];
+        $institucion = $_POST['institucion'];
+        $grupo = $_POST['grupo'];
 
+        $id_docente = $_SESSION['idUsuario'];
+
+        /*Se verifica permisos*/
+        if($_SESSION['perfil'] != 6){
+            $this->renderJSON(array(
+                "status" => 2,
+                "mensaje" => "Acción no permitida por permisos insuficientes."
+            ));
+        }
+
+        /*Verificamos si los alumnos si son de la institucion y son alumnos*/
+        $verificarCurpsContraBase = (new Administrador())->contarAlumnosIdInstitucion($alumnos, $institucion);
+
+        if(count($alumnos) != $verificarCurpsContraBase[0]['cantidad']){
+            $this->renderJSON(array(
+                "status" => 2,
+                "mensaje" => "Usuarios no son alumnos o no son pertenecientes a la institución correspondiente del docente."
+            ));
+        }
+
+        /*Verificamos máxima cantidad de alumnos en grupo para evitar meter de más*/
+        $alumnos_en_grupo = (new Grupos())->cuentaAlumnosGrupo($grupo)[0]['total_alumnos'];
+        $maximo_alumnos_db = verificaModuloSistemaRetornoValor('maximoAlumnosPorGrupo');
+
+        if((intval($alumnos_en_grupo) + intval($alumnosCantidad)) > intval($maximo_alumnos_db)){
+            $this->renderJSON(array(
+                "status" => 2,
+                "mensaje" => "Ya hay demasiados alumnos en el grupo, máximo: ".$maximo_alumnos_db.", contacta a soporte."
+            ));
+        }
+
+        /*Hacemos el cambio de grupo*/
+        $cambio_alumnos_grupo = (new Administrador())->actualizarAlumnosGrupoDocente(
+            $alumnos, $grupo, $id_docente, $institucion, 'ids'
+        );
+
+        if($cambio_alumnos_grupo){
+            $this->renderJSON(array(
+                "status" => 1,
+                "mensaje" => "Alumnos agregados al grupo correctamente."
+            ));
+        }
+
+        $this->renderJSON(array(
+            "status" => 2,
+            "mensaje" => "Fallo en el servidor favor de contactar a soporte."
+        ));
+
+
+    }
+
+
+    public function obtenerUsuariosBusquedaCurpNombre(){
+        $nombre = $_POST['nombre'];
+        $institucion = $_POST['institucion'];
+        $exacto = $_POST['exacto'];
+
+        $alumnos = (new Usuarios())->obtenerUsuariosDesdeInstitucionCurpNombre($nombre, $institucion, $exacto);
         $object = array (
             'data' => $alumnos
         );
-
         $this->renderJSON ( $object );
     }
 
@@ -450,6 +509,8 @@ class AjaxHomeController extends Controller_Learnglish {
 			$error = 0;
 		}
 
+
+
 		foreach ($grupos as $grupo) {
 			if ($grupo['nivelid'] == 2) {
 				$clase = "primaria";
@@ -478,8 +539,20 @@ class AjaxHomeController extends Controller_Learnglish {
                             <button class='btn my-2 d-block boton-mostrar-alumnos' data-bs-toggle='modal' grupo='".$grupo['id']."' data-bs-target='#modalAlumnosMostrar' style='color: #0d6efd;'   >
                                 Ver alumnos de grupo
                             </button>
-                        </td>
-                     </tr>";
+                        </td>";
+
+            if(verificaModuloSistemaActivo('permitirAdministrarGruposDocente')){
+                $tabla .= "<td>
+                                <button class='btn btn-danger font-1x eliminar_grupo' grupo='".$grupo['id']."' >
+                                    Eliminar grupo
+                                </button>
+                            </td>
+                         </tr>";
+            }else{
+                $tabla .= "</tr>";
+            }
+
+
 			
 			// Linea original
 			//$tabla.="<tr><td>".$grupo['grupo']."</td><td>".$grupo['alumnos']."</td><td class='".$clase."'>".$grupo['nivel']."</td><td class='".$clase."'>".$grupo['lecciones']."</td><td class='".$clase."'><a href='".CONTEXT."home/guides/".$grupo['modulo']."/".$grupo['id']."' >Guías</a></td><td class='".$clase."'><a href='".CONTEXT."home/means/".$grupo['modulo']."/".$grupo['id']."' >Recursos</a></td><td class='".$clase."'><a href='".CONTEXT."home/results/".$grupo['id']."/".$grupo['nivelid']."' >Reportes</a></td></tr>";
@@ -577,8 +650,11 @@ class AjaxHomeController extends Controller_Learnglish {
 		foreach ($datos as $dato) {
 			$aux = explode("|", $dato['promedio']);
 			$nombre = $dato['nombre']." ".$dato['apepat']." ".$dato['apemat'];
-			$columnas.="<tr>
-                            <td><a target='_blank' href='".CONTEXT."admin/editUsuario/".$dato["id"]."'>$nombre</a></td>";
+            if($_SESSION['perfil'] == 1){
+			    $columnas.="<tr><td><a target='_blank' href='".CONTEXT."admin/editUsuario/".$dato["id"]."'>$nombre</a></td>";
+            }else{
+			    $columnas.="<tr><td>$nombre</td>";
+            }
 			$suma = 0;
 			$contador1 = 0;
 			for ($i=0; $i < count($aux); $i++) { 

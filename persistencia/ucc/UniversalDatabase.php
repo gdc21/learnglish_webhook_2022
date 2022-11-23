@@ -134,7 +134,8 @@ class UniversalDatabase extends ModelTools
             'verificarDocumentosYspeakCargado',
             'existe_evaluacion_hecha',
             'obtenerResumenAvancesLecciones',
-            'teachers'
+            'teachers',
+            'mostrar_grupos'
 
         ];
         #Verificar si existe una funcion a excluir de la lista $funcionesTraza

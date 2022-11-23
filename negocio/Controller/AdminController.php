@@ -679,8 +679,8 @@
                                 history.go(-1);                           
                         </script>";
                 }
-            }elseif($id_registro != "no" && $_SESSION['perfil'] != 1){
-                $this->Redirect("home", "menu");
+            }else{
+                if($_SESSION['perfil'] != 1) $this->Redirect("home", "menu");
             }
 
             $estadistica = (new EstadisticasCliente())->leerEstadisticasCliente($id_registro);

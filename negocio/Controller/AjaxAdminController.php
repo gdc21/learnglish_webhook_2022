@@ -26,7 +26,7 @@
                 if($verificarCurpsContraBase != []){
 
                     if(count($curpsProcesados) == count($verificarCurpsContraBase)){
-                        $resultado = (new Administrador())->actualizarAlumnosGrupoDocente($curpsProcesados, $grupo, $docente, $institucion);
+                        $resultado = (new Administrador())->actualizarAlumnosGrupoDocente($curpsProcesados, $grupo, $docente, $institucion, 'curps');
 
                         $this->renderJSON ( array (
                             'result' => "updated_correctly",
@@ -981,12 +981,41 @@
             $this->renderJSON(array("lista" => $lista));
         }
 
+        public function eliminar_alumno_grupo(){
+            $alumno = $_POST['alumno'];
+            $id_grupo = $_POST['id_grupo'];
+
+            $respuesta = (new Grupos())->elimina_alumno_grupo($id_grupo, $alumno);
+
+            if($respuesta){
+                $this->renderJSON(array(
+                    "status" => 1,
+                    'mensaje'=> "Alumno eliminado del grupo correctamente."
+                ));
+            }
+            $this->renderJSON(array(
+                "status" => 2,
+                'mensaje'=> "Ocurrio un error, si el error persiste contactar a soporte."
+            ));
+        }
+
+
         public function listar_alumnos_grupo_especifico(){
             $id = $_POST['id'];
             $orden = $_POST['orden'];
+            /*Permiso para gestion de alumnos por parte del docente*/
+            $permiso = 0;
 
             $lista = (new Administrador())->listar_alumnos_grupo($id, $orden);
-			$this->renderJSON(array("lista" => $lista));
+
+            if(verificaModuloSistemaActivo('permitirAdministrarGruposDocente')){
+                $permiso = 1;
+            }
+
+			$this->renderJSON(array(
+                "lista"   => $lista,
+                "permiso" => $permiso
+            ));
         }
 
 		public function obtenerGrupos() {

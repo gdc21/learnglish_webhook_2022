@@ -2,7 +2,7 @@
 	class Administrador extends UniversalDatabase {
 
 
-        public function actualizarAlumnosGrupoDocente($curps, $grupo, $docente, $institucion){
+        public function actualizarAlumnosGrupoDocente($curps, $grupo, $docente, $institucion, $c_ids_o_curps){
 
             /*Si el docente viene vacio significa que no se actualizara el docente actual*/
             /*LGF0010038 campo de institucion, se actualizara el alumno a la fuerza 173 don jon de escandon*/
@@ -11,6 +11,15 @@
                 $accion1 = $this->doSingleQuery();
             }else{
                 $accion1 = 1;
+            }
+
+            /*Para agregar alumnos a un grupo sera por ids, para asignacion masiva sera por curps
+            page: admin/groups
+            page: home/teacher_students */
+            if($c_ids_o_curps == 'curps'){
+                $campoTipoActualizacion = "LGF0010040";
+            }elseif($c_ids_o_curps == 'ids'){
+                $campoTipoActualizacion = "LGF0010001";
             }
 
             if($accion1){
@@ -36,14 +45,13 @@
                                 LGF0010024 = '.$modulo_desde_grupo.',
                                 LGF0010025 = '.$leccion.', 
                                 LGF0010026 = 1 
-                                WHERE LGF0010007 = 2 and LGF0010040 IN ("'.implode('", "', $curps).'")';
+                                WHERE LGF0010007 = 2 and '.$campoTipoActualizacion.' IN ("'.implode('", "', $curps).'")';
                 $accion2 = $this->doSingleQuery();
                 if($accion2){
                     return true;
                 }else{
-                    $this->query = "UPDATE lg00029 SET LGF0290006 = NULL WHERE LGF0290001 = ".$grupo;
-                    $this->doSingleQuery();
-
+                    /*$this->query = "UPDATE lg00029 SET LGF0290006 = NULL WHERE LGF0290001 = ".$grupo;
+                    $this->doSingleQuery();*/
                     return false;
                 }
             }else{
@@ -52,6 +60,16 @@
         }
 
 
+        public function contarAlumnosIdInstitucion($ids, $institucion){
+            $this->query = 'SELECT 
+                count(LGF0010001) as cantidad
+                FROM lg00001 
+                WHERE LGF0010007 = 2 and
+                      LGF0010038 = '.$institucion.' and
+                      LGF0010001 IN ("'.implode('", "', $ids).'")';
+
+            return $this->doSelect();
+        }
 
         public function verificarCurpsAlumnosCargados($curps){
             $this->query = 'SELECT 
@@ -1807,7 +1825,9 @@
                     LGF0010040 AS curp, 
                     LGF0010021 as genero,
                     LGF0010024 as modulo, 
+                    LGF0150001 as id_modulo, 
                     LGF0150002 as nombre_modulo, 
+                    LGF0290001 as id_grupo,
                     LGF0290002 as nombre_grupo,
                     LGF0270002 AS institucion, 
                     LGF0270028 AS CCT    
