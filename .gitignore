@@ -7,9 +7,6 @@ portal/archivos/*.xlsx
 portal/archivos/recursosLecciones
 portal/archivos/iconosLecciones
 portal/archivos/guiasEstudio
-portal/archivos/archivosCargadosPorEstudiantes/speaking/*
-portal/archivos/archivosCargadosPorEstudiantes/documentos/*
-portal/archivos/archivosCargadosPorEstudiantes/blobTemporalAudios/*
 portal/IMG/perfil/*
 conf/Cache/carpetaAlmacenamientoCache/
 .idea
