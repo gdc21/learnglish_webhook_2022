@@ -7138,12 +7138,13 @@
 								}
 							}
 							// echo "</pre>";
-							$mensaje = "Se registro un total de ".$regAdd." usuarios de ".$totalReg." registros.";
+							$mensaje = "Se registro un total de ".$regAdd." usuarios de ".$totalReg." registros, verificar el csv que se descargará";
 						}
                         #######################
                         else {
-							$mensaje = "no hay registros para importar";
-                            $this->renderJSON(array("error"=>1,"mensaje" => $mensaje, "titulo" => "usuarios_NO_cargados", "data1" => $cadena1, "titulo1" => "usuarios_no_cargados"));
+							$mensaje = "No hay registros para importar, verificar el csv que se descargará";
+    						$this->renderJSON(array("error"=>0,"mensaje" => $mensaje, "data"=>$noRegistrado, "titulo" => "usuarios_NO_cargados", "data1" => $cadena1, "titulo1" => "usuarios_no_cargados"));
+                            #$this->renderJSON(array("error"=>0,"mensaje" => $mensaje, "titulo" => "usuarios_NO_cargados", "data1" => $noRegistrado, "titulo1" => "usuarios_no_cargados"));
 						}
 						$cadena1 = null;
 						if (count($noRegistrado) > 0) {
