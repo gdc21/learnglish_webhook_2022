@@ -237,6 +237,7 @@
             /*Campo carga masiva vacio?*/
             if(alumnos_cargar.value == ''){
                 $("#mensajeMasiva").html("<small class='font-red'>Introduce un listado de CURPS para verificar.</small><hr>");
+                $("#guardarAlumnosMasiva").removeClass('disabled');
             }else {
                 /*Campo carga masiva a mayusculas, quitando espacios y tabs*/
                 alumnos_cargar.value = alumnos_cargar.value.toUpperCase();
