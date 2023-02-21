@@ -366,7 +366,9 @@
                             /*#######################################*/
 
                             /*Proceso que agrega curp, obtiene los verdes (cargados en tabla listos), quita duplicados y vuelve a pintar*/
-                            $("#asignacionMasivaOk")[0].innerHTML += "<span class='font-green'>"+alumno.curp+"<span><br>";
+                            if($("#asignacionMasivaOk")[0].innerHTML.indexOf(alumno.curp) == -1) {
+                                $("#asignacionMasivaOk")[0].innerHTML += "<span class='font-green'>" + alumno.curp + "<span><br>";
+                            }
 
                             /*Ponemos los curps correctos para verificar un mensaje "se agregaron alumnos pero aun hay errores"*/
                             curpsCorrectos.push(alumno.curp);
@@ -535,17 +537,29 @@
                 contar_checks_al_click();
                 $('input[name="alumnoSeleccionadoAgregar[]"]').click(function(){
                     var elementoPresionado = this;
+
+                    /*Elimina alumno de la tabla tras dar clic al checkbox*/
                     $("#tablaAgregarAlumnos").DataTable()
                         .row( $(elementoPresionado).parents('tr') )
                         .remove()
                         .draw();
+
+                    var cuadro_alumnos_agregrados = $("#asignacionMasivaOk")[0].innerHTML.split('\n');
+
+                    $("#asignacionMasivaOk")[0].innerHTML = '';
+                    $("#asignacionMasivaOk")[0].innerHTML += cuadro_alumnos_agregrados.filter(function(item, index){
+                        return item.indexOf(elementoPresionado.value) == -1;
+                    }).join('\n');
+
                     contar_checks_al_click();
                 });
 
                 $("#mensaje").html("<span style='color: green;'>Alumno agregado<span>");
 
                 /*Agregar a lista verde el curp que se agrego por buscador */
-                $("#asignacionMasivaOk")[0].innerHTML += "<span class='font-green'>"+alumno.getAttribute('curp')+"<span><br>";
+                if($("#asignacionMasivaOk")[0].innerHTML.indexOf(alumno.getAttribute('curp')) == -1){
+                    $("#asignacionMasivaOk")[0].innerHTML += "<span class='font-green'>"+alumno.getAttribute('curp')+"<span><br>";
+                }
 
                 /*Se quita leyenda de alumno agregado*/
                 setTimeout(function(){
