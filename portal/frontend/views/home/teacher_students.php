@@ -543,13 +543,17 @@
                         .row( $(elementoPresionado).parents('tr') )
                         .remove()
                         .draw();
-
-                    var cuadro_alumnos_agregrados = $("#asignacionMasivaOk")[0].innerHTML.split('\n');
+                    console.log("Diste clic al: ", elementoPresionado);
+                    var cuadro_alumnos_agregrados = $("#asignacionMasivaOk")[0].innerHTML.split('<br>');
 
                     $("#asignacionMasivaOk")[0].innerHTML = '';
                     $("#asignacionMasivaOk")[0].innerHTML += cuadro_alumnos_agregrados.filter(function(item, index){
-                        return item.indexOf(elementoPresionado.value) == -1;
-                    }).join('\n');
+                        console.log("Valor en cuadro: ", item)
+                        console.log("Valor a buscar: ", elementoPresionado.parentElement.parentElement.children[elementoPresionado.parentElement.parentElement.children.length-1].innerText)
+                        return item.indexOf(
+                            elementoPresionado.parentElement.parentElement.children[elementoPresionado.parentElement.parentElement.children.length-1].innerText
+                        ) == -1;
+                    }).join('<br>');
 
                     contar_checks_al_click();
                 });
