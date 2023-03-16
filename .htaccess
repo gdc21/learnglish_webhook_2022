@@ -3,7 +3,7 @@
 # expire GIF and JPG images after a month in the client's cache
 #ExpiresByType image/gif A2592000
 #ExpiresByType image/jpg A2592000
-
+ 
 <IfModule mod_rewrite.c>
 	# Habilitando Rewriting
 	RewriteEngine on
