@@ -4,7 +4,7 @@
 #ExpiresByType image/gif A2592000
 #ExpiresByType image/jpg A2592000
  
-<IfModule mod_rewrite.c>
+<IfModule mod_rewrite.c> 
 	# Habilitando Rewriting
 	RewriteEngine on
 	RewriteRule .* - [E=HTTP_IF_MODIFIED_SINCE:%{HTTP:If-Modified-Since}]
