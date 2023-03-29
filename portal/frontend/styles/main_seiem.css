@@ -1004,6 +1004,9 @@ a.section{
 .section.type-12 {
   background-color: #ef86b4;
 }
+.section.type-13 {
+    background-color: #f5bd3d;
+}
 a.section img {
     float: right;
     height: 44px;

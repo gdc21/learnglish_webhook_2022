@@ -1233,6 +1233,10 @@ a.section {
     background-color: #ef86b4;
 }
 
+.section.type-13 {
+    background-color: #f5bd3d;
+}
+
 a.section img {
     float: right;
     height: 2.2em;
