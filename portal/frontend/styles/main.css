@@ -1234,7 +1234,11 @@ a.section {
 }
 
 .section.type-13 {
-    background-color: #f5bd3d;
+    background-color: #be51e8;
+}
+
+.section.type-14 {
+    background-color: #2d75d8;
 }
 
 a.section img {
