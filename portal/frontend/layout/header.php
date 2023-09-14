@@ -1,36 +1,39 @@
-<?php $this->temp['perfiles'] = array(1,3,4,5,6,7); ?>
+<?php $this->temp['perfiles'] = array(1, 3, 4, 5, 6, 7); ?>
 <?php
 /**
  * Verifica en la seccion de modulos si esta habilitada esta opcion, tbl:lg00043
  */
-if(verificaModuloSistemaActivo('integracionGsuite')){ ?>
-<header style="height: 12vh; display: flex; align-items: center;">
-    <style>
-        @media screen and (max-width: 1300px) {
-            header{
-                height: auto !important;
-                min-height: 9vh !important;
+if (verificaModuloSistemaActivo('integracionGsuite')) { ?>
+    <header style="height: 12vh; display: flex; align-items: center;">
+        <style>
+            @media screen and (max-width: 1300px) {
+                header {
+                    height: auto !important;
+                    min-height: 9vh !important;
+                }
+
+                #imagenPresentacion {
+                    padding: 2px 2px !important;
+                    height: 8vh !important;
+                }
             }
-            #imagenPresentacion{
-                padding: 2px 2px !important;
-                height: 8vh !important;
+
+            @media screen and (max-width: 820px) {
+                header {
+                    min-height: 6vh !important;
+                }
+
+                #imagenPresentacion {
+                    height: 5vh !important;
+                }
             }
-        }
-        @media screen and (max-width: 820px) {
-            header{
-                min-height: 6vh !important;
-            }
-            #imagenPresentacion{
-                height: 5vh !important;
-            }
-        }
-    </style>
-    <?php }else{ ?>
-    <header>
+        </style>
+    <?php } else { ?>
+        <header>
         <?php } ?>
 
 
-        <?php if (! isset ( $_SESSION ["userLogged"] ) || $_SESSION ["tipoSesion"] == 2) { ?>
+        <?php if (!isset($_SESSION["userLogged"]) || $_SESSION["tipoSesion"] == 2) { ?>
             <a class="hide" data-toggle="modal" href='#loginForm' id="btnLogin"></a>
             <div aria-hidden="true" aria-labelledby="Login" role="dialog" tabindex="-1" id="loginForm" class="modal fade" style="display: none;">
                 <div class="modal-dialog modal-sm">
@@ -109,13 +112,13 @@ if(verificaModuloSistemaActivo('integracionGsuite')){ ?>
                 $text = 'Log in';
                 $inicio = 'inicio';
                 $boton_id = 'loginBtn';
-                if (isset ( $_SESSION ['userLogged'] ) && $_SESSION ["tipoSesion"] == 1) {
+                if (isset($_SESSION['userLogged']) && $_SESSION["tipoSesion"] == 1) {
                     $url = CONTEXT . "/home/menu";
                     $text = 'Salir';
                     $boton_id = 'logoutBtn';
                     $inicio = 'inicio_m';
                 }
-                if (isset ( $_SESSION ['userLogged'] ) && $_SESSION ["tipoSesion"] == 2) {
+                if (isset($_SESSION['userLogged']) && $_SESSION["tipoSesion"] == 2) {
                     $url = CONTEXT . "/home/menu";
                     $text = 'Log in';
                     $boton_id = 'loginBtn';
@@ -127,43 +130,49 @@ if(verificaModuloSistemaActivo('integracionGsuite')){ ?>
                 // var_dump($this->temp ['path_home']);
                 ?>
 
-                <li class="menu_inicio menus <?php if(isset($this->temp['retroseso'])){echo 'retroseso';} ?>"><i class="fa fa-home pages <?= $inicio?>"></i></li>
+                <li class="menu_inicio menus <?php if (isset($this->temp['retroseso'])) {
+                                                    echo 'retroseso';
+                                                } ?>"><i class="fa fa-home pages <?= $inicio ?>"></i></li>
 
                 <?php
                 /**
                  * Verifica en la seccion de modulos si esta habilitada esta opcion, tbl:lg00043
                  */
-                if(verificaModuloSistemaActivo('ExamenTrimestral')){ ?>
+                if (verificaModuloSistemaActivo('ExamenTrimestral')) { ?>
                     <li class="align-items-center d-flex">
                         <i class="fa fa-pencil-square" style="margin: 10px;" aria-hidden="true"></i> <br>
                         <strong>
-                            <a href="<?= CONTEXT?>evaluaciontrimestral/evaluacionlistarlecciones" style="color: #000 !important">
+                            <a href="<?= CONTEXT ?>evaluaciontrimestral/evaluacionlistarlecciones" style="color: #000 !important">
                                 Evaluación trimestral
                             </a>
                         </strong>
                     </li>
                 <?php } ?>
 
-
-
-                <?php if (isset ( $_SESSION ["perfil"] ) && ($_SESSION ["perfil"] == 1 || $_SESSION ["perfil"] == 3 || $_SESSION ["perfil"] == 4)) { ?>
-                    <li class="menu_inicio menus <?php if(isset($this->temp['retroseso'])){echo 'retroseso';} ?>">
-                        <strong><a href="<?= CONTEXT?>admin/manager" style="color: #000 !important">Menú</a></strong>
+                <?php if (isset($_SESSION["perfil"]) && ($_SESSION["perfil"] == 1 || $_SESSION["perfil"] == 3 || $_SESSION["perfil"] == 4)) { ?>
+                    <li class="menu_inicio menus <?php if (isset($this->temp['retroseso'])) {
+                                                        echo 'retroseso';
+                                                    } ?>">
+                        <strong><a href="<?= CONTEXT ?>admin/manager" style="color: #000 !important">Menú</a></strong>
                     </li>
                 <?php } else if ($_SESSION['perfil'] == 6) { ?>
-                    <li class="menu_inicio menus <?php if(isset($this->temp['retroseso'])){echo 'retroseso';} ?>"><a href="<?= CONTEXT?>home/teacher/">Menú</a></li>
+                    <li class="menu_inicio menus <?php if (isset($this->temp['retroseso'])) {
+                                                        echo 'retroseso';
+                                                    } ?>"><a href="<?= CONTEXT ?>home/teacher/">Menú</a></li>
                 <?php } elseif ($_SESSION['perfil'] == 7) { ?>
-                    <li class="menu_inicio menus <?php if(isset($this->temp['retroseso'])){echo 'retroseso';} ?>"><a href="<?= CONTEXT?>home/tutor/">Menú</a></li>
+                    <li class="menu_inicio menus <?php if (isset($this->temp['retroseso'])) {
+                                                        echo 'retroseso';
+                                                    } ?>"><a href="<?= CONTEXT ?>home/tutor/">Menú</a></li>
                 <?php } ?>
                 <?php
                 /**
                  * Verifica en la seccion de modulos si esta habilitada esta opcion, tbl:lg00043
                  */
-                if(verificaModuloSistemaActivo('integracionGsuite')){ ?>
-                <ul class="menu_second" style="top: 0 !important; height: 100%; display: flex; align-items: center;">
-                    <?php }else{ ?>
+                if (verificaModuloSistemaActivo('integracionGsuite')) { ?>
+                    <ul class="menu_second" style="top: 0 !important; height: 100%; display: flex; align-items: center;">
+                    <?php } else { ?>
 
-                    <ul class="menu_second">
+                        <ul class="menu_second">
                         <?php } ?>
 
                         <?php if (isset($_SESSION['userLogged'])) {
@@ -171,31 +180,31 @@ if(verificaModuloSistemaActivo('integracionGsuite')){ ?>
                             #$nombre = $login[0]['LGF0010002']." ".$login[0]['LGF0010003']." ".$login[0]['LGF0010004'];
                             $nombre = $login[0]['LGF0010002'];
                             if ($_SESSION['perfil'] == 1) { // Admin
-                                $titulo = "Administrador: ".$nombre;
+                                $titulo = "Administrador: " . $nombre;
                             } else if ($_SESSION['perfil'] == 2) { // Usuario/alumno
-                                $titulo = $login[0]['institucion'].": ".$nombre;
+                                $titulo = $login[0]['institucion'] . ": " . $nombre;
                             } else if ($_SESSION['perfil'] == 3) { // Cliente
-                                $titulo = "Cliente: ".$_SESSION['nombre'];
+                                $titulo = "Cliente: " . $_SESSION['nombre'];
                             } else if ($_SESSION['perfil'] == 4) { // Institucion
-                                $titulo = "Institución: ".$_SESSION['nombre'];
+                                $titulo = "Institución: " . $_SESSION['nombre'];
                             } else if ($_SESSION['perfil'] == 5) { // Demo
-                                $titulo = "Usuario demo: ".$nombre;
+                                $titulo = "Usuario demo: " . $nombre;
                             } else if ($_SESSION['perfil'] == 6) { // Docente
-                                $titulo = "Docente: ".$nombre;
+                                $titulo = "Docente: " . $nombre;
                             } else if ($_SESSION['perfil'] == 7) { // Tutor
-                                $titulo = "Tutor: ".$nombre;
+                                $titulo = "Tutor: " . $nombre;
                             }
                             #$titulo = $nombre;
-                            ?>
+                        ?>
                             <!-- <li><strong><?php echo $titulo; ?></strong></li> -->
                         <?php } ?>
                         <?php if (isset($_SESSION['userLogged'])) {
                             /**
                              * Verifica en la seccion de modulos si esta habilitada esta opcion, tbl:lg00043
                              */
-                            if(verificaModuloSistemaActivo('SistemaCache')){ ?>
+                            if (verificaModuloSistemaActivo('SistemaCache')) { ?>
                                 <li>
-                                    <a  href="<?= CONTEXT ?>home/borrarcache/learn12" target="_blank">Cache</a>
+                                    <a href="<?= CONTEXT ?>home/borrarcache/learn12" target="_blank">Cache</a>
                                 </li>
                             <?php } ?>
                             <li>
@@ -204,11 +213,18 @@ if(verificaModuloSistemaActivo('integracionGsuite')){ ?>
                                         <strong><?php echo $titulo; ?></strong>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-lg-end">
-                                        <a href="<?= CONTEXT?>Home/profile"><i class="fa fa-user" aria-hidden="true"></i> Mi Perfil</a>
+                                        <a href="<?= CONTEXT ?>Home/profile"><i class="fa fa-user" aria-hidden="true"></i> Mi Perfil</a>
                                         <a href="https://translate.google.com.mx/" target="_blank"><i class="fa fa-book" aria-hidden="true"></i> Diccionario</a>
 
+                                        <?php if (verificaModuloSistemaActivo('MenuRecursos')) : ?>
+                                            <a href="https://www.youtube.com/@learnglishpro6011" target="_blank"><i class="fa fa-globe"></i> Videos introductorios</a>
+                                            <a href="https://www.bibliotechnia.com.mx/" target="_blank"><i class="fa fa-globe"></i> Libros digitales</a>
+                                            <a href="https://teachers.learnglishpro.com/Courses/" target="_blank"><i class="fa fa-globe"></i> Ideas para proyectos transversales</a>
+                                            <a href="http://www.hopinadigital.com.mx/" target="_blank"><i class="fa fa-globe"></i> Sitios Web recomendados y Juegos para computadoras y dispositivos móviles.</a>
+                                        <?php endif; ?>
+
                                         <!-- <a id="abrir-traslate" ><i class="fa fa-book" aria-hidden="true" style="color: #000 !important; font-size: 20px !important;"></i> Traductor</a> -->
-                                        <a id="<?= $boton_id?>"><i class="fa fa-sign-out" aria-hidden="true"></i> <?=$text ?></a>
+                                        <a id="<?= $boton_id ?>"><i class="fa fa-sign-out" aria-hidden="true"></i> <?= $text ?></a>
                                     </ul>
                                 </div>
                             </li>
@@ -219,22 +235,22 @@ if(verificaModuloSistemaActivo('integracionGsuite')){ ?>
                                 /**
                                  * Verifica en la seccion de modulos si esta habilitada esta opcion, tbl:lg00043
                                  */
-                                if(verificaModuloSistemaActivo('integracionGsuite')){ ?>
+                                if (verificaModuloSistemaActivo('integracionGsuite')) { ?>
                                     <img id="imagenPresentacion" src="<?php echo CONTEXT ?>/portal/IMG/glimg.png" style="background: rgba(255,255,255,0.7); height: 10vh; padding: 2px 15px; border-radius: 10px; max-height: 100% !important; margin-right: 10px; border: 2px solid rgba(255,255,255,0.4);">
                                 <?php } ?>
 
-                                <a id="<?= $boton_id?>" class="menu-login">Ingresar</a>
+                                <a id="<?= $boton_id ?>" class="menu-login">Ingresar</a>
                                 <img src="<?php echo CONTEXT ?>/portal/IMG/login.png">
                             </li>
                         <?php } ?>
 
                         <li class="menu_inicio menus"></li>
-                        <?php if (isset ( $_SESSION ['userLogged'] ) && $_SESSION ["tipoSesion"] == 2) { ?>
-                            <li><a id="registro" class="menu-login" href="<?= CONTEXT."auth/registro" ?>">Registrate</a></li>
-                        <?php }?>
-                        <!-- <li><a id="<?= $boton_id?>" class="menu-login"><?=$text ?></a></li> -->
+                        <?php if (isset($_SESSION['userLogged']) && $_SESSION["tipoSesion"] == 2) { ?>
+                            <li><a id="registro" class="menu-login" href="<?= CONTEXT . "auth/registro" ?>">Registrate</a></li>
+                        <?php } ?>
+                        <!-- <li><a id="<?= $boton_id ?>" class="menu-login"><?= $text ?></a></li> -->
+                        </ul>
                     </ul>
-                </ul>
         </nav>
-    </header>
-    <!--COMIENZA el div del CONTENIDO EN GENERAL -->
+        </header>
+        <!--COMIENZA el div del CONTENIDO EN GENERAL -->
