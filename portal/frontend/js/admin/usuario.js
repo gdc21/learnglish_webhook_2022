@@ -93,7 +93,7 @@ $(function() {
 							},
 							password : {
 								required : true,
-								minlength: 5,
+								minlength: 3,
 								maxlength: 120
 							},
 							passwordconfirm : {
