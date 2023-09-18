@@ -8,18 +8,18 @@ class HomeController extends Controller_Learnglish
     public function __construct()
     {
         parent::__construct();
-        if (isset ($_SESSION ["userLogged"])) {
-            if ($_SESSION ["tipoSesion"] != 2) {
-                $img_usuario = (new Usuarios ())->obtenUsuario ( ( object ) array (
+        if (isset($_SESSION["userLogged"])) {
+            if ($_SESSION["tipoSesion"] != 2) {
+                $img_usuario = (new Usuarios())->obtenUsuario((object) array(
                     "LGF0010001" => $this->userid
-                ) ) [0] ["LGF0010009"];
+                ))[0]["LGF0010009"];
 
-                $ruta = IMG."perfil/".$img_usuario;
+                $ruta = IMG . "perfil/" . $img_usuario;
 
-                if(!is_file(__DIR__.'/../../portal/IMG/perfil/'.$img_usuario)){
-                    $ruta = IMG."default.png";
+                if (!is_file(__DIR__ . '/../../portal/IMG/perfil/' . $img_usuario)) {
+                    $ruta = IMG . "default.png";
                 }
-                $this->temp ["img_usuario"] = $ruta;
+                $this->temp["img_usuario"] = $ruta;
             }
         }
     }
@@ -34,14 +34,14 @@ class HomeController extends Controller_Learnglish
     }
     /**########################################################################################*/
 
-    public function listarlistening(){
+    public function listarlistening()
+    {
         $datos = (new Administrador())->navegacioncompleta();
         $i = 1;
         foreach ($datos as $dato) {
-            echo $dato['LGF0180001'].'  \\\JMORENO\folder_oda_jon\n'.$dato['LGF0180002'].'\m'.$dato['LGF0180003'].'\l'.$dato['LGF0180006'].'\\'.$dato['LGF0180007'].'<br>';
+            echo $dato['LGF0180001'] . '  \\\JMORENO\folder_oda_jon\n' . $dato['LGF0180002'] . '\m' . $dato['LGF0180003'] . '\l' . $dato['LGF0180006'] . '\\' . $dato['LGF0180007'] . '<br>';
             $i++;
         }
-
     }
 
 
@@ -60,7 +60,7 @@ class HomeController extends Controller_Learnglish
 
                     $rutaMoverSpeaking = "portal/archivos/archivosCargadosPorEstudiantes/speaking/" . $nombreArchivo;
 
-                    $documento = (new EvaluacionDocumentos())->agregarDocumentosYspeakCargado(( object )array(
+                    $documento = (new EvaluacionDocumentos())->agregarDocumentosYspeakCargado((object)array(
                         "LGF0440002" => $this->userid,
                         "LGF0440003" => $leccion,
                         "LGF0440004" => $nombreArchivo,
@@ -129,7 +129,7 @@ class HomeController extends Controller_Learnglish
         $tipoArchivoPermitido = $_POST['tipo_elemento'];
 
         /*********************************************/
-        $orden = (isset ($target_path[3]) ? $target_path[3] : 1);
+        $orden = (isset($target_path[3]) ? $target_path[3] : 1);
         // $target_path[0] -> Nivel
         // $target_path[1] -> Modulo
         // $target_path[2] -> Leccion
@@ -193,27 +193,28 @@ class HomeController extends Controller_Learnglish
                     #orden
                     "LGF0180006" => $orden
                 );
-                $registro_anterior = (new EstructuraNavegacion())->obtenEstructuraNavegacion((object)
-                $buscarRegistro
+                $registro_anterior = (new EstructuraNavegacion())->obtenEstructuraNavegacion(
+                    (object)
+                    $buscarRegistro
                 );
 
                 if ($registro_anterior) {
                     $this->borrar_archivo_directorio(
                         __DIR__ . "/../../" .
-                        $carpeta_buscar_olds_borrar .
-                        $registro_anterior[0][$campoBDinsertar]
+                            $carpeta_buscar_olds_borrar .
+                            $registro_anterior[0][$campoBDinsertar]
                     );
                 }
                 /*$this->renderJSON($registro_anterior);
 					exit;*/
 
-                $actualizar_registro = (new EstructuraNavegacion ())->actualizarEstructuraNavegacion(
-                #Nuevo valor
-                    ( object )array(
+                $actualizar_registro = (new EstructuraNavegacion())->actualizarEstructuraNavegacion(
+                    #Nuevo valor
+                    (object)array(
                         $campoBDinsertar => $nombreFinalArchivo
                     ),
                     #Condicion where
-                    ( object )$buscarRegistro
+                    (object)$buscarRegistro
                 );
 
                 if ($actualizar_registro) {
@@ -224,8 +225,7 @@ class HomeController extends Controller_Learnglish
                     #unlink($target_path);
                     echo 0;
                 }
-            } /*Si los archivos NOOO se mueven correctamente al directorio indicado*/
-            else {
+            } /*Si los archivos NOOO se mueven correctamente al directorio indicado*/ else {
                 /*NO se movio correctamente el documento a la carpeta destino CHECAR PERMISOS EN SERVIDOR*/
                 echo 0;
             }
@@ -280,7 +280,7 @@ class HomeController extends Controller_Learnglish
 
             /*Si los archivos se mueven correctamente al directorio indicado*/
             if (move_uploaded_file($_FILES['fileAjax']['tmp_name'], $target_path)) {
-                $documento = (new EvaluacionDocumentos())->agregarDocumentosYspeakCargado(( object )array(
+                $documento = (new EvaluacionDocumentos())->agregarDocumentosYspeakCargado((object)array(
                     "LGF0440002" => $this->userid,
                     "LGF0440003" => $_POST['leccion'],
                     "LGF0440004" => $nombreFinalArchivo,
@@ -295,8 +295,7 @@ class HomeController extends Controller_Learnglish
                     unlink($target_path);
                     return 0;
                 }
-            } /*Si los archivos NOOO se mueven correctamente al directorio indicado*/
-            else {
+            } /*Si los archivos NOOO se mueven correctamente al directorio indicado*/ else {
                 /*NO se movio correctamente el documento a la carpeta destino CHECAR PERMISOS EN SERVIDOR*/
                 return 0;
             }
@@ -380,33 +379,33 @@ class HomeController extends Controller_Learnglish
 
         $this->temp['ultimoAcceso'] = $this->obtendia($day) . " " . $aux1[2] . " de " . $this->obtenmes($aux1[1]) . " del " . $aux1[0] . " " . $aux[1] . " " . $hora;
 
-        $niveles = (new Nivel ())->obtenNivel();
+        $niveles = (new Nivel())->obtenNivel();
         $n = array();
         foreach ($niveles as $nivel) {
-            $modulos = (new Modulo ())->obtenModulo(( object )array(
-                "LGF0150004" => $nivel ["LGF0140001"]
+            $modulos = (new Modulo())->obtenModulo((object)array(
+                "LGF0150004" => $nivel["LGF0140001"]
             ));
             $m = array();
             foreach ($modulos as $modulo) {
                 array_push($m, array(
-                    "id" => $modulo ["LGF0150001"],
-                    "nombre" => $modulo ["LGF0150002"],
-                    "img" => $modulo ["LGF0150003"]
+                    "id" => $modulo["LGF0150001"],
+                    "nombre" => $modulo["LGF0150002"],
+                    "img" => $modulo["LGF0150003"]
                 ));
             }
 
             array_push($n, array(
-                'id' => $nivel ["LGF0140001"],
-                'nombre' => $nivel ['LGF0140002'],
-                'img' => $nivel ['LGF0140003'],
-                'descripcion' => $nivel ['LGF0140004'],
-                'color' => $nivel ['LGF0140005'],
+                'id' => $nivel["LGF0140001"],
+                'nombre' => $nivel['LGF0140002'],
+                'img' => $nivel['LGF0140003'],
+                'descripcion' => $nivel['LGF0140004'],
+                'color' => $nivel['LGF0140005'],
                 'modulos' => $m,
             ));
         }
 
         $this->temp['nivel_actual'] = $user[0]['LGF0010023'];
-        $this->temp ["niveles"] = $n;
+        $this->temp["niveles"] = $n;
 
         ////////// Validaciones de perfiles
         $validarAccesos = (new Administrador())->validarAccesos();
@@ -445,8 +444,14 @@ class HomeController extends Controller_Learnglish
             $urls = $this->obtenerURL($levelLeccion, 0);
             $imagen = $this->obtenerImagen($levelLeccion, $genero, 0);
         } else if ($_SESSION['perfil'] == 2) {
-            $urls = $this->obtenerURL($user[0]['LGF0010023'], 0);
-            $imagen = $this->obtenerImagen($user[0]['LGF0010023'], $genero, 0);
+            // Habilitar todos los niveles para alumno demo == 55
+            if ($user[0]['LGF0010023'] != 55) {
+                $urls = $this->obtenerURL($user[0]['LGF0010023'], 0);
+                $imagen = $this->obtenerImagen($user[0]['LGF0010023'], $genero, 0);
+            } else {
+                $urls = $this->obtenerURL("A", 0);
+                $imagen = $this->obtenerImagen("A", $genero, 0);
+            }
         }
         $this->temp['urls'] = $urls;
         $this->temp['imagen'] = $imagen;
@@ -537,10 +542,10 @@ class HomeController extends Controller_Learnglish
 
     public function lessons($modulo)
     {
-        $modulos = (new Modulo ())->obtenModulo(( object )array(
+        $modulos = (new Modulo())->obtenModulo((object)array(
             "LGF0150001" => $modulo
         ));
-        if (empty ($modulos)) {
+        if (empty($modulos)) {
             $this->Redirect();
         }
 
@@ -550,39 +555,39 @@ class HomeController extends Controller_Learnglish
         $this->temp['haveGroup'] = empty($user[0]['LGF0010039']) ? 0 : 1;
         $this->temp['group'] = $user[0]['LGF0010039'];
 
-        $niveles = (new Nivel ())->obtenNivel(( object )array(
-            "LGF0140001" => $modulos [0] ["LGF0150004"]
+        $niveles = (new Nivel())->obtenNivel((object)array(
+            "LGF0140001" => $modulos[0]["LGF0150004"]
         ));
-        $this->temp ["color"] = $niveles [0] ["LGF0140005"];
+        $this->temp["color"] = $niveles[0]["LGF0140005"];
 
-        $this->temp ["modulo"] = array(
-            "id" => $modulos [0] ["LGF0150001"],
-            "nombre" => $modulos [0] ["LGF0150002"],
-            "img" => $modulos [0] ["LGF0150003"]
+        $this->temp["modulo"] = array(
+            "id" => $modulos[0]["LGF0150001"],
+            "nombre" => $modulos[0]["LGF0150002"],
+            "img" => $modulos[0]["LGF0150003"]
         );
 
         $lecciones = (new Administrador())->mostrarLecciones($modulo);
 
 
         $h = ($this->check_lesson_active());
-        if ($_SESSION ["perfil"] == 5 && ($h [2] + 1 != 3)) {
+        if ($_SESSION["perfil"] == 5 && ($h[2] + 1 != 3)) {
             $this->is_final_modulo($h);
-        } else if ($_SESSION ["perfil"] != 5) {
+        } else if ($_SESSION["perfil"] != 5) {
             $this->is_final_modulo($h);
         }
         $l = array();
         foreach ($lecciones as $leccion) {
             if ($leccion['LGF0160005'] == 1) { // Lecciones activas
                 $estatus = 0;
-                if ($modulos [0] ["LGF0150004"] <= $h [0]) { // Si el nivel es meno o igual al actual
-                    if ($modulos [0] ["LGF0150004"] < $h [0]) { // Si el nivel es menor al actual desbloquemoa todo
+                if ($modulos[0]["LGF0150004"] <= $h[0]) { // Si el nivel es meno o igual al actual
+                    if ($modulos[0]["LGF0150004"] < $h[0]) { // Si el nivel es menor al actual desbloquemoa todo
                         $estatus = 1;
                     } else {
-                        if ($modulos [0] ["LGF0150001"] <= $h [1]) { // Se compara si el modulo el menos o igual al actual
-                            if ($modulos [0] ["LGF0150001"] < $h [1]) { // Si el modulo es menor al actual lo desbloquemos
+                        if ($modulos[0]["LGF0150001"] <= $h[1]) { // Se compara si el modulo el menos o igual al actual
+                            if ($modulos[0]["LGF0150001"] < $h[1]) { // Si el modulo es menor al actual lo desbloquemos
                                 $estatus = 1;
                             } else {
-                                if ($leccion ["LGF0160007"] <= $h [2]) { // Revisamos si el nivel actual es menor o igual al actual
+                                if ($leccion["LGF0160007"] <= $h[2]) { // Revisamos si el nivel actual es menor o igual al actual
                                     $estatus = 1; // Si es asi, lo desbloqueamos
                                 }
                             }
@@ -593,8 +598,8 @@ class HomeController extends Controller_Learnglish
                 } else {
                     $estatus = 0; // Si es mayor el modulo al del usuario lo bloqueamos todo
                 }
-                if ($leccion ["LGF0160007"] < 9) {
-                    $num_leccion = "0" . $leccion ["LGF0160007"];
+                if ($leccion["LGF0160007"] < 9) {
+                    $num_leccion = "0" . $leccion["LGF0160007"];
                 }
 
                 $ruta = __DIR__ . "/../../portal/archivos/iconosLecciones/";
@@ -614,20 +619,20 @@ class HomeController extends Controller_Learnglish
                 $rutaImg = ARCHIVO_FISICO . "iconosLecciones/n" . $modulos[0]["LGF0150004"] . "/m" . $leccion["LGF0160004"] . "/l" . $leccion["LGF0160007"] . "/" . $leccion["LGF0160003"];
 
                 #Obtener imagen y video de preview para mostrar en modal
-                if ($leccion ["LGF0160008"] != null) {
-                    $imagen = ARCHIVO_FISICO . 'previewsLecciones/l' . $leccion ["LGF0160001"] . "_" . $leccion ["LGF0160008"];
+                if ($leccion["LGF0160008"] != null) {
+                    $imagen = ARCHIVO_FISICO . 'previewsLecciones/l' . $leccion["LGF0160001"] . "_" . $leccion["LGF0160008"];
                 } else {
                     $imagen = "no_image";
                 }
 
                 array_push($l, array(
-                    'id' => $leccion ["LGF0160001"],
-                    'nombre' => $leccion ["LGF0160002"],
+                    'id' => $leccion["LGF0160001"],
+                    'nombre' => $leccion["LGF0160002"],
                     'img' => $rutaImg,
                     'estatus' => 0,
                     'access' => 0,
-                    'url' => CONTEXT . "home/navegar/" . $modulos [0] ["LGF0150004"] . "_" . $modulos [0] ["LGF0150001"] . "_" . $leccion ["LGF0160001"],
-                    'video_preview' => $leccion ["LGF0160009"],
+                    'url' => CONTEXT . "home/navegar/" . $modulos[0]["LGF0150004"] . "_" . $modulos[0]["LGF0150001"] . "_" . $leccion["LGF0160001"],
+                    'video_preview' => $leccion["LGF0160009"],
                     'imagen_preview' => $imagen #Ruta o "no_image"
                 ));
             }
@@ -653,14 +658,14 @@ class HomeController extends Controller_Learnglish
         if ($_SESSION['perfil'] == 1 || $_SESSION['perfil'] == 3) {
             $lock = $this->validarBloqueo("A", "");
         } else if ($_SESSION['perfil'] == 4 || $_SESSION['perfil'] == 6) {
-            $lock = $this->validarBloqueo($levelLeccion, $modulos [0] ["LGF0150001"]);
+            $lock = $this->validarBloqueo($levelLeccion, $modulos[0]["LGF0150001"]);
         } else if ($_SESSION['perfil'] == 2) {
             if ($user[0]['LGF0010039'] == "") {
                 for ($j = 0; $j < count($l); $j++) {
                     $l[$j]['estatus'] = 1;
                     $l[$j]['access'] = 1;
                 }
-                $lock = $this->validarBloqueo($user[0]['LGF0010024'], $modulos [0] ["LGF0150001"]);
+                $lock = $this->validarBloqueo($user[0]['LGF0010024'], $modulos[0]["LGF0150001"]);
             } else {
                 $accesDataL = array(
                     'LGF0370003' => $user[0]['LGF0010039'],
@@ -702,7 +707,7 @@ class HomeController extends Controller_Learnglish
                 }
             }
         }
-        $this->temp ["lecciones"] = $l;
+        $this->temp["lecciones"] = $l;
         $this->temp['bloqueo'] = $lock;
         $this->temp['encabezado'] = self::encabezado($modulos[0]['LGF0150002'] . " - Lecciones");
         $this->render();
@@ -732,13 +737,14 @@ class HomeController extends Controller_Learnglish
         return $data[0]['nombre'];
     }
 
-    public function teacher_students($id_grupo){
+    public function teacher_students($id_grupo)
+    {
         $is_my_group = (new Grupos())->obtenGrupo((object)array(
             'LGF0290001' => $id_grupo,
             'LGF0290006' => $_SESSION['idUsuario']
         ));
 
-        if(count($is_my_group) == 0){
+        if (count($is_my_group) == 0) {
             $this->Redirect();
         }
         $this->temp['lista'] = (new Administrador())->listar_alumnos_grupo($id_grupo, 'LGF0010002');
@@ -755,7 +761,7 @@ class HomeController extends Controller_Learnglish
     public function preschool()
     {
         $modulo = 1;
-        $modulos = (new Modulo ())->obtenModulo(( object )array(
+        $modulos = (new Modulo())->obtenModulo((object)array(
             "LGF0150004" => $modulo
         ));
 
@@ -763,27 +769,27 @@ class HomeController extends Controller_Learnglish
             "LGF0010001" => $this->userid
         ));
 
-        if (empty ($modulos)) {
+        if (empty($modulos)) {
             $this->Redirect();
         }
 
-        $niveles = (new Nivel ())->obtenNivel(( object )array(
-            "LGF0140001" => $modulos [0] ["LGF0150004"]
+        $niveles = (new Nivel())->obtenNivel((object)array(
+            "LGF0140001" => $modulos[0]["LGF0150004"]
         ));
-        $this->temp ["color"] = $niveles[0]["LGF0140005"];
+        $this->temp["color"] = $niveles[0]["LGF0140005"];
 
-        $this->temp ["modulo"] = array(
-            "id" => $modulos [0] ["LGF0150001"],
-            "nombre" => $modulos [0] ["LGF0150002"],
-            "img" => $modulos [0] ["LGF0150003"]
+        $this->temp["modulo"] = array(
+            "id" => $modulos[0]["LGF0150001"],
+            "nombre" => $modulos[0]["LGF0150002"],
+            "img" => $modulos[0]["LGF0150003"]
         );
-        $lecciones = (new Leccion ())->obtenLeccion(( object )array(
+        $lecciones = (new Leccion())->obtenLeccion((object)array(
             "LGF0160004" => $modulo
         ));
         $h = ($this->check_lesson_active());
-        if ($_SESSION ["perfil"] == 5 && ($h [2] + 1 != 3)) {
+        if ($_SESSION["perfil"] == 5 && ($h[2] + 1 != 3)) {
             $this->is_final_modulo($h);
-        } else if ($_SESSION ["perfil"] != 5) {
+        } else if ($_SESSION["perfil"] != 5) {
             $this->is_final_modulo($h);
         }
 
@@ -813,13 +819,13 @@ class HomeController extends Controller_Learnglish
         }
         $aux = explode(",", $levelLeccion);
         if ($_SESSION['perfil'] == 1 || $_SESSION['perfil'] == 5) {
-            $urls = $this->obtenerURL("A", 3, $niveles [0] ["LGF0140005"]);
+            $urls = $this->obtenerURL("A", 3, $niveles[0]["LGF0140005"]);
             $imagen = $this->obtenerImagen("A", $genero, 1);
         } else if ($_SESSION['perfil'] == 4 || $_SESSION['perfil'] == 3 || $_SESSION['perfil'] == 6) {
-            $urls = $this->obtenerURL($levelLeccion, 3, $niveles [0] ["LGF0140005"]);
+            $urls = $this->obtenerURL($levelLeccion, 3, $niveles[0]["LGF0140005"]);
             $imagen = $this->obtenerImagen($levelLeccion, $genero, 0);
         } else if ($_SESSION['perfil'] == 2) {
-            $urls = $this->obtenerURL($user[0]['LGF0010024'], 3, $niveles [0] ["LGF0140005"]);
+            $urls = $this->obtenerURL($user[0]['LGF0010024'], 3, $niveles[0]["LGF0140005"]);
             $imagen = $this->obtenerImagen($user[0]['LGF0010024'], $genero, 0);
         }
 
@@ -847,7 +853,7 @@ class HomeController extends Controller_Learnglish
     public function primary()
     {
         $modulo = 2;
-        $modulos = (new Modulo ())->obtenModulo(( object )array(
+        $modulos = (new Modulo())->obtenModulo((object)array(
             "LGF0150004" => $modulo
         ));
 
@@ -855,27 +861,27 @@ class HomeController extends Controller_Learnglish
             "LGF0010001" => $this->userid
         ));
 
-        if (empty ($modulos)) {
+        if (empty($modulos)) {
             $this->Redirect();
         }
 
-        $niveles = (new Nivel ())->obtenNivel(( object )array(
-            "LGF0140001" => $modulos [0] ["LGF0150004"]
+        $niveles = (new Nivel())->obtenNivel((object)array(
+            "LGF0140001" => $modulos[0]["LGF0150004"]
         ));
-        $this->temp ["color"] = $niveles[0]["LGF0140005"];
+        $this->temp["color"] = $niveles[0]["LGF0140005"];
 
-        $this->temp ["modulo"] = array(
-            "id" => $modulos [0] ["LGF0150001"],
-            "nombre" => $modulos [0] ["LGF0150002"],
-            "img" => $modulos [0] ["LGF0150003"]
+        $this->temp["modulo"] = array(
+            "id" => $modulos[0]["LGF0150001"],
+            "nombre" => $modulos[0]["LGF0150002"],
+            "img" => $modulos[0]["LGF0150003"]
         );
-        $lecciones = (new Leccion ())->obtenLeccion(( object )array(
+        $lecciones = (new Leccion())->obtenLeccion((object)array(
             "LGF0160004" => $modulo
         ));
         $h = ($this->check_lesson_active());
-        if ($_SESSION ["perfil"] == 5 && ($h [2] + 1 != 3)) {
+        if ($_SESSION["perfil"] == 5 && ($h[2] + 1 != 3)) {
             $this->is_final_modulo($h);
-        } else if ($_SESSION ["perfil"] != 5) {
+        } else if ($_SESSION["perfil"] != 5) {
             $this->is_final_modulo($h);
         }
 
@@ -905,13 +911,13 @@ class HomeController extends Controller_Learnglish
         }
         $aux = explode(",", $levelLeccion);
         if ($_SESSION['perfil'] == 1 || $_SESSION['perfil'] == 5) {
-            $urls = $this->obtenerURL("A", 1, $niveles [0] ["LGF0140005"]);
+            $urls = $this->obtenerURL("A", 1, $niveles[0]["LGF0140005"]);
             $imagen = $this->obtenerImagen("A", $genero, 1);
         } else if ($_SESSION['perfil'] == 4 || $_SESSION['perfil'] == 3 || $_SESSION['perfil'] == 6) {
-            $urls = $this->obtenerURL($levelLeccion, 1, $niveles [0] ["LGF0140005"]);
+            $urls = $this->obtenerURL($levelLeccion, 1, $niveles[0]["LGF0140005"]);
             $imagen = $this->obtenerImagen($levelLeccion, $genero, 1);
         } else if ($_SESSION['perfil'] == 2) {
-            $urls = $this->obtenerURL($user[0]['LGF0010024'], 1, $niveles [0] ["LGF0140005"]);
+            $urls = $this->obtenerURL($user[0]['LGF0010024'], 1, $niveles[0]["LGF0140005"]);
             $imagen = $this->obtenerImagen($user[0]['LGF0010024'], $genero, 1);
         }
 
@@ -939,7 +945,7 @@ class HomeController extends Controller_Learnglish
     public function secundary()
     {
         $modulo = 3;
-        $modulos = (new Modulo ())->obtenModulo(( object )array(
+        $modulos = (new Modulo())->obtenModulo((object)array(
             "LGF0150004" => $modulo
         ));
 
@@ -947,28 +953,28 @@ class HomeController extends Controller_Learnglish
             "LGF0010001" => $this->userid
         ));
 
-        if (empty ($modulos)) {
+        if (empty($modulos)) {
             $this->Redirect();
         }
 
-        $niveles = (new Nivel ())->obtenNivel(( object )array(
-            "LGF0140001" => $modulos [0] ["LGF0150004"]
+        $niveles = (new Nivel())->obtenNivel((object)array(
+            "LGF0140001" => $modulos[0]["LGF0150004"]
         ));
 
-        $this->temp ["color"] = $niveles [0] ["LGF0140005"];
+        $this->temp["color"] = $niveles[0]["LGF0140005"];
 
-        $this->temp ["modulo"] = array(
-            "id" => $modulos [0] ["LGF0150001"],
-            "nombre" => $modulos [0] ["LGF0150002"],
-            "img" => $modulos [0] ["LGF0150003"]
+        $this->temp["modulo"] = array(
+            "id" => $modulos[0]["LGF0150001"],
+            "nombre" => $modulos[0]["LGF0150002"],
+            "img" => $modulos[0]["LGF0150003"]
         );
-        $lecciones = (new Leccion ())->obtenLeccion(( object )array(
+        $lecciones = (new Leccion())->obtenLeccion((object)array(
             "LGF0160004" => $modulo
         ));
         $h = ($this->check_lesson_active());
-        if ($_SESSION ["perfil"] == 5 && ($h [2] + 1 != 3)) {
+        if ($_SESSION["perfil"] == 5 && ($h[2] + 1 != 3)) {
             $this->is_final_modulo($h);
-        } else if ($_SESSION ["perfil"] != 5) {
+        } else if ($_SESSION["perfil"] != 5) {
             $this->is_final_modulo($h);
         }
         $l = array();
@@ -999,13 +1005,13 @@ class HomeController extends Controller_Learnglish
         }
         $aux = explode(",", $levelLeccion);
         if ($_SESSION['perfil'] == 1 || $_SESSION['perfil'] == 5 || $_SESSION['perfil'] == 3) {
-            $urls = $this->obtenerURL("A", 2, $niveles [0] ["LGF0140005"]);
+            $urls = $this->obtenerURL("A", 2, $niveles[0]["LGF0140005"]);
             $imagen = $this->obtenerImagen("A", $genero, 2);
         } else if ($_SESSION['perfil'] == 4 || $_SESSION['perfil'] == 6) {
-            $urls = $this->obtenerURL($levelLeccion, 2, $niveles [0] ["LGF0140005"]);
+            $urls = $this->obtenerURL($levelLeccion, 2, $niveles[0]["LGF0140005"]);
             $imagen = $this->obtenerImagen($levelLeccion, $genero, 2);
         } else if ($_SESSION['perfil'] == 2) {
-            $urls = $this->obtenerURL($user[0]['LGF0010024'], 2, $niveles [0] ["LGF0140005"]);
+            $urls = $this->obtenerURL($user[0]['LGF0010024'], 2, $niveles[0]["LGF0140005"]);
             $imagen = $this->obtenerImagen($user[0]['LGF0010024'], $genero, 2);
         }
 
@@ -1062,8 +1068,8 @@ class HomeController extends Controller_Learnglish
             $this->Redirect("home", "menu");
         }
 
-        $mostrar_ocultas = (isset ($url[4]) ? 0 : 1);
-        $orden = (isset ($url[3]) ? $url[3] : 1);
+        $mostrar_ocultas = (isset($url[4]) ? 0 : 1);
+        $orden = (isset($url[3]) ? $url[3] : 1);
         $nav = (new Administrador())->navegacion($url[0], $url[1], $url[2], 0, $mostrar_ocultas);
         $current = $this->buscar($nav, $orden);
         #var_dump($current);
@@ -1099,7 +1105,7 @@ class HomeController extends Controller_Learnglish
             /*"LGF0410002" => $current ["ID_nivel"],
 				"LGF0410003" => $current ["ID_modulo"],
 				"LGF0410005" => $current ["ID_seccion"],*/
-            "LGF0410004" => $current ["ID_leccion"],
+            "LGF0410004" => $current["ID_leccion"],
             "LGF0410006" => $this->userid
         ));
 
@@ -1118,7 +1124,7 @@ class HomeController extends Controller_Learnglish
         ));
 
         $_logReg = array(
-            'LGF0360002' => $_SESSION ["idUsuario"],
+            'LGF0360002' => $_SESSION["idUsuario"],
             'LGF0360003' => 2,
             'LGF0360006' => $url[0],
             'LGF0360007' => $url[1],
@@ -1130,7 +1136,7 @@ class HomeController extends Controller_Learnglish
                 unset($_SESSION['regLeccion']);
             }
             $_logReg = array(
-                'LGF0360002' => $_SESSION ["idUsuario"],
+                'LGF0360002' => $_SESSION["idUsuario"],
                 'LGF0360003' => 2,
                 'LGF0360004' => date("Y-m-d H:i:s"),
                 'LGF0360006' => $url[0],
@@ -1142,15 +1148,15 @@ class HomeController extends Controller_Learnglish
         }
 
         $evaluacion = (new Evaluacion())->obtenEvaluacion((object)array(
-            "LGF0190005" => $current ["ID_nivel"],
-            "LGF0190006" => $current ["ID_modulo"],
-            "LGF0190007" => $current ["ID_leccion"],
+            "LGF0190005" => $current["ID_nivel"],
+            "LGF0190006" => $current["ID_modulo"],
+            "LGF0190007" => $current["ID_leccion"],
             "LGF0190010" => 1
         ));
 
         $ordenEval = (new Administrador())->orden_evaluacion($current["ID_modulo"], $current["ID_leccion"]);
 
-        $actual_abs = ODA . "n" . $current["ID_nivel"] . "/m" . $current["ID_modulo"] . "/l" . $current["numero_leccion"] . "/" . $current ["directorio"] . "/";
+        $actual_abs = ODA . "n" . $current["ID_nivel"] . "/m" . $current["ID_modulo"] . "/l" . $current["numero_leccion"] . "/" . $current["directorio"] . "/";
         $actual_rel = ODA_REL . "n" . $current["ID_nivel"] . "/m" . $current["ID_modulo"] . "/l" . $current["numero_leccion"] . "/" . $current["directorio"] . "/";
         $this->temp["dir_oda"] = $actual_rel;
 
@@ -1181,7 +1187,7 @@ class HomeController extends Controller_Learnglish
                 #Verificamos si ya se cargaron los archivos para poder hacer su evaluacion
                 $haSubidoArchivosSpeakDoc = (new EvaluacionDocumentos())->verificarDocumentosYspeakCargado((object)array(
                     "LGF0440002" => $this->userid,
-                    "LGF0440003" => $current ["ID_leccion"],
+                    "LGF0440003" => $current["ID_leccion"],
                 ));
                 #var_dump($current ["ID_leccion"]);
 
@@ -1208,18 +1214,16 @@ class HomeController extends Controller_Learnglish
                         $this->temp['anotaciones'] = 'files_loaded';
 
                         #Verificamos si el alumno ya realizo su evaluacion
-                        $evaluacionHechaLeccion = (new Administrador())->existe_evaluacion_hecha($this->userid, $current ["ID_leccion"]);
+                        $evaluacionHechaLeccion = (new Administrador())->existe_evaluacion_hecha($this->userid, $current["ID_leccion"]);
                         #var_dump($evaluacionHechaLeccion);
                         if ($evaluacionHechaLeccion) {
                             $this->temp['examen'] = 'already_applied';
                             $this->temp['resultadosEval'] = $evaluacionHechaLeccion[0];
-
                         } else {
                             $this->temp['examen'] = 'not_applied';
                         }
                         $this->temp["js_evaluacion_abs"] = ODA . "../frontend/js/evaluacion.js";
                         $this->temp["js_evaluacion_rel"] = ODA_REL . "../frontend/js/evaluacion.js";
-
                     } elseif ($speaking) {
                         $this->temp['anotaciones'] = 'document_missing';
                     } elseif ($documentoSolicitado) {
@@ -1272,8 +1276,8 @@ class HomeController extends Controller_Learnglish
         $this->temp['instrucciones_es'] = ($current["texto_es"] == "" ? "" : $current["texto_es"]);
         $this->temp['instrucciones_en'] = ($current["texto_en"] == "" ? "" : $current["texto_en"]);
 
-        $this->temp ["anterior"] = ($prev != null ? CONTEXT . "home/navegar/" . $prev["ID_nivel"] . "_" . $prev["ID_modulo"] . "_" . $prev["ID_leccion"] . "_" . $prev["orden"] : CONTEXT . "home/lessons/" . $current["ID_modulo"]);
-        $this->temp ["siguiente"] = ($next != null ? CONTEXT . "home/navegar/" . $next["ID_nivel"] . "_" . $next["ID_modulo"] . "_" . $next["ID_leccion"] . "_" . $next["orden"] : CONTEXT . "home/lessons/" . $current ["ID_modulo"]);
+        $this->temp["anterior"] = ($prev != null ? CONTEXT . "home/navegar/" . $prev["ID_nivel"] . "_" . $prev["ID_modulo"] . "_" . $prev["ID_leccion"] . "_" . $prev["orden"] : CONTEXT . "home/lessons/" . $current["ID_modulo"]);
+        $this->temp["siguiente"] = ($next != null ? CONTEXT . "home/navegar/" . $next["ID_nivel"] . "_" . $next["ID_modulo"] . "_" . $next["ID_leccion"] . "_" . $next["orden"] : CONTEXT . "home/lessons/" . $current["ID_modulo"]);
 
         $this->temp["id_modulo"] = $current["ID_modulo"];
         $this->temp["id_nivel"] = $current["ID_nivel"];
@@ -1338,7 +1342,7 @@ class HomeController extends Controller_Learnglish
         }
         #var_dump($this->temp);
         #ACTIVADOS MOMENTANEAMIENTE
-        if($_SESSION['perfil'] == 1 && (!empty($evaluacion) && $current["orden"] == $ordenEval[0]['orden'])){
+        if ($_SESSION['perfil'] == 1 && (!empty($evaluacion) && $current["orden"] == $ordenEval[0]['orden'])) {
             $this->temp["js_evaluacion_abs"] = ODA . "../frontend/js/evaluacion.js";
             $this->temp["js_evaluacion_rel"] = ODA_REL . "../frontend/js/evaluacion.js";
         }
@@ -1347,15 +1351,15 @@ class HomeController extends Controller_Learnglish
 
     private function buscar(&$array, $orden, $next = true)
     {
-        if ($orden > $array [count($array) - 1] ["orden"]) {
+        if ($orden > $array[count($array) - 1]["orden"]) {
             return null;
         }
         if ($orden <= 0) {
             return null;
         }
         foreach ($array as $k => $v) {
-            if ($v ['orden'] == $orden) {
-                return $array [$k];
+            if ($v['orden'] == $orden) {
+                return $array[$k];
                 break;
             }
         }
@@ -1366,14 +1370,14 @@ class HomeController extends Controller_Learnglish
 
     private function check_lesson_active()
     {
-        $usuario = (new Usuarios ())->obtenUsuario(( object )array(
+        $usuario = (new Usuarios())->obtenUsuario((object)array(
             "LGF0010001" => $this->userid
         ));
-        $usuario = $usuario [0];
-        $nivel = empty ($usuario ["LGF0010023"]) ? 1 : $usuario ["LGF0010023"];
-        $modulo = empty ($usuario ["LGF0010024"]) ? 1 : $usuario ["LGF0010024"];
-        $leccion = empty ($usuario ["LGF0010025"]) ? 1 : $usuario ["LGF0010025"];
-        $orden = empty ($usuario ["LGF0010026"]) ? 1 : $usuario ["LGF0010026"];
+        $usuario = $usuario[0];
+        $nivel = empty($usuario["LGF0010023"]) ? 1 : $usuario["LGF0010023"];
+        $modulo = empty($usuario["LGF0010024"]) ? 1 : $usuario["LGF0010024"];
+        $leccion = empty($usuario["LGF0010025"]) ? 1 : $usuario["LGF0010025"];
+        $orden = empty($usuario["LGF0010026"]) ? 1 : $usuario["LGF0010026"];
         return array(
             $nivel,
             $modulo,
@@ -1386,7 +1390,7 @@ class HomeController extends Controller_Learnglish
     private function paso_siguiente_leccion($nivel, $modulo, $leccion, $seccion, $update)
     {
         // echo "Nivel: ".$nivel." Modulo: ".$modulo." Leccion: ".$leccion." Orden: ".$seccion." Update: ".$update."<br>";
-        $datos = (new Usuarios ())->obtenUsuario(( object )array(
+        $datos = (new Usuarios())->obtenUsuario((object)array(
             "LGF0010001" => $this->userid
         ));
         $datos = $datos[0];
@@ -1410,7 +1414,7 @@ class HomeController extends Controller_Learnglish
                                 );
 
                                 // print_r($usuario);
-                                (new Usuarios ())->actualizarUsuario(( object )$usuario, ( object )array(
+                                (new Usuarios())->actualizarUsuario((object)$usuario, (object)array(
                                     "LGF0010001" => $this->userid
                                 ));
                             }
@@ -1423,7 +1427,7 @@ class HomeController extends Controller_Learnglish
                                 "LGF0010026" => $seccion
                             );
                             // print_r($usuario);
-                            (new Usuarios ())->actualizarUsuario(( object )$usuario, ( object )array(
+                            (new Usuarios())->actualizarUsuario((object)$usuario, (object)array(
                                 "LGF0010001" => $this->userid
                             ));
                         }
@@ -1436,24 +1440,24 @@ class HomeController extends Controller_Learnglish
     private function save_lesson_active($nivel, $modulo, $leccion, $orden)
     {
         // echo "Nivel: ".$nivel." Modulo: ".$modulo." Leccion: ".$leccion." Orden: ".$orden."<br>";
-        $usuario = (new Usuarios ())->obtenUsuario(( object )array(
+        $usuario = (new Usuarios())->obtenUsuario((object)array(
             "LGF0010001" => $this->userid
         ));
-        $usuario = $usuario [0];
-        if ($usuario ["LGF0010023"] <= $nivel) {
-            $usuario ["LGF0010023"] = ($usuario ["LGF0010023"] < $nivel) ? $nivel : $usuario ["LGF0010023"];
-            if ($usuario ["LGF0010024"] <= $modulo) {
-                $usuario ["LGF0010024"] = ($usuario ["LGF0010024"] < $modulo) ? $modulo : $usuario ["LGF0010024"];
-                if ($usuario ["LGF0010025"] <= $leccion) {
-                    $usuario ["LGF0010025"] = ($usuario ["LGF0010025"] < $leccion) ? $leccion : $usuario ["LGF0010025"];
-                    if ($usuario ["LGF0010026"] <= $orden) {
-                        $usuario ["LGF0010026"] = ($usuario ["LGF0010026"] < $orden) ? $orden : $usuario ["LGF0010026"];
+        $usuario = $usuario[0];
+        if ($usuario["LGF0010023"] <= $nivel) {
+            $usuario["LGF0010023"] = ($usuario["LGF0010023"] < $nivel) ? $nivel : $usuario["LGF0010023"];
+            if ($usuario["LGF0010024"] <= $modulo) {
+                $usuario["LGF0010024"] = ($usuario["LGF0010024"] < $modulo) ? $modulo : $usuario["LGF0010024"];
+                if ($usuario["LGF0010025"] <= $leccion) {
+                    $usuario["LGF0010025"] = ($usuario["LGF0010025"] < $leccion) ? $leccion : $usuario["LGF0010025"];
+                    if ($usuario["LGF0010026"] <= $orden) {
+                        $usuario["LGF0010026"] = ($usuario["LGF0010026"] < $orden) ? $orden : $usuario["LGF0010026"];
                     }
                 }
             }
         }
 
-        (new Usuarios ())->actualizarUsuario(( object )$usuario, ( object )array(
+        (new Usuarios())->actualizarUsuario((object)$usuario, (object)array(
             "LGF0010001" => $this->userid
         ));
     }
@@ -1461,53 +1465,53 @@ class HomeController extends Controller_Learnglish
     private function is_final_modulo(&$historia)
     {
         // Recuperamos los modulos del nivel
-        $modulos = (new Modulo ())->obtenModulo(( object )array(
-            "LGF0150004" => $historia [0]
+        $modulos = (new Modulo())->obtenModulo((object)array(
+            "LGF0150004" => $historia[0]
         ));
         // Recuperamos las lecciones del modulo
-        $lecciones = (new Leccion ())->obtenLeccion(( object )array(
-            "LGF0160004" => $historia [1]
+        $lecciones = (new Leccion())->obtenLeccion((object)array(
+            "LGF0160004" => $historia[1]
         ));
         // Recuperamos la leccion actual
-        $leccion_actual = (new Leccion ())->obtenLeccion(( object )array(
-            "LGF0160004" => $historia [1],
-            "LGF0160007" => $historia [2]
+        $leccion_actual = (new Leccion())->obtenLeccion((object)array(
+            "LGF0160004" => $historia[1],
+            "LGF0160007" => $historia[2]
         ));
         // Recuperamos la navegacion de orden
-        $nav = (new Administrador ())->navegacion($historia [0], $historia [1], $leccion_actual [0] ["LGF0160001"]);
+        $nav = (new Administrador())->navegacion($historia[0], $historia[1], $leccion_actual[0]["LGF0160001"]);
         // Revisamos si llego al top de objetos de la leccion
 
-        if ($historia [3] == $nav [count($nav) - 1] ["orden"]) {
+        if ($historia[3] == $nav[count($nav) - 1]["orden"]) {
             // if ($historia [3] == count ( $nav )) {
             // Recuperamos el usuario
-            $usuario = (new Usuarios ())->obtenUsuario(( object )array(
+            $usuario = (new Usuarios())->obtenUsuario((object)array(
                 "LGF0010001" => $this->userid
             ));
-            $usuario = $usuario [0];
-            $historia [3] = 1; // Si llegamos al limite reseteamos
-            $usuario ["LGF0010026"] = $historia [3]; // Guardamos el reseteo del modulo con el usuario
-            if ($historia [2] + 1 > count($lecciones)) { // Revisamos si hemos llegado al limite de lecciones del modulo
-                $historia [2] = 1; // Reseteamos la leccion
-                $usuario ["LGF0010025"] = $historia [2]; // Guardamos el reseteo del modulo con el usuario
-                if ($historia [1] + 1 > count($modulos)) {
+            $usuario = $usuario[0];
+            $historia[3] = 1; // Si llegamos al limite reseteamos
+            $usuario["LGF0010026"] = $historia[3]; // Guardamos el reseteo del modulo con el usuario
+            if ($historia[2] + 1 > count($lecciones)) { // Revisamos si hemos llegado al limite de lecciones del modulo
+                $historia[2] = 1; // Reseteamos la leccion
+                $usuario["LGF0010025"] = $historia[2]; // Guardamos el reseteo del modulo con el usuario
+                if ($historia[1] + 1 > count($modulos)) {
                     // Aumentamos el nivel si este ya supero los modulos
-                    if ($historia [0] != 2) {
-                        $historia [0] += 1;
+                    if ($historia[0] != 2) {
+                        $historia[0] += 1;
                     }
-                    $usuario ["LGF0010023"] = $historia [0];
+                    $usuario["LGF0010023"] = $historia[0];
                     // aumentamos el modulo
-                    $historia [1] += 1;
-                    $usuario ["LGF0010024"] = $historia [1];
+                    $historia[1] += 1;
+                    $usuario["LGF0010024"] = $historia[1];
                 } else {
                     // volvemos a aumentar el modulo
-                    $historia [1] += 1;
-                    $usuario ["LGF0010024"] = $historia [1];
+                    $historia[1] += 1;
+                    $usuario["LGF0010024"] = $historia[1];
                 }
             } else {
-                $historia [2] += 1; // Si no es asi, aumentamos uno para desbloquear el siguiente
-                $usuario ["LGF0010025"] = $historia [2]; // Guardamos el reseteo del modulo con el usuario
+                $historia[2] += 1; // Si no es asi, aumentamos uno para desbloquear el siguiente
+                $usuario["LGF0010025"] = $historia[2]; // Guardamos el reseteo del modulo con el usuario
             }
-            (new Usuarios ())->actualizarUsuario(( object )$usuario, ( object )array(
+            (new Usuarios())->actualizarUsuario((object)$usuario, (object)array(
                 "LGF0010001" => $this->userid
             ));
         }
@@ -1667,10 +1671,10 @@ class HomeController extends Controller_Learnglish
 
 
 
-        if($_POST){
-            if($_POST['numero'] != '' && $_POST['letra'] != '' && $_POST['version'] != '' && $_POST['modulo'] != ''){
+        if ($_POST) {
+            if ($_POST['numero'] != '' && $_POST['letra'] != '' && $_POST['version'] != '' && $_POST['modulo'] != '') {
 
-                $nombreGrupo = "Grupo ".$_POST['numero']."".$_POST['letra'].".".$_POST['version'];
+                $nombreGrupo = "Grupo " . $_POST['numero'] . "" . $_POST['letra'] . "." . $_POST['version'];
                 $modulo = $_POST['modulo'];
 
                 $creargrupo = (new Grupos())->addGrupo((object)array(
@@ -1681,10 +1685,10 @@ class HomeController extends Controller_Learnglish
                     'LGF0290006' => $_SESSION['idUsuario']
                 ));
 
-                if($creargrupo){
+                if ($creargrupo) {
                     $_SESSION['status'] = "<b style='color: green'>Grupo creado correctamente</b>";
                 }
-            }else{
+            } else {
                 $_SESSION['status'] = "<b style='color: red;'>Datos faltantes para la creacion del grupo</b>";
             }
             $this->Redirect('home', 'teacher');
@@ -2459,5 +2463,3 @@ class HomeController extends Controller_Learnglish
         return $bloqueo;
     }
 }
-
-?>
