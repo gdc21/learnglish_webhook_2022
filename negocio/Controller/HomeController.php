@@ -825,8 +825,14 @@ class HomeController extends Controller_Learnglish
             $urls = $this->obtenerURL($levelLeccion, 3, $niveles[0]["LGF0140005"]);
             $imagen = $this->obtenerImagen($levelLeccion, $genero, 0);
         } else if ($_SESSION['perfil'] == 2) {
-            $urls = $this->obtenerURL($user[0]['LGF0010024'], 3, $niveles[0]["LGF0140005"]);
-            $imagen = $this->obtenerImagen($user[0]['LGF0010024'], $genero, 0);
+            // Habilitar todos los niveles para alumno demo == 55
+            if ($user[0]['LGF0010023'] != 55) {
+                $urls = $this->obtenerURL($user[0]['LGF0010024'], 3, $niveles[0]["LGF0140005"]);
+                $imagen = $this->obtenerImagen($user[0]['LGF0010024'], $genero, 0);
+            } else {
+                $urls = $this->obtenerURL("A", 3, $niveles[0]["LGF0140005"]);
+                $imagen = $this->obtenerImagen("A", $genero, 1);
+            }
         }
 
         /**
@@ -917,8 +923,14 @@ class HomeController extends Controller_Learnglish
             $urls = $this->obtenerURL($levelLeccion, 1, $niveles[0]["LGF0140005"]);
             $imagen = $this->obtenerImagen($levelLeccion, $genero, 1);
         } else if ($_SESSION['perfil'] == 2) {
-            $urls = $this->obtenerURL($user[0]['LGF0010024'], 1, $niveles[0]["LGF0140005"]);
-            $imagen = $this->obtenerImagen($user[0]['LGF0010024'], $genero, 1);
+            // Habilitar todos los niveles para alumno demo == 55
+            if ($user[0]['LGF0010023'] != 55) {
+                $urls = $this->obtenerURL($user[0]['LGF0010024'], 1, $niveles[0]["LGF0140005"]);
+                $imagen = $this->obtenerImagen($user[0]['LGF0010024'], $genero, 1);
+            } else {
+                $urls = $this->obtenerURL("A", 1, $niveles[0]["LGF0140005"]);
+                $imagen = $this->obtenerImagen("A", $genero, 1);
+            }
         }
 
         /**
@@ -1011,8 +1023,14 @@ class HomeController extends Controller_Learnglish
             $urls = $this->obtenerURL($levelLeccion, 2, $niveles[0]["LGF0140005"]);
             $imagen = $this->obtenerImagen($levelLeccion, $genero, 2);
         } else if ($_SESSION['perfil'] == 2) {
-            $urls = $this->obtenerURL($user[0]['LGF0010024'], 2, $niveles[0]["LGF0140005"]);
-            $imagen = $this->obtenerImagen($user[0]['LGF0010024'], $genero, 2);
+            // Habilitar todos los niveles para alumno demo == 55
+            if ($user[0]['LGF0010023'] != 55) {
+                $urls = $this->obtenerURL($user[0]['LGF0010024'], 2, $niveles[0]["LGF0140005"]);
+                $imagen = $this->obtenerImagen($user[0]['LGF0010024'], $genero, 2);
+            } else {
+                $urls = $this->obtenerURL("A", 2, $niveles[0]["LGF0140005"]);
+                $imagen = $this->obtenerImagen("A", $genero, 2);
+            }
         }
 
         /**
