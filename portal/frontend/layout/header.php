@@ -218,7 +218,7 @@ if (verificaModuloSistemaActivo('integracionGsuite')) { ?>
 
                                         <?php if (verificaModuloSistemaActivo('MenuRecursos')) : ?>
                                             <a href="https://www.youtube.com/@learnglishpro6011" target="_blank"><i class="fa fa-globe"></i> Videos introductorios</a>
-                                            <a href="https://www.bibliotechnia.com.mx/" target="_blank"><i class="fa fa-globe"></i> Libros digitales</a>
+                                            <a href="https://www.bibliotechnia.com.mx/auth/exception_access/UrYiZ3AmNOKNueyAP3po8ifMfhNs-63rjOzk2PBj0TQ=" target="_blank"><i class="fa fa-globe"></i> Libros digitales</a>
                                             <a href="https://teachers.learnglishpro.com/Courses/" target="_blank"><i class="fa fa-globe"></i> Ideas para proyectos transversales</a>
                                             <a href="http://www.hopinadigital.com.mx/" target="_blank"><i class="fa fa-globe"></i> Sitios Web recomendados y Juegos para computadoras y dispositivos móviles.</a>
                                         <?php endif; ?>
